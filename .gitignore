@@ -1,0 +1,5 @@
+.DS_Store
+
+# story-loop runtime state (storyboard data, logs)
+story-loop/.claude/
+**/logs/
