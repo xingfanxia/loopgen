@@ -545,6 +545,29 @@ point.
 
 Escalate (rare, irreversible-only): see the Runner contract.
 
+### Halt-cause classifier
+
+When emitting `stop-and-summarize` or `escalate: <reason>`, label the
+cause so the user (and the next derivation) can route it back:
+
+- `derivation-gap` — blocked on something derivation could have asked
+  for (lane, fixture, app URL, auth, …). Next derivation pass adds it
+  to the Frontload audit.
+- `genuine-escalate` — irreversible / external / authority-needed
+  (product-direction change, irreversible data, source conflict
+  requiring human judgment).
+- `storyboard-converged` — legitimate completion.
+- `signal-starvation` — no new source, no new candidate, no new
+  alignment for the configured number of consecutive iterations; the
+  frontier-novelty rule forced a re-grounding pass that yielded
+  nothing.
+- `wrong-loop` — the work needs a different loop (evaluator blindness
+  → `frontier-loop`; known product-fail with narrow proof →
+  `spark-loop`; target itself undefined → `greenfield-loop`).
+
+`derivation-gap` is the feedback signal: the Frontload audit was
+incomplete; close it next run.
+
 ## Minimal output
 
 When the iteration completes a verification, return:

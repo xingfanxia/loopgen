@@ -45,7 +45,60 @@ repo, Story Loop performs the responsibility directly or emits a handoff.
 - `frontier-loop` — appropriate when the storyboard exposes evaluator
   blindness, missing proof surfaces, or a broader frontier question.
 
+## Frontloading discipline
+
+Loops fail when they self-terminate blocked on a decision the user could
+have made before the loop fired. The derivation step's job is to
+**frontload every uncertainty** so iteration runs through the night
+without blocking.
+
+At derivation time, for every thing the loop might need (lane, surface,
+storyboard, fixture, app URL, …), do one of:
+
+1. **Resolve it now.** If the host has an AskUserQuestion-style tool,
+   use it. Otherwise print the uncertainty prominently in the
+   derivation response so the user can answer before launching.
+2. **Default + Alignment Review.** Pick the smallest reversible default
+   and record an Alignment Review.
+3. **Mark as escalate candidate.** Only for the truly irreversible.
+
+Anything left over is a **derivation gap** — a future block waiting to
+happen. The Pre-flight Frontload audit (below) lists what was resolved
+/ defaulted / deferred; the emitted prompt's halt-cause classifier
+flags `derivation-gap` halts so the next derivation pass closes them.
+
 ## Derivation procedure
+
+### Pre-flight: Frontload audit
+
+Before §1, walk this checklist. For each item: **resolve**
+(AskUserQuestion if available, else print prominently), **default +
+Alignment Review**, or **escalate-mark**. Record in `loop/STATE.md`
+under `frontload:` and prepend a brief frontload preamble to the
+emitted `loop/PROMPT.md`.
+
+- **Motive** — one-sentence goal.
+- **Selected lane** — e.g. `Surface Taste Lane`, or a domain-named
+  lane.
+- **Selected surface class** — generic, repo-local
+  (audience/workflow/surface name the project uses).
+- **Storyboard format and path** — `docs/storyboard.md` (human) or
+  `.yaml` (machine); prefer the repo's existing convention.
+- **App URL** — for local verification, if in scope.
+- **Fixtures / seeds / auth** — what the proof recipe needs.
+- **Dev-server runnable** — yes / no / unknown; if no, record
+  `env-gap` instead of attempting verification.
+- **Evidence-capture path** — where screenshots / DOM / traces go.
+- **Adjacent skill availability** — `work`, `acceptance`, `e2e-test`,
+  `spark-loop`, `frontier-loop`, `build`: present or not in the host?
+- **Consult availability** — frontier-model channel for Surface Taste
+  blind reads (if applicable).
+- **Existing storyboard state** — rows present? freshness? alignment
+  status of top rows?
+
+A derivation that doesn't close all of these — at least to defaults —
+emits a frontload preamble naming the open gaps so the user can decide
+before sleeping.
 
 ### 1. Inspect the evidence surface
 
