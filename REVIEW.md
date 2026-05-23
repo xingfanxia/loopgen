@@ -104,6 +104,47 @@ tightened with plain language (no "seam closure" jargon at the top).
 proof-ready split) · non-QA "no ready story" fallback · frontier novelty
 rule · current-surface promise scan.
 
+## Fourth pass — frontloading discipline as the family-level principle (2026-05-22)
+
+Observation in conversation: the biggest concrete failure mode of these
+loops is *self-terminating at 3 AM blocked on a decision the user could
+have made before sleeping*. The patches above address it piecewise. This
+pass names the unifying principle.
+
+**The trinity:**
+
+1. **Derivation = decide as much as possible.** Frontload every
+   uncertainty.
+2. **Iteration = narrow reversible judgment + Alignment Review.**
+3. **Escalate = rare, irreversible only.**
+
+If derivation does its job, iteration almost never blocks; the loop runs
+through the night.
+
+**What was added** to each of the four skills:
+
+- **`## Frontloading discipline`** — a shared block (duplicated per skill
+  to survive the symlink install model) naming the principle and the
+  resolve / default / escalate-mark choices. The discipline explicitly
+  privileges **AskUserQuestion** when the host provides it; otherwise
+  printing the uncertainty prominently in the derivation response is the
+  expected behaviour.
+- **Pre-flight: Frontload audit** — a skill-specific checklist that runs
+  *before* §1 of the derivation procedure. For each item the skill
+  resolves / defaults / escalate-marks, then records the result in
+  `loop/STATE.md` under `frontload:` and prepends a frontload preamble
+  to the emitted `loop/PROMPT.md`. The user sees, before sleeping,
+  exactly what was resolved, what was defaulted, and what's an escalate
+  candidate.
+- **Halt-cause classifier** in the emitted prompt: every `stop-and-summarize`
+  or `escalate:` is labelled (`derivation-gap` · `genuine-escalate` ·
+  legitimate-completion · `signal-starvation` · `wrong-loop`).
+  `derivation-gap` is the feedback signal — it tells the user the
+  Frontload audit missed something; the next derivation closes it.
+
+The README now opens with the same principle so anyone cloning the repo
+reads it before the skill files.
+
 ## Still deferred
 
 Family-structural calls still need human judgment:
