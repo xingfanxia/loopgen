@@ -1,9 +1,10 @@
 # Oracle Principles
 
-Distilled from `/oracle-design` — the wisdom earned from real loop runs.
-Minus its syntax-heavy bureaucracy (multi-agent harnesses, bash drivers,
-tagged lanes, Phase + TICKET-ID decomposition), because `/loop` and `/goal`
-runners + LLM-native iteration give us the iteration mechanics for free.
+The wisdom earned from real loop runs in a heavyweight oracle-loop
+framework that goal-loop distills. Minus its syntax-heavy bureaucracy
+(multi-agent harnesses, bash drivers, tagged lanes, Phase + TICKET-ID
+decomposition), because `/loop` and `/goal` runners + LLM-native iteration
+give us the iteration mechanics for free.
 
 The point of goal-loop is to *honor these principles*, not enforce them
 through structural overhead.
@@ -50,9 +51,9 @@ conditions count `OPEN` only; `PASS_PENDING_FINAL` does not satisfy them.
 
 ## Honest-verifier invariants
 
-Slim subset of `/oracle-design`'s 18, scoped to what makes a *verifier*
-honest (the multi-agent / harness / Phase invariants don't apply to us —
-runner contract + LLM iteration replaces them).
+A slim subset of the heavyweight framework's full 18, scoped to what
+makes a *verifier* honest (the multi-agent / harness / Phase invariants
+don't apply to us — runner contract + LLM iteration replaces them).
 
 1. **Oracle commands are concrete and runnable.** Never "review behaviour"
    or "confirm the spec." Every verifier is a command.
@@ -104,21 +105,23 @@ Use when:
 - stakes require the strongest form of independence (e.g. payments,
   data-loss, security boundaries).
 
-This is `/oracle-design`'s default; for most loopy goals it's the
-expensive form. Goal-loop notes the option in its derivation but doesn't
-require it.
+This is the heavyweight framework's default; for most goal-loop runs
+it's the expensive form. Goal-loop notes the option in its derivation
+but doesn't require it.
 
-## Lineage
+## When the heavyweight framework is the right move
 
-The full elaborate framework lives in `/oracle-design` (47KB SKILL.md +
-case studies + references). It has the multi-agent Builder/Acceptance
-drone separation, the `loop.sh` runnable harness, the Phase + TICKET-ID
-decomposition, the structured PROGRESS.md / PROMPT_build.md /
-PROMPT_acceptance.md emission. Use it directly when:
+The principles above are distilled — they keep the essence. The full
+heavyweight framework adds:
 
-- a heavyweight harness with explicit role separation is the right move,
-- the goal needs Phase-level decomposition rather than a flat inventory,
-- you want a generated `loop.sh` instead of using `/loop` or `/goal` as
-  the runner.
+- multi-agent Builder/Acceptance drone separation,
+- a `loop.sh` runnable harness with structured config,
+- Phase + TICKET-ID decomposition rather than a flat inventory,
+- structured emission of separate PROGRESS / PROMPT_build / PROMPT_acceptance
+  files.
 
-For everything else, `goal-loop` is the lighter sibling.
+Reach for the heavyweight form when: stakes require strict role
+separation, the goal needs Phase-level decomposition, or you want a
+generated `loop.sh` instead of using `/loop` / `/goal` / an external
+harness as the runner. For everything else, `goal-loop` is the lighter
+form.

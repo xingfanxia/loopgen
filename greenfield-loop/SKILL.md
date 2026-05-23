@@ -56,8 +56,8 @@ Also invoke to **retrofit a drifting existing loop** that shows any of:
 
 - Project has an explicit benchmark, oracle, CI signal, or pre-built evaluator → use `/frontier-loop`
 - Single-issue closure work on existing code → use `/spark-loop`
-- One-off planning (not iterative) → use `/scope`, `/atlas`, `/code-architect`
-- Pure debugging → use `/debugging`
+- One-off planning (not iterative) → use a dedicated planning skill, not a loop
+- Pure debugging → use a dedicated debugging tool, not a loop
 
 ## What this skill produces
 

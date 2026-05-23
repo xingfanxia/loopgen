@@ -65,11 +65,11 @@ works with any agent that reads skill folders.
 
 ## Notes
 
-`goal-loop` is the family-voice distillation of the heavyweight
-`/oracle-design` skill — same wisdom (binary oracle, oracle independence,
-consumer-side, anti-theater), minus the syntax-heavy bureaucracy
-(multi-agent prompts, `loop.sh`, tagged lanes, Phase + TICKET-ID
-decomposition). The runner contract handles iteration; the LLM handles
-execution. See [`goal-loop/references/oracle-principles.md`](goal-loop/references/oracle-principles.md)
+`goal-loop` is the family-voice distillation of a heavyweight oracle-loop
+framework — same wisdom (binary oracle, oracle independence, consumer-
+side, anti-theater), minus the syntax-heavy bureaucracy (multi-agent
+prompts, `loop.sh`, tagged lanes, Phase + TICKET-ID decomposition). The
+runner contract handles iteration; the LLM handles execution. See
+[`goal-loop/references/oracle-principles.md`](goal-loop/references/oracle-principles.md)
 for the principles and [`REVIEW.md`](REVIEW.md) for the frontier-model
 design review history.

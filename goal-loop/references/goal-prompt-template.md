@@ -362,11 +362,11 @@ YAML list in `loop/ACCEPTANCE.md`. Minimum fields per criterion: `id` ·
 `fail_evidence` · `status` · `depends_on` · `reopen_condition` ·
 `last_verification`.
 
-`/architect` U-IDs lift in as `id`; `/architect` test scenarios lift in
-as `pass_evidence` + `fail_evidence`; `/architect`'s decisive choice
-becomes `authority`. The only new work goal-loop does on top of an
-`/architect` blueprint is wire the `verifier` command per criterion and
-define the `final-verify`.
+A design blueprint's unit IDs lift in as `id`; its test scenarios lift in
+as `pass_evidence` + `fail_evidence`; its decisive choice becomes the
+`authority`. The only new work goal-loop does on top of an upstream
+blueprint is wire the `verifier` command per criterion and define the
+`final-verify`.
 
 A criterion may be split into subcriteria only when proof requires it;
 the parent remains, and completion requires every child *and* the

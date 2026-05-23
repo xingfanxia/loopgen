@@ -226,7 +226,8 @@ Inspect the strongest available sources. For generic frontend repos, prefer:
 6. observed running UI
 7. analytics, support notes, or other field evidence
 
-When `/work` is available and relevant, use it as a source adapter and
+When a work-tracking adapter (Linear, GitHub, vault, Slack — host-
+specific) is available and relevant, use it to synthesize context and
 record its findings as `kind: work`. Still preserve the underlying source
 type when known, such as `issue`, `vault`, `github`, or `slack`.
 
@@ -436,7 +437,8 @@ evidence or a decision. Newly discovered child stories may be appended as
 
 For each non-verified result, emit a handoff target:
 
-- `product-fail` -> implementation ticket, `spark-loop`, or `build`
+- `product-fail` -> implementation ticket; for a finite fix, derive a
+  `goal-loop` with the failing acceptance criterion as the inventory
 - `oracle-defect` -> evaluator/test task
 - `fixture-gap` -> fixture/golden/data task
 - `env-gap` -> dev-server/devslot/DX task

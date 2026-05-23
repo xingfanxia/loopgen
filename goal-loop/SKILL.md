@@ -17,11 +17,11 @@ machine-checkable proof. The per-iteration playbook lives in
 the principles that keep the loop honest live in
 [`references/oracle-principles.md`](references/oracle-principles.md).
 
-`goal-loop` is the family-voice **distillation of `/oracle-design`**. It
-keeps the wisdom (binary oracle, oracle independence, consumer-side,
-anti-theater) and drops the syntax-heavy bureaucracy (multi-agent
-`PROMPT_build.md` + `PROMPT_acceptance.md`, `loop.sh`, tagged lanes, Phase
-+ TICKET-ID decomposition). The runner contract — `/loop`, `/goal`,
+`goal-loop` is the family-voice distillation of a heavyweight oracle-loop
+framework — the wisdom (binary oracle, oracle independence, consumer-side,
+anti-theater) without the syntax-heavy bureaucracy (multi-agent
+`PROMPT_build.md` + `PROMPT_acceptance.md`, `loop.sh`, tagged lanes,
+Phase + TICKET-ID decomposition). The runner contract — `/loop`, `/goal`,
 external harness — handles iteration; the LLM handles execution. **No
 bash, no taxonomy.**
 
@@ -63,13 +63,14 @@ The user or repo gives a *finite contract*:
 - "implement this spec"
 - "make these acceptance criteria pass"
 - "close this issue's checklist"
-- "make this `/architect` blueprint true"
+- "make this design blueprint true"
 - "make this suite pass without changing expected behavior"
 - "rerun this previously-passing goal after a regression"
 
-`/architect` blueprints are first-class criteria sources — their U-ID
-decomposition + test scenarios + decisive choice lift in with minimal
-translation.
+Architectural design blueprints (e.g. an `/architect`-style document with
+unit IDs + test scenarios + a decisive choice) are first-class criteria
+sources — their unit IDs lift in as criterion IDs, test scenarios lift in
+as pass/fail evidence, the decisive choice becomes the authority.
 
 ## Do NOT invoke when
 
@@ -136,9 +137,10 @@ available, else print prominently), **default + Alignment Review**, or
 prepend a frontload preamble to the emitted prompt.
 
 - **Motive** — one-sentence terminal goal.
-- **Criteria source** — exact file path, issue URL, `/architect`
-  blueprint, test selector list, or migration plan. Tests are verifier
-  surfaces, not authoritative intent unless the user names them as such.
+- **Criteria source** — exact file path, issue URL, design blueprint
+  (`/architect`-style), test selector list, or migration plan. Tests
+  are verifier surfaces, not authoritative intent unless the user names
+  them as such.
 - **Authority order** — which source wins when criteria conflict.
 - **Acceptance inventory** — finite list with stable IDs (`AC-XXX`).
 - **Goal version** — fingerprint of inventory + authority + final-verify.
@@ -167,10 +169,10 @@ before sleeping.
 
 ### 1. Locate the contract
 
-Find the *authority source*: spec doc, issue checklist, `/architect`
-blueprint, PR review, test suite to pass, migration plan. Criteria come
-from **outside the loop**; a test the loop authors is a *verifier* for a
-frozen criterion, never the source of intent.
+Find the *authority source*: spec doc, issue checklist, design blueprint
+(`/architect`-style), PR review, test suite to pass, migration plan.
+Criteria come from **outside the loop**; a test the loop authors is a
+*verifier* for a frozen criterion, never the source of intent.
 
 If no authoritative finite contract exists, the work is not goal-shaped.
 Decline and route.
@@ -297,9 +299,5 @@ Invoked to diagnose a drifting goal loop (not author a new prompt):
   — the output template. The per-iteration playbook lives here and gets
   populated at derivation time.
 - [`references/oracle-principles.md`](references/oracle-principles.md) —
-  the four oracle principles + honest-verifier invariants + anti-patterns,
-  distilled from `/oracle-design`.
-- `/oracle-design` (separate skill) — the heavyweight framework with
-  multi-agent harness, `loop.sh`, Phase + TICKET-ID decomposition, and
-  the full 18-invariant admissibility checklist. Use when goal-loop is
-  too light for the stakes.
+  the four oracle principles + honest-verifier invariants + anti-patterns
+  that keep the loop honest.

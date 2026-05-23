@@ -30,20 +30,23 @@ row as truth (see the template's Forbidden Moves).
 ## Relationship to other skills
 
 These are *optional integrations*; if they are not available in the host
-repo, Story Loop performs the responsibility directly or emits a handoff.
+environment, Story Loop performs the responsibility directly or emits a
+handoff.
 
-- `work` — optional guidance adapter for synthesizing vault, Linear,
-  GitHub, Slack, and code context. Do not make the skill depend on
-  project-specific work surfaces.
-- `acceptance` — verifies known acceptance criteria and emits evidence
-  reports after a story has criteria.
-- `e2e-test` — owns browser / dev-server mechanics when verifying a
-  running app.
-- `spark-loop` or `build` — may fix larger product failures after Story
-  Loop classifies them. Story Loop itself may still implement one narrow,
-  reversible, evidence-backed story per iteration.
-- `frontier-loop` — appropriate when the storyboard exposes evaluator
-  blindness, missing proof surfaces, or a broader frontier question.
+- A **work-tracking adapter** (host-specific: Linear, GitHub Issues,
+  Slack, vault) — synthesizes external context. Do not make the skill
+  depend on a particular adapter.
+- An **acceptance verifier** — verifies known acceptance criteria and
+  emits evidence reports after a story has criteria.
+- An **e2e-test harness** — owns browser / dev-server mechanics when
+  verifying a running app.
+- An **implementation skill** (e.g. `goal-loop` for a finite acceptance
+  inventory, or any host-provided builder) — may fix larger product
+  failures after Story Loop classifies them. Story Loop itself may still
+  implement one narrow, reversible, evidence-backed story per iteration.
+- `frontier-loop` (sibling) — appropriate when the storyboard exposes
+  evaluator blindness, missing proof surfaces, or a broader frontier
+  question.
 
 ## Frontloading discipline
 
@@ -89,8 +92,9 @@ emitted `loop/PROMPT.md`.
 - **Dev-server runnable** — yes / no / unknown; if no, record
   `env-gap` instead of attempting verification.
 - **Evidence-capture path** — where screenshots / DOM / traces go.
-- **Adjacent skill availability** — `work`, `acceptance`, `e2e-test`,
-  `spark-loop`, `frontier-loop`, `build`: present or not in the host?
+- **Adjacent capability availability** — work-tracking adapter,
+  acceptance verifier, e2e harness, implementation skill, sibling loops:
+  present or not in the host environment?
 - **Consult availability** — frontier-model channel for Surface Taste
   blind reads (if applicable).
 - **Existing storyboard state** — rows present? freshness? alignment
