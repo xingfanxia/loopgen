@@ -161,6 +161,11 @@ Inline:
 - **Runner contract** — sibling skills share an identical block; keep in sync.
 - **Judgment default** — narrow reversible judgment + Alignment Review;
   sibling skills share an identical block; keep in sync.
+- **Frontier vector** — derive 3–7 repo-specific dimensions covering at
+  minimum: one product-capability, one evaluator-discrimination, one
+  failure-legibility, one cost/latency guardrail. For each: current
+  evidence source, the cheap or expensive command that measures it, and
+  what counts as regression.
 - **Core law** (the 4 valid-progress criteria)
 - **Signal hierarchy** — the four-tier ranking of memory surfaces from
   step 1. If step 2.7 recorded only weak surfaces available, say so
@@ -220,6 +225,10 @@ If ramp mode is active:
   trace legibility), and the ramp exit criterion (stages 1–5 complete).
 - In the homeostasis block, add ramp-axes above main-loop axes. Note
   that main-loop axes are advisory until ramp exits.
+- Require **stage closure cards** (see template) for every ramp-stage
+  exit: verifier command + expected red/green + failure artifact +
+  false-green eliminated + reopen condition. Stages 3–5 have stricter
+  closure (red/green pair, induced failure, queryable trace).
 - State explicitly: ramp is deep, multi-iteration work. A single stage
   may span a PR or a branch. This is not failure.
 - Include an explicit ramp exit signal: when stages 1–5 are complete,

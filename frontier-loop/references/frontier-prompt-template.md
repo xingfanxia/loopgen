@@ -57,6 +57,20 @@ externally blocked, or requires authority the loop cannot establish:
 - product-direction changes whose rollback is unclear,
 - source conflict between authoritative-current sources.
 
+## Frontier vector
+
+This repository's evidence-backed frontier moves along these dimensions:
+
+{{FRONTIER_VECTOR}}
+
+Every accepted change must record a before → after delta on at least one
+dimension while preserving the guardrails on the others. "Different from
+the last change" is not frontier movement by itself.
+
+If a dimension cannot yet be measured, the accepted change must be
+`evaluator` / `observability` / `specification` work that makes it
+measurable.
+
 ## Core law
 
 A healthy loop alternates between improving the product and improving the
@@ -236,12 +250,37 @@ anchor is valid only when another homeostasis axis is actively
 disturbed and the work is the cheapest restoration. Sustained polish
 without an anchor is echo, not frontier work.
 
+**Anchor lifecycle.** Each anchor carries a `closure_criterion` and
+`freshness`. An anchor cited by two accepted changes with no fresh
+failing trace, changed metric, new discriminative fixture, narrowed
+sub-anchor, or confirmed closure becomes **STALE** and cannot justify
+the next accepted change. The next iteration must split the anchor,
+strengthen the oracle, seek external review, or emit
+`stop-and-summarize`.
+
 ### Additional rules
 
 - Use traces and outputs as truth; use notes as memory.
 - Treat the loop as a Pareto frontier, not a single scalar.
 - Prefer additive ratchets over broad rewrites unless evidence strongly
   favors a rewrite.
+
+### Cash-out discipline
+
+After ramp exit, every non-product accepted change (evaluator,
+observability, specification) names its product cash-out trigger: the
+product question it enables, the signal that becomes stronger, the
+command or artifact that will show the improvement.
+
+After `{{CASH_OUT_N}}` consecutive non-product accepted changes at T3+,
+the next accepted change must do one of:
+
+1. use the improved signal to select or complete product work,
+2. run the outer channel and update the frontier vector,
+3. create or run a holdout / anti-overfitting check, or
+4. emit `stop-and-summarize`.
+
+Default `{{CASH_OUT_N}} = 3`.
 
 ## Halt conditions
 
@@ -330,6 +369,26 @@ Missing ramp stages: {{RAMP_MISSING_STAGES}}
 
 Each stage may take many iterations. A single stage may span a PR or a
 branch. Do not rush stages; do not treat ramp as a checkbox list.
+
+### Stage closure cards
+
+A stage is not closed by prose. Each closure produces a card:
+
+- `stage`
+- `verifier_command` — the exact command that proves the stage
+- `expected_green` — what passes on a known-good state
+- `expected_red` — what fails under a deliberate broken case, mutation,
+  sentinel, or known defect (or `none-known` with justification)
+- `failure_artifact` — path / query showing the produced failure trace
+- `false_green_eliminated` — the named false-green class or `none-known`
+- `reopen_condition` — the evidence that would reopen the stage
+
+Stricter closure for stages 3–5: stage 3 (smoke validator) demonstrates at
+least one obvious breakage caught; stage 4 (discriminative signal) needs
+a red/green pair, mutation sentinel, or known-defect reproduction (a
+passing test alone does not close stage 4); stage 5 (trace
+infrastructure) induces at least one failure and shows the artifact is
+queryable without rerun.
 
 ### Ramp exit criterion
 
