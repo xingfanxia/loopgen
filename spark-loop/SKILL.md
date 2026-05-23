@@ -98,7 +98,57 @@ known false-green with a concrete wrong behavior. A generic seam family, a
 TODO, broad dissatisfaction, or a self-authored hypothesis is not
 admissible. If no admissible anchor exists, the repo is `not-fit`.
 
+## Frontloading discipline
+
+Loops fail when they self-terminate blocked on a decision the user could
+have made before the loop fired. The derivation step's job is to
+**frontload every uncertainty** so iteration runs through the night
+without blocking.
+
+At derivation time, for every thing the loop might need (motive, anchors,
+commands, scope, fixture, …), do one of:
+
+1. **Resolve it now.** If the host has an AskUserQuestion-style tool,
+   use it. Otherwise print the uncertainty prominently in the derivation
+   response so the user can answer before launching.
+2. **Default + Alignment Review.** Pick the smallest reversible default
+   and record an Alignment Review.
+3. **Mark as escalate candidate.** Only for the truly irreversible.
+
+Anything left over is a **derivation gap** — a future block waiting to
+happen. The Pre-flight Frontload audit (below) lists what was resolved /
+defaulted / deferred; the emitted prompt's halt-cause classifier flags
+`derivation-gap` halts so the next derivation pass closes them.
+
 ## Derivation procedure
+
+### Pre-flight: Frontload audit
+
+Before §1, walk this checklist. For each item: **resolve**
+(AskUserQuestion if available, else print prominently), **default +
+Alignment Review**, or **escalate-mark**. Record in `loop/STATE.md`
+under `frontload:` and prepend a brief frontload preamble to the
+emitted prompt.
+
+- **Motive** — one-sentence goal.
+- **Admissible live anchor inventory** — concrete current evidence
+  items, not generic seam classes (open finding · failing test +
+  command · operator bug + repro · measured regression on a named path
+  · known false-green with concrete wrong behavior). If none are
+  admissible, declare `not-fit` and route to `frontier-loop`.
+- **Closure posture** — `closure-ready` / `partial-closure` / `not-fit`.
+- **Bootstrap move** — if `partial-closure`: which one anchor needs it?
+- **Cheap inner channel** — exact command.
+- **Narrow proof channel** — smallest discriminative reproducer / selector
+  for each anchor.
+- **Outer channel** — broader proof run for checkpoints.
+- **Scope manifest** — allowed / forbidden surfaces.
+- **Forbidden shortcuts** — `--no-verify`, mocked integration, etc.
+- **Parameter** — `{{QUIET_SIGNAL_N}}`.
+
+A derivation that doesn't close all of these — at least to defaults —
+emits a frontload preamble naming the open gaps so the user can decide
+before sleeping.
 
 ### 1. Inspect the evidence surface
 

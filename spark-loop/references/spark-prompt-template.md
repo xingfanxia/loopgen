@@ -295,6 +295,23 @@ exploration? If the remaining highest-impact work is not closure-shaped,
 emit `stop-and-reroute: frontier-loop`. Do not keep harvesting trivial
 seams to avoid frontier work.
 
+### Halt-cause classifier
+
+When emitting `stop-and-summarize`, `stop-and-reroute`, or
+`escalate: <reason>`, label the cause:
+
+- `derivation-gap` — blocked on something derivation could have asked
+  for. Next derivation pass adds it to the Frontload audit.
+- `genuine-escalate` — irreversible / external / authority-needed.
+- `seams-sealed` — legitimate completion; no admissible live anchors
+  remain.
+- `signal-starvation` — quiet-signal checkpoint fired.
+- `wrong-loop` — the seam needs frontier work; reroute to
+  `frontier-loop`.
+
+`derivation-gap` is the feedback signal: the Frontload audit was
+incomplete.
+
 The short version:
 
 The frontier loop moves the frontier.
