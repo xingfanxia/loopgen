@@ -89,6 +89,30 @@ diagnoses imbalance each firing.
 How to fire the loop, how to tune the rubric, how to halt, and what
 milestones look like.
 
+## Frontloading discipline
+
+Loops fail when they self-terminate blocked on a decision the user could
+have made before the loop fired. The derivation step's job is to
+**frontload every uncertainty** so iteration runs through the night
+without blocking.
+
+At derivation time, for every thing the loop might need (model, paid-API
+budget, secret, license click, hardware, evaluator format, capability
+surface, consult channel, …), do one of:
+
+1. **Resolve it now.** If the host has an AskUserQuestion-style tool,
+   use it. Otherwise print the uncertainty prominently in the derivation
+   response so the user can answer before launching.
+2. **Default + Alignment Review.** Pick the smallest reversible default
+   and record an Alignment Review.
+3. **Mark as escalate candidate.** Only for the truly irreversible.
+
+Anything left over is a **derivation gap** — a future 3 AM block waiting
+to happen. The Pre-flight Frontload audit (in the emit procedure) lists
+what was resolved / defaulted / deferred; the emitted PROMPT.md's
+halt-cause classifier flags `derivation-gap` halts so the next
+derivation pass closes them.
+
 ## The 11 green-field invariants (encoded in the emitted prompt)
 
 These are the patterns that *every* successful green-field loop converges on
@@ -299,9 +323,74 @@ iteration with file changes ends with `git add … && git commit` before
 the iteration ends. Format: `chore(loop): iter NNN — <mode> —
 <focus>`. Use `COMMIT_APPROVED=1` env to bypass interactive hooks.
 
+## Halt-cause classifier
+
+The emitted PROMPT.md must include this classifier. When the loop emits
+`stop-and-summarize` or `escalate: <reason>`, label the cause:
+
+- `derivation-gap` — blocked on something derivation could have asked
+  for (model identity, budget cap, secret install, network/auth, …).
+  The next derivation pass adds it to the Frontload audit so the loop
+  doesn't block on it again.
+- `genuine-escalate` — irreversible / external / authority-needed
+  (paid API budget, public-publish, secrets, product direction with
+  unclear rollback).
+- `stone-converged` — legitimate completion; the artifact landed on
+  the user's reframed target and further iteration has no positive
+  yield.
+- `signal-starvation` — quiet milestone region with no new evidence
+  (no rubric revision, no consult finding, no user reframe) for the
+  configured stretch.
+- `wrong-loop` — the work has stopped being green-field (target now
+  fixed and the loop should switch to `frontier-loop`, or the work is
+  one known seam better fit for `spark-loop`).
+
+`derivation-gap` is the feedback signal: it tells the user the
+Frontload checklist was incomplete; close it next run.
+
 ## Emit procedure
 
 When invoked, perform these steps:
+
+### 0. Pre-flight: Frontload audit
+
+Before §1, walk this checklist. For each item: **resolve**
+(AskUserQuestion if available, else print prominently in the
+derivation response), **default + Alignment Review**, or
+**escalate-mark**. Record in `loop/STATE.md` under `frontload:` and
+prepend a brief frontload preamble to `loop/PROMPT.md` — exactly what
+was resolved / defaulted / left as escalate candidates.
+
+- **Target adjacency** — "X-adjacent" interpretation; INTENT.md
+  hypotheses (≥3 live, see invariant 3).
+- **Implied artifacts** — videos, designs, articles, code, slides, ….
+- **Constraints** — solo dev, local-only, paid budget cap, deadline.
+- **Model identity** — which LLM / which account / which physical
+  machine.
+- **Paid APIs** — list + budget caps (or `none-allowed`).
+- **Secrets / credentials** — install paths; the user runs these, not
+  the loop.
+- **License clicks / hardware preconditions** — preloop checklist
+  items (invariant 10).
+- **Network / auth / VPN** — what the loop needs to reach.
+- **Evaluator format** — RUBRIC.md v0.1 criteria draft (8–12).
+- **Capability surface** — which tools the loop may install
+  (invariant 6).
+- **Consult availability** — frontier-model channel (Agentify / PAL /
+  mcp / …); if absent, invariant 8 is marked `CONSULT unavailable` in
+  PROMPT.md.
+- **Cheap dignity test** — concrete pass/fail definition.
+- **Audience-comprehension probe** — protocol for blind reads
+  (invariant 2 extension).
+- **Commit discipline** — `COMMIT_APPROVED=1` env (invariant 11).
+- **Phase order** — research → preloop → bootstrap → iter 1+;
+  ownership of each gate.
+
+A derivation that doesn't close all of these — at least to defaults —
+emits a frontload preamble naming the open gaps so the user can
+decide before sleeping.
+
+### Steps (after Pre-flight)
 
 1. **Read the user's stated intent.** Extract: target adjacency
    ("X-adjacent"), implied artifacts (videos, designs, articles, code),
