@@ -162,6 +162,18 @@ early. They WILL become ceilings once hit. Encode:
 - Once the user reframes to "no fixed milestone," switch to imbalance-
   seeking (see #5)
 
+**Rubric versions + score quarantine.** `RUBRIC.md` carries
+`rubric_version: vN` and `score_comparable_with: [...]`. Any of these
+creates a new version and quarantines old scores: user reframe,
+target-hypothesis change, major artifact-format change, milestone hit
+faster than expected, three consecutive high scores with no substantial
+audience/capability change, a frontier-consult flagging stale-target
+risk, or a blind-comprehension read that diverges from self-scores.
+During quarantine the loop may not claim improvement against the old
+total; it must revise the evaluator, run a divergence probe, or
+rebaseline under the new version. "Raise the ceiling" must be a new
+version, not a stricter restatement of stale criteria.
+
 ### 5. Imbalance-seeking replaces sequenced plans eventually
 
 Sequenced plans (N+1, N+2, …) are useful early — they give the loop
@@ -203,6 +215,34 @@ Schedule a CONSULT every ~10 iterations. Frame the question as:
 would look stupid in 6 months?"* — not "review my plan." Disagreement with
 the consultant is allowed and sometimes correct. Capture into
 `loop/creative-consults.md`.
+
+**Blind adversarial protocol.** The consult packet excludes current
+scores, the loop's preferred next plan, and self-justifying rationale.
+It contains: the user's original intent + later reframes, current
+INTENT.md hypotheses, representative artifacts or excerpts, the current
+rubric criteria *without scores*, and known constraints. Ask:
+
+1. What current target should be killed or demoted?
+2. What's seductive-but-hollow about recent progress?
+3. What would look derivative, trivial, or embarrassing in six months?
+4. What assumption is the loop over-optimizing?
+5. What one experiment would most cheaply invalidate the current rubric?
+
+Within 3 iterations the loop must do one of: run a proposed invalidation
+experiment, revise INTENT.md / RUBRIC.md because of the answer, or
+explicitly reject the answer with a concrete reason. A consult that
+produces no behavioral change and no explicit rejection does **not** count
+as completed.
+
+**Consult availability detection (at derivation time).** Inspect the
+host environment for a frontier-model consult channel (Agentify Desktop
+MCP, PAL, mcp__* tools, or similar). If none is available, mark
+invariant 8 in the emitted PROMPT.md as
+`CONSULT unavailable in this environment — front-loaded as a known
+limitation; the loop proceeds without scheduled creative consults and
+surfaces creative-direction blindness as a known risk.` Do not silently
+drop the invariant — the user should see at run-start that CONSULT is
+off, and consider a periodic human-look gate instead.
 
 ### 9. Provenance/re-editability matters from the first generated asset
 
