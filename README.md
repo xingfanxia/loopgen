@@ -38,14 +38,15 @@ legitimate completion.
 
 | Skill | Derives a loop that… | Use when |
 |---|---|---|
+| `goal-loop` | the **terminal loop** — closes a finite acceptance inventory and halts when one final-verify proves the whole list | you have a known list of things to make true (spec, suite to pass, `/architect` blueprint) |
 | `frontier-loop` | moves a repo's evidence-backed capability frontier | an artifact/evaluator exists and should get better |
 | `greenfield-loop` | discovers what to build when nothing is defined | empty repo, vague "build me something X-adjacent" intent |
-| `spark-loop` | the **closing loop** — closes one known operator-visible problem per iteration with the smallest reversible fix + a narrow proof | you already know what to close (a bug, a review finding, a measured regression) |
+| `spark-loop` | the **closing loop** — closes one known operator-visible problem per iteration with the smallest reversible fix + a narrow proof | you already know the one thing to close (a bug, a review finding, a measured regression) |
 | `story-loop` | maintains a living product storyboard | discovering / verifying user-facing product promises |
 
-Rough routing: **target undefined →** `greenfield-loop` · **move an existing
-frontier →** `frontier-loop` · **close one known seam →** `spark-loop` ·
-**product promises →** `story-loop`.
+Rough routing: **finite known target →** `goal-loop` · **target undefined →**
+`greenfield-loop` · **move an existing frontier →** `frontier-loop` ·
+**close one known seam →** `spark-loop` · **product promises →** `story-loop`.
 
 ## Install
 
@@ -53,7 +54,7 @@ Clone, then symlink the skills into your agent's skills directory:
 
 ```sh
 git clone git@github.com:pro-vi/loopy.git
-for s in frontier-loop greenfield-loop spark-loop story-loop; do
+for s in frontier-loop goal-loop greenfield-loop spark-loop story-loop; do
   ln -s "$PWD/loopy/$s" ~/.claude/skills/$s      # Claude Code
   ln -s "$PWD/loopy/$s" ~/.codex/skills/$s       # Codex (optional)
 done
@@ -62,15 +63,13 @@ done
 Each skill is a plain directory with a `SKILL.md` — no plugin runtime, so it
 works with any agent that reads skill folders.
 
-## Status
-
-`goal-loop` is the next planned member — the family currently has no
-finite, known-target, terminal loop (implement a known spec, pass a fixed
-suite, close a finite checklist). The README's tagline says "`/goal` and
-`/loop`"; `goal-loop` closes that family gap. Tracked in [`REVIEW.md`](REVIEW.md)
-under *Still deferred*.
-
 ## Notes
 
-See [`REVIEW.md`](REVIEW.md) for the frontier-model design review history
-and the deferred-decisions log.
+`goal-loop` is the family-voice distillation of the heavyweight
+`/oracle-design` skill — same wisdom (binary oracle, oracle independence,
+consumer-side, anti-theater), minus the syntax-heavy bureaucracy
+(multi-agent prompts, `loop.sh`, tagged lanes, Phase + TICKET-ID
+decomposition). The runner contract handles iteration; the LLM handles
+execution. See [`goal-loop/references/oracle-principles.md`](goal-loop/references/oracle-principles.md)
+for the principles and [`REVIEW.md`](REVIEW.md) for the frontier-model
+design review history.

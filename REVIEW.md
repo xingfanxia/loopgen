@@ -145,15 +145,49 @@ through the night.
 The README now opens with the same principle so anyone cloning the repo
 reads it before the skill files.
 
+## Fifth pass — goal-loop landed as /oracle-design distillation (2026-05-23)
+
+`goal-loop` exists. It's the family-voice distillation of `/oracle-design`,
+the heavyweight ancestor (47KB SKILL.md + case studies + references). Kept:
+
+- the **four oracle principles** (binary · independence · consumer-side ·
+  anti-theater / FIXED ≠ CLOSED),
+- a **slim subset of the 18 invariants** (the ones about *verifier
+  honesty*, not multi-agent harness mechanics),
+- the **PASS_PENDING_FINAL → PASS** state distinction (one verifier
+  passing isn't terminal; the final-verify must prove the whole inventory
+  in one repo state),
+- **Oracle Change Notes** inline in `loop/STATE.md` (no separate
+  oracle-change-cards file),
+- the anti-patterns table (trimmed).
+
+Dropped (syntax-heavy bureaucracy `/loop` and `/goal` make unnecessary):
+
+- multi-agent `PROMPT_build.md` + `PROMPT_acceptance.md` split (default;
+  available as `loop/PROMPT_verify.md` for high-stakes runs),
+- `loop.sh` runnable harness (runner contract replaces it),
+- Phase + TICKET-ID decomposition (flat acceptance inventory),
+- `[lane:acceptance]` / `[expect:fail]` tags (prose rules),
+- Motivation Trace / Risk-to-Oracle Compilation as separate derivation
+  steps (folded into the verifier-design step),
+- Representation Boundary Analysis (too specialized).
+
+**Files**: `goal-loop/SKILL.md`,
+`goal-loop/references/goal-prompt-template.md`,
+`goal-loop/references/oracle-principles.md`. Total ~700 lines vs
+`/oracle-design`'s 47KB.
+
+**`/architect` compose**: goal-loop's derivation §1 names `/architect`
+blueprints as a first-class criteria source. A U-ID becomes an AC-ID, a
+test scenario becomes `pass_evidence` + `fail_evidence`, the decisive
+choice becomes `authority`. The only new work goal-loop does on top of
+`/architect` output is wire the `verifier` commands and define the
+`final-verify`.
+
 ## Still deferred
 
 Family-structural calls still need human judgment:
 
-- **Missing `goal-loop` / oracle-loop.** The repo identity is "generators
-  for `/goal` and `/loop`", and frontier-loop explicitly contrasts itself
-  with an "Oracle loop" — but no skill owns finite, known-target,
-  terminal work (implement a known spec, pass a fixed suite, close a
-  finite checklist). The biggest remaining gap.
 - **Shared `references/loop-family-router.md` + `shared-loop-contract.md`.**
   A truly shared file dangles under per-skill symlink install; this pass
   resolved to per-skill duplication of the short Runner-contract /
