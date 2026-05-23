@@ -102,6 +102,16 @@ artifact-level anchors, and only then renders the first artifact. If the user
 demands output before evaluator, the prompt should warn that early outputs
 will inflate.
 
+**Score-locked ramp.** STATE.md starts with `score_lock: yes`. While
+locked the loop may not write numeric totals, pass/fail judgments,
+milestone claims, or artifact-to-artifact rankings — only rubric drafting,
+evidence-rule definitions, the cheap dignity test, audience-comprehension
+probes, and explicitly labeled `CALIBRATION — NOT PRODUCT — NOT SCORED`
+runs. Exit the lock only when RUBRIC.md v0.1 has 8–12 criteria with
+0/2/5 anchors and per-criterion evidence rules, the cheap dignity test
+is written, an audience-comprehension probe is defined, and `INTENT.md`
+holds live target hypotheses (see #3).
+
 ### 2. Pixel/artifact-level evidence is mandatory for any score above 2
 
 The single most reliable failure mode in green-field is *agent-grades-own-
@@ -110,6 +120,17 @@ evidence (extracted frames, AST nodes, test outputs, transcript spans —
 whatever the artifact is). No citation = score caps at 2. Run a "would this
 pass the cheap dignity test" guard (Keynote-slide-guard equivalent) before
 writing the total.
+
+**Blind comprehension for audience-facing scores above 3.** For criteria
+involving clarity, narrative, comprehension, audience fit, persuasion, or
+memorability: scores above 3 require a blind read — send the artifact to
+a fresh isolated session (LLM via the invariant-8 CONSULT channel, or a
+human reviewer) **without** the rubric, prompt, internal rationale, or
+current scores. Ask: *"what is this trying to do? what did you
+understand? what felt missing, confusing, derivative, or hollow?"*
+Compare to the artifact's `comprehensionClaim`. Cap the criterion at 2
+if no blind read was run; cap at 3 if the blind read substantially
+diverges from the claim.
 
 ### 3. The intent itself will change. Build for that.
 
@@ -122,6 +143,14 @@ locks in. Encode:
   prior scores; write a `STATE.md` block that explicitly resets stale
   numbers when intent shifts
 - Don't let the loop defend old work against new intent
+- Maintain `loop/INTENT.md` with **≥3 live target hypotheses**: the
+  literal interpretation, a more ambitious / more original interpretation,
+  and a dangerous-but-plausible wrong interpretation. Each names
+  supporting evidence, artifact implications, what good output makes the
+  user understand/feel/do, failure smells, invalidating evidence, and one
+  cheap probe that distinguishes it. No rubric criterion may be added
+  unless it maps to a live hypothesis. Re-review INTENT.md every ~10
+  iterations, on every user reframe, and before any major rubric revision.
 
 ### 4. Hard-coded numerical targets are scaffolding, not goals
 
@@ -202,6 +231,18 @@ When emitting the prompt, identify human-only items in the project's domain
 and write them as a numbered preloop checklist with matching fields in
 STATE.md. Add a **gate-hardening line**: the gate is binary — `yes` literally,
 or halt. No "almost done," no partial fills, no commented-out completions.
+
+**Role-protected gates.** Every phase gate declares its owner:
+`owner: loop | user | external`. A `user`-owned gate (preloop_complete,
+license clicks, secret install, identity decisions) cannot be flipped
+to `yes` by the loop — only an explicit user edit or user message. If
+the loop finds a user-owned gate set to `yes` without evidence, treat
+it as `no`, restore the block, and continue only with non-gated
+preparatory work. A `loop`-owned gate (e.g. `research_complete`) requires
+structured `exit_evidence` — decision record, rejected alternatives,
+assumptions still at risk, implications for RUBRIC.md and preloop.
+Research may run at most 3 consecutive iterations without completing
+the gate or naming a specific blocker in STATE.md.
 
 If the project also has *open questions* requiring hands-on research (best
 practices, model identity, runtime choice) before the preloop checklist
