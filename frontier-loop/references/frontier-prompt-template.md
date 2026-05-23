@@ -292,6 +292,27 @@ separate signal — see the Runner contract.
 - All five homeostasis axes in balance and no intervention is available
   (frontier-exhausted equilibrium).
 
+### Halt-cause classifier
+
+When emitting `stop-and-summarize` or `escalate: <reason>`, label the
+cause so the user (and the next derivation) can route it back:
+
+- `derivation-gap` — blocked on something derivation could have asked
+  for. The next derivation pass adds it to the Frontload audit so this
+  loop doesn't block on it again.
+- `genuine-escalate` — irreversible / external / authority-needed
+  (paid API budget, public-publish, secret, product direction).
+- `frontier-exhausted` — legitimate completion; all five homeostasis
+  axes in balance, no positive-yield intervention available.
+- `signal-starvation` — quiet-signal checkpoint fired; outer channel
+  ran or stop-and-summarize.
+- `wrong-loop` — the seam belongs in a different loop type (a
+  closure-shaped seam should reroute to `spark-loop`).
+
+`derivation-gap` is the feedback signal. It tells the user the
+checklist was incomplete; add the missed item to next run's Frontload
+audit.
+
 ### Quiet-signal checkpoint
 
 After N consecutive iterations with the cheap channel green, no new

@@ -42,7 +42,64 @@ Valid progress is any small reversible change that does at least one of:
 4. improves observability or specification so future search is cheaper and
    less ambiguous
 
+## Frontloading discipline
+
+Loops fail when they self-terminate blocked on a decision the user could
+have made before the loop fired. The derivation step's job is to
+**frontload every uncertainty** so iteration runs through the night
+without blocking.
+
+At derivation time, for every thing the loop might need (model, command,
+path, credential, evaluator, scope, fixture, format, …), do one of:
+
+1. **Resolve it now.** If the host has an AskUserQuestion-style tool
+   (Claude Code, similar), use it. Otherwise print the uncertainty
+   prominently in the derivation response so the user can answer before
+   launching the loop.
+2. **Default + Alignment Review.** Pick the smallest reversible default
+   and record an Alignment Review (problem · options · chosen contract ·
+   rollback trigger). Reversible at iteration time.
+3. **Mark as escalate candidate.** Only for the truly irreversible —
+   paid APIs without budget caps, public-publish, secrets, product
+   direction with unclear rollback.
+
+Anything left over — neither resolved, defaulted, nor escalate-marked —
+is a **derivation gap**: a future block waiting to happen. The Pre-flight
+Frontload audit (below) makes the list explicit; the emitted prompt's
+halt-cause classifier flags `derivation-gap` halts so the next derivation
+pass closes them.
+
 ## Derivation procedure
+
+### Pre-flight: Frontload audit
+
+Before §1, walk this checklist. For each item: **resolve** (AskUserQuestion
+if available, else print prominently), **default + Alignment Review**, or
+**escalate-mark**. Record the result in `loop/STATE.md` under `frontload:`
+and prepend a brief frontload preamble to the emitted `loop/PROMPT.md`:
+exactly what was resolved / defaulted / left as escalate candidates.
+
+- **Motive** — one-sentence goal.
+- **Evidence surface** — build / test / run commands; ledger / findings /
+  run-artifacts paths; failing selectors; benchmark outputs.
+- **Evaluator tier** — current T0–T6.
+- **Ramp mode** — missing stages 1–5, if any; ramp encoded in motive?
+- **Reward channels** — cheap inner command; expensive outer command
+  (or "build during ramp").
+- **Frontier vector** — the 3–7 repo dimensions and how each is measured.
+- **Scope manifest** — allowed / forbidden globs (or `none`).
+- **Known false-green zones** — named tests / suites that pass without
+  actually validating.
+- **Forbidden shortcuts** — `--no-verify`, mocked integration,
+  assertion-free fixtures.
+- **Artifact locations** — where the ledger, benchmark, run state live.
+- **Review-closure overlay** — applicable?
+- **Consult availability** — frontier-model channel in this host?
+- **Parameters** — `{{QUIET_SIGNAL_N}}`, `{{CASH_OUT_N}}` (defaults 3).
+
+A derivation that doesn't close all of these — at least to defaults —
+emits a frontload preamble naming the open gaps so the user can decide
+before sleeping.
 
 ### 1. Inspect the evidence surface
 
