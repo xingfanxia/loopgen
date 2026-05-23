@@ -230,8 +230,11 @@ When invoked, perform these steps:
 3. **Pick an initial rubric (8–12 criteria).** Cover at minimum: artifact
    clarity, narrative/structural coherence, density-vs-emptiness, pacing,
    and an "audience comprehension" axis. Concrete anchors per criterion.
-4. **Write `loop/PROMPT.md`** encoding all 11 invariants above plus a
-   capability-list specific to the project's domain. The prompt should be
+4. **Write `loop/PROMPT.md`** with a **Runner contract** preamble
+   (sibling skills share an identical block — keep in sync; copy from
+   any `*-prompt-template.md` in the family), then all 11 invariants
+   above, plus a capability-list specific to the project's domain.
+   Invariant 7 carries the Judgment default. The prompt should be
    directly invokable by any runner — e.g.
    `/loop Read ./loop/PROMPT.md and follow its instructions.`,
    `/goal Read ./loop/PROMPT.md ...`, or fed to an external harness. The
