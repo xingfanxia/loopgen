@@ -22,6 +22,13 @@ documents the alignment cost for human review, implements or verifies one
 focused slice, captures evidence, and continues. It is not broad QA or a
 project-management digest.
 
+The loop should bias toward actual story / feature movement. A promoted
+product iteration should make a user promise more visibly understandable,
+usable, safe, recoverable, or decision-supporting. Semantic-only cleanup
+can be valid support work, but repeated same-family low-visibility fixes
+are a drift signal unless they unblock a selected story or repair a
+misleading rendered contract.
+
 The storyboard is an *index of evidence and intent*, not the source of
 intent itself. Authority lives in human prompts, current docs, accepted
 issues/PRs, and reviewer guidance — re-check those before treating an old
@@ -204,6 +211,7 @@ Invoked to diagnose a drifting Story Loop (not author a new prompt):
 3. Identify the dominant failure mode: stale storyboard treated as
    authority? Repeated re-verification of easy stories? Broad QA sweep
    masquerading as verification? Verification on unaligned candidates?
+   Same-family semantic cleanup crowding out story / feature movement?
    Escalate-polling where judgment should default?
 4. Emit a *minimal* PROMPT.md mutation that closes the failure mode —
    not a full rewrite. The hand-evolved prompt has hard-won lessons; the

@@ -240,55 +240,95 @@ content lives correctly inside `goal-loop`.
   now points at `goal-loop` with a 1-row inventory.
 - README routing line drops the `close one known seam` row.
 
-## Seventh pass — god-loop drafted as experimental meta-skill (2026-05-23)
+## Seventh pass — god-loop drafted, then retracted (2026-05-23 → 2026-05-24)
 
-`god-loop/` exists as a v0 / experimental draft — a meta-skill that
-composes the four siblings by homeostating over modes. Where
-`frontier-loop` cycles through five axes within its mode, `god-loop`
-cycles through the four modes themselves. Each iteration: classify
-which mode is most disturbed, delegate to that mode's playbook,
-reclassify next iteration.
+`god-loop/` was drafted as a v0 / experimental meta-skill (commit
+`609ba2a`) and **retracted within ~24h without dogfooding** (the
+retract commit removes it from `main`). Reasoning, in plain terms:
 
-**Status:** not yet dogfooded. Marked clearly in SKILL.md frontmatter, in
-the README's "Meta (experimental)" subsection (separate from the 4
-stable siblings), and in the README install loop (skip until used).
+- A second-opinion consultation (GPT Pro Extended) on family coverage
+  delivered the same verdict as the prior /meta in this thread: *"add
+  only when real runs need it; pick empirically-earned shapes over full
+  coverage. A new sibling earns public status only when existing
+  siblings plus overlays repeatedly produce the wrong failure mode."*
+- god-loop was authored on the same impulse that retired spark-loop
+  (design without usage evidence) — applying the spark standard to
+  god-loop, it hadn't earned a sibling slot either. Retracting it now
+  closes the consistency gap.
+- The content survives in git history at `609ba2a`. If real
+  multi-mode runs later prove the case for it, the restoration cost
+  is one `git revert`.
 
-**Design choices for v0:**
+The architectural insight stands: homeostasis lifted one level (modes
+as axes) is a real generalization of frontier-loop's homeostasis-
+over-axes. Retraction is about *when*, not *whether*.
 
-- `god-loop` reads sibling templates at derivation time and **inlines**
-  active-mode playbooks into the emitted prompt; the runtime prompt is
-  self-contained, no live cross-skill resolution at iteration time.
-- The classifier refuses to emit a god-prompt if only one mode classifies
-  as active — single-mode runs should use the sibling skill directly,
-  not god-loop with ceremony.
-- A `wrong-shape` halt-cause fires at iteration time if only one mode has
-  shown disturbance across the run; the loop reroutes to that sibling.
-- Anti-thrash threshold: `{{MAX_MODE_THRASH}}` switches per N iterations
-  without measurable progress in any mode → halt for human review.
+## Eighth pass — promotion-bar rule on paper (2026-05-24)
 
-**Concerns to watch in dogfooding:**
-
-- Mode-thrashing under unclear disturbance signs.
-- Inlined-playbook drift when a sibling skill updates mid-run (mitigation:
-  fingerprint inlined source versions).
-- The active-modes audit becoming taste rather than evidence — if every
-  god-loop derivation lights up all four modes, the audit isn't doing
-  its job.
-
-If real runs argue against it, the natural fallback is removing
-god-loop and routing manually between siblings.
+A self-imposed rule added to the Still-deferred section below, naming
+the dogfooding-citation requirement for new siblings, overlays, and
+structural refactors. This is the rule GPT Pro named, that the spark
+retirement implicitly applied, and that this thread has invoked /meta
+twice to surface. Putting it on paper so the next "what should we add?"
+question lands against a written bar instead of a vibe.
 
 ## Still deferred
 
-Family-structural calls still need human judgment:
+Family-structural calls still need human judgment. Until the rule below
+is satisfied, *no further additions land on `main`*.
+
+### Promotion-bar rule (adopted 2026-05-24)
+
+> No new sibling skill, overlay, or structural refactor lands on `main`
+> without a **dogfooding citation** — a concrete run on a real project
+> that surfaced the failure mode the addition addresses. Frontier-model
+> recommendations log as candidates here (below); drafts wait for a real
+> run before promoting. This is the same bar the spark retirement
+> implicitly applied (commits up to `68c6ed8`) and the god-loop
+> retraction explicitly applied.
+
+### Logged candidates (awaiting dogfooding evidence)
+
+- **`inquiry-loop`** (GPT Pro coverage-gap consultation, 2026-05-23,
+  confidence 0.78). Distinct epistemology: artifact = a *finding*
+  (causal explanation · root-cause account · narrowed surviving
+  hypotheses); evidence = discriminative observation (traces · repros ·
+  counterexamples · induced failures); key invariant *do not fix before
+  understanding*; failure modes: narrative closure · confirmation
+  fishing · fix laundering · instrumentation overfit · root-cause
+  inflation · unfalsifiable finding. Earns a slot only if real debug /
+  RCA arcs keep getting mis-shaped as fixes by goal/frontier.
+- **`audit-loop` / cartography-loop**. Knowledge object = a coverage
+  inventory (security surfaces · dep/license audits · API route
+  inventories · "find every place this promise appears and classify
+  its evidence"). Earns a slot only if `inquiry-loop` doesn't subsume
+  the work and goal-loop preflights aren't strong enough.
+- **`god-loop`** (retracted). Mode-homeostasis composer. Earns
+  restoration only if a real run genuinely shifts between ≥2 modes
+  within one session and manual switching is observably worse than
+  a runtime classifier.
+
+### Logged candidates (overlays, not siblings)
+
+- **Authority-resolution overlay** (GPT Pro recommendation). Shared
+  block across goal/story/frontier/greenfield: identify conflicting
+  sources · rank declared authority · quarantine if no precedence ·
+  propose reversible defaults · escalate for irreversible authority.
+  Earns landing if any sibling repeatedly emits the
+  `source-conflict → escalate` halt-cause across real runs.
+- **Migration-as-goal-loop-overlay**. A documented acceptance-inventory
+  template for migrations (7 row archetypes: pre-state captured · shim
+  · dual-read · rehearsal · rollback · removal · final-verify). Earns
+  landing only if real migration runs through goal-loop repeatedly
+  lose the path-safety invariants.
+
+### Permanently deferred structural items
 
 - **Shared `references/loop-family-router.md` + `shared-loop-contract.md`.**
   A truly shared file dangles under per-skill symlink install; this pass
   resolved to per-skill duplication of the short Runner-contract /
   Judgment-default blocks. A router would need either heavy per-skill
-  duplication or an installer that brings the family together. god-loop
-  partially relieves this (it's a runtime router) but doesn't replace
-  the case for a documentation-level router.
+  duplication or an installer that brings the family together.
 
 The full review text for each skill is preserved in the ChatGPT Pro
 threads.

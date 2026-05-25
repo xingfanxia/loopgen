@@ -47,12 +47,6 @@ Rough routing: **finite known target →** `goal-loop` · **target undefined →
 `greenfield-loop` · **move an existing frontier →** `frontier-loop` ·
 **product promises →** `story-loop`.
 
-### Meta (experimental)
-
-| Skill | What it does | Status |
-|---|---|---|
-| `god-loop` | composes the four siblings — each iteration classifies which mode is most disturbed and runs that mode's playbook (homeostasis over modes, vs `frontier-loop`'s homeostasis over axes within a mode) | **v0, not yet dogfooded.** Use only when a run genuinely shifts between modes; most projects want a single sibling. |
-
 ## Install
 
 Clone, then symlink the skills into your agent's skills directory:
@@ -60,7 +54,6 @@ Clone, then symlink the skills into your agent's skills directory:
 ```sh
 git clone git@github.com:pro-vi/loopy.git
 for s in frontier-loop goal-loop greenfield-loop story-loop; do
-  # ^ stable siblings only; skip `god-loop` until you genuinely use it.
   ln -s "$PWD/loopy/$s" ~/.claude/skills/$s      # Claude Code
   ln -s "$PWD/loopy/$s" ~/.codex/skills/$s       # Codex (optional)
 done

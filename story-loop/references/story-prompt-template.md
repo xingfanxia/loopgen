@@ -326,6 +326,16 @@ group-label-only, active-state-only, and outside-selected-surface-only
 findings are supporting observations unless they are explicitly the
 selected lane or directly support the selected story.
 
+**Story movement gate.** A promoted product change should move the selected
+story or feature promise, not merely harvest a technically valid defect.
+Prefer changes that improve visible comprehension, task completion,
+decision support, state / recovery clarity, interaction safety, flow
+ergonomics, or product character. Semantic-only changes (names, roles,
+groups, decorative classification, status wording) may be promoted when
+they unblock durable proof or repair a misleading rendered contract, but
+they are otherwise candidates or supporting evidence for a higher-value
+story.
+
 Do not let global audits choose the story before a selected surface and
 user promise exist. Run broad audits only after story selection as
 regression safety.
@@ -359,6 +369,15 @@ no prior evidence → regression of a previously `verified` story only with
 a recorded trigger. After 2 consecutive iterations that add no new
 source, no new candidate, and no new alignment decision, force a
 re-grounding pass before further verification.
+
+**Same-family drift guard.** Track consecutive promotions that share the
+same low-visibility family, such as scoped-name-only fixes, decorative
+element classification, group/landmark labels, pending-status wording, or
+operator-only semantics. After two such promotions, the next accepted
+iteration must either move a visible/mechanical story, run a broader
+source/browser re-grounding pass to find one, or document signal starvation
+with the surfaces checked. Do not keep promoting the same family simply
+because the findings are valid.
 
 ### 5. Verify with evidence
 
@@ -453,6 +472,11 @@ After a long autonomous run, or when the loop clearly shifts away from the
 selected surface class, add a short retro note explaining what was
 exhausted, where the frontier drifted, what evaluator bias may have caused
 it, and what the next loop should target.
+
+When the run exposes reusable process lessons, add a Skill Harvest note:
+target skill, observed gap, evidence iteration, proposed rule, why it
+generalizes, suggested patch wording, and the risk the rule could
+accidentally encourage.
 
 ## Surface Taste Lane
 
