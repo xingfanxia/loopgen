@@ -39,8 +39,8 @@ this", `genuine-escalate` means "I correctly punted", `frontier-exhausted`
 A new sibling skill, overlay, or structural refactor lands on `main`
 only with a **dogfooding citation** — a concrete run on a real project
 that surfaced the failure mode the addition addresses. Frontier-model
-recommendations and design intuitions log as *candidates* in
-[`REVIEW.md`](REVIEW.md); drafts wait for a real run before promoting.
+recommendations and design intuitions log as candidates (below); drafts
+wait for a real run before promoting.
 
 The capture mechanism is the **Skill Harvest** pattern that each sibling
 template emits as part of its iteration / reconcile protocol: when a run
@@ -49,18 +49,28 @@ note (target skill · observed gap · evidence iteration · proposed rule ·
 why it generalizes · suggested patch wording · accidental-encouragement
 risk). Promotion to `main` requires at least one such citation.
 
-This bar already produced:
-- `spark-loop` retirement (the heavy taxonomy hadn't earned a public
-  sibling slot)
-- `god-loop` retraction (drafted, then pulled when it failed the same
-  bar)
-- a candidate list (currently `inquiry-loop` · `audit-loop` · `god-loop`
-  · authority-resolution overlay · migration-as-goal-overlay), each
-  documented in `REVIEW.md` with the run signal that would earn promotion.
+This bar already produced `spark-loop`'s retirement (taxonomy hadn't
+earned a public slot) and `god-loop`'s retraction (drafted then pulled
+when it failed the same bar). Restoration of either, if real usage ever
+earns it back, is a `git revert` away.
 
 The bar is empirical, not aesthetic. *"Full coverage"* is rejected as a
 design goal — the family grows from observed failure modes, not from
 theoretical gaps.
+
+### Candidates (awaiting dogfooding citation)
+
+| Candidate | Earns promotion when… |
+|---|---|
+| `inquiry-loop` | Real debug / RCA arcs keep getting mis-shaped as fixes by `goal-loop` or `frontier-loop`; the artifact of interest is a *finding* (causal explanation / narrowed surviving hypotheses), not a fix. |
+| `audit-loop` / cartography | `inquiry-loop` doesn't subsume the work and `goal-loop` preflight inventories aren't strong enough for population-mapping tasks (security surfaces · dep audits · API route inventories). |
+| `god-loop` (retracted) | A real run genuinely shifts between ≥2 modes within one session and manual switching is observably worse than a runtime classifier. |
+| Authority-resolution overlay | A sibling repeatedly emits `source-conflict → escalate` halt-cause across real runs. |
+| Migration-as-goal-loop overlay | Real migration runs through `goal-loop` repeatedly lose path-safety invariants. |
+
+Sources: GPT Pro coverage-gap consultation 2026-05-23 + owner design
+intuition. Each candidate's earn-promotion signal is the failure mode a
+harvest note would have to cite.
 
 ## The skills
 
@@ -98,5 +108,5 @@ side, anti-theater), minus the syntax-heavy bureaucracy (multi-agent
 prompts, `loop.sh`, tagged lanes, Phase + TICKET-ID decomposition). The
 runner contract handles iteration; the LLM handles execution. See
 [`goal-loop/references/oracle-principles.md`](goal-loop/references/oracle-principles.md)
-for the principles and [`REVIEW.md`](REVIEW.md) for the frontier-model
-design review history.
+for the principles. Design history lives in `git log` — no separate
+log file.
