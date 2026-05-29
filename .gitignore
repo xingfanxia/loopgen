@@ -3,3 +3,7 @@
 # story-loop runtime state (storyboard data, logs)
 story-loop/.claude/
 **/logs/
+
+# machine-local tooling state (never commit)
+.prov/
+.claude/

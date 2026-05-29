@@ -280,7 +280,7 @@ the next accepted change must do one of:
 3. create or run a holdout / anti-overfitting check, or
 4. emit `stop-and-summarize`.
 
-Default `{{CASH_OUT_N}} = 3`.
+Default N = 3; set per repo as `{{CASH_OUT_N}}`.
 
 ## Halt conditions
 

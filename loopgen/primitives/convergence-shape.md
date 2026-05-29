@@ -1,0 +1,56 @@
+# convergence-shape (axis primitive)
+
+## Purpose
+
+The **stop signal** — the evidence pattern that says "converged." Weight 2.
+Distinct from `halt-shape` (the reopen policy); this names what triggers the
+stop. A composed prompt names both.
+
+## Values
+
+- `criteria-completion` — the final-verify proves the whole frozen inventory in
+  one repo state (`criteria-met`).
+- `frontier-exhaustion` — all homeostasis axes in balance and no positive-yield
+  intervention available.
+- `capstone-plus-closer` — the run completes a capstone deliverable, then a
+  closer pass that reconciles / seals the queue (a chapter ends with a closer).
+- `stone-reframe` — the artifact lands on the user's *reframed* target and
+  further iteration has no positive yield (`stone-converged`; the user's call).
+- `iteration-cap` — a hard budget / iteration ceiling. Cross-cutting; rarely a
+  default.
+
+`signal-starvation` is the cross-cutting **quiet-region sub-signal** (N green
+iters with no new strong evidence) that forces the outer channel or an honest
+halt under any convergence-shape.
+
+## Detection heuristics
+
+| Task phrasing | Value |
+|---|---|
+| finite verifier matrix | `criteria-completion` |
+| homeostasis balance, "nothing left to restore" | `frontier-exhaustion` |
+| chapters / episodes with closers | `capstone-plus-closer` |
+| reframable creative target | `stone-reframe` |
+| explicit budget / iteration cap | `iteration-cap` |
+
+## Archetype defaults
+
+| Archetype | Default |
+|---|---|
+| frontier | `frontier-exhaustion` |
+| goal | `criteria-completion` |
+| story | `capstone-plus-closer` |
+| greenfield | `stone-reframe` |
+
+Refinement over the source blueprint: `story`'s default is
+`capstone-plus-closer` post-bodytxt — not a brand-new value; `frontier`'s
+default is `frontier-exhaustion` — its self-halting equilibrium, not
+`manual-only`.
+
+## Composition rules
+
+- `criteria-completion` requires `target-shape: finite-criteria`.
+- Orthogonal to `halt-shape`; both appear in the composed prompt and in
+  provenance when either diverges.
+- **Contradiction** (ask the user): `frontier-exhaustion` with `target-shape:
+  finite-criteria`.

@@ -1,0 +1,112 @@
+# Backward-Compatibility Tests (U11 probe)
+
+The promotion gate for `/loopgen`. The four **pure** archetype cases must
+produce composed `loop/PROMPT.md` output structurally equivalent to the legacy
+skill it replaces; the **hybrid** and **tier-0** cases exercise the new
+capability and the degradation contract.
+
+## Acceptance criteria
+
+A composed prompt **passes** when its difference from the legacy reference is
+limited to exactly two classes:
+
+1. **the provenance preamble** (new, expected — the only addition for a pure
+   case), and
+2. **cosmetic** whitespace / section-ordering.
+
+Any **load-bearing** structural difference on a pure case (a missing section, a
+changed rule, a weakened halt condition, a dropped invariant) is a **failure**
+and blocks promotion until the design is revised.
+
+## Cases
+
+### 1. Pure frontier
+
+- **Task:** "Run an evidence-driven improvement loop on this repo; make it
+  better and keep the evaluator honest." (frontier-loop's braid case study.)
+- **Expected bundle:** `target=frontier-expanding, halt=equilibrium,
+  artifact=findings-ledger, convergence=frontier-exhaustion,
+  cadence=checkpoint-gated`. Archetype `frontier`, divergences `none`.
+- **Reference:** legacy `frontier-loop` output (`templates/bodies/frontier-body.md`
+  filled).
+- **Must contain:** the 5-axis homeostasis frame, signal hierarchy, same-family
+  admissibility, frontier-anchor requirement, quiet-signal checkpoint,
+  evaluator-maturity tier.
+
+### 2. Pure goal
+
+- **Task:** "Make these acceptance criteria pass without weakening them."
+- **Expected bundle:** `target=finite-criteria, halt=terminal,
+  artifact=acceptance-inventory, convergence=criteria-completion, cadence=sync`.
+  Archetype `goal`, divergences `none`.
+- **Reference:** legacy `goal-loop` output.
+- **Extra artifact:** `loop/ACCEPTANCE.md` emitted.
+- **Must contain:** oracle principles, terminal contract, final-verify, the
+  acceptance inventory, oracle-drift guard, partial-deadlock vs criteria-met.
+
+### 3. Pure story
+
+- **Task:** "Maintain a living storyboard; verify one product promise per
+  iteration on the report viewer."
+- **Expected bundle:** `target=promise-discovery, halt=checkpoint-with-reopen,
+  artifact=storyboard, convergence=capstone-plus-closer, cadence=chapter`.
+  Archetype `story`, divergences `none`.
+- **Reference:** legacy `story-loop` output.
+- **Extra artifact:** `docs/storyboard.{md,yaml}` resolved.
+- **Must contain:** Guidance Source + Story Record objects, status model,
+  ready-gate, same-family drift guard, fixture-mode declaration; Surface Taste
+  Lane only if the lane is the taste lane.
+
+### 4. Pure greenfield
+
+- **Task:** "Build me something Kurzgesagt-adjacent; I'll know it when I see it."
+- **Expected bundle:** `target=discovery-reframing, halt=manual-gated,
+  artifact=rubric+intent, convergence=stone-reframe, cadence=checkpoint-gated`.
+  Archetype `greenfield`, divergences `none`.
+- **Reference:** legacy `greenfield-loop` output.
+- **Extra artifacts:** `loop/RUBRIC.md` + `loop/INTENT.md` (+ `loop/README.md`).
+- **Must contain:** all 11 invariants, score-locked ramp, score quarantine,
+  CAPABILITY mode, preloop/research phase gates with owners.
+
+### 5. Hybrid — bodytxt (frontier + story)
+
+- **Task:** "Build an incremental gallery of pretext demos with overnight
+  chapter cadence and frontier-model consults; keep evidence discipline."
+- **Expected bundle:** `target=frontier-expanding (frontier),
+  artifact=storyboard (story), halt=checkpoint-with-reopen (story),
+  convergence=capstone-plus-closer (story), cadence=chapter (story),
+  consult=tier-3`.
+- **Classification:** nearest `frontier`; divergences `cadence: chapter (story);
+  convergence: capstone-plus-closer (story); halt-shape: checkpoint-with-reopen
+  (story); artifact-shape: storyboard (story)`.
+- **Must contain:** frontier homeostasis frame **and** story chapter cadence +
+  capstone-plus-closer convergence + checkpoint-with-reopen halt + a storyboard
+  artifact; the provenance preamble names all four divergences + their source.
+- This is the case that justifies the whole skill — no single legacy skill
+  could compose it.
+
+### 6. Tier-0 consult degradation (any archetype)
+
+- **Task:** any case above, run in an environment with **no** consult channel.
+- **Expected:** `consult-capability: tier-0`; every consult-dependent section
+  removed (blind comprehension reads, scheduled creative consults, adversarial
+  refute panels); a periodic human-look gate inserted; the degradation recorded
+  in the provenance preamble. The composed prompt has **no** agentify / mcp
+  references and the loop proceeds without consult invocation paths.
+
+### 7. Contradiction (negative case)
+
+- **Task:** "Make these finite criteria pass, but never stop — keep going
+  forever." → `target: finite-criteria` + `halt: manual-gated`.
+- **Expected:** Phase 2 HALTS classification with `classification error:
+  incompatible primitives [target=finite-criteria, halt=manual-gated]` and
+  fires AskUserQuestion. No prompt is emitted with a silent default.
+
+## How to run
+
+The probe is an adversarial workflow: for each pure case, compose via the
+Phase 1–3 procedure, diff the result against the legacy body
+(`templates/bodies/<archetype>-body.md`), and classify each difference as
+provenance / cosmetic / load-bearing. Rows 1–4 must show no load-bearing
+difference; row 5 must contain the hybrid sections; row 6 must drop consult
+sections; row 7 must halt with an error.

@@ -1,0 +1,202 @@
+---
+name: loopgen
+description: "Compose a repo-specific, runner-agnostic loop prompt from a primitive vocabulary. Classifies a task to its nearest archetype (frontier / goal / story / greenfield), composes the prompt from primitive values — defaulting to the archetype, diverging where the task demands — and emits with provenance. Supersedes /frontier-loop, /goal-loop, /story-loop, /greenfield-loop. Also diagnoses a drifting loop. Triggers: '/loopgen', 'derive a loop for X', 'make me an overnight loop'."
+---
+
+# Loopgen
+
+`/loopgen` derives a repo-specific, **runner-agnostic** loop prompt — `/loop`,
+`/goal`, and external harnesses (gnhf, cocc, ralph) are all valid runners; they
+differ only in invocation. It is a **hybrid dispatcher + compositional
+generator**: it runs a shared pre-flight audit, classifies the task to its
+nearest *archetype* by extracting primitive values, composes the prompt by
+combining those values (defaulting to the nearest archetype's presets and
+diverging where the task demands), and emits with a provenance preamble.
+
+It supersedes the four loop skills (`frontier-loop`, `goal-loop`, `story-loop`,
+`greenfield-loop`), whose irreducible cores now live as archetype reference
+documents (`archetypes/*.md`) and whose shared infrastructure is the primitive
+vocabulary (`primitives/*.md`). Output is backward-compatible: a pure archetype
+reproduces the legacy skill's prompt plus a provenance preamble.
+
+Invoke **once per run** to author or revise a prompt; the loop's per-iteration
+playbook lives in the composed `loop/PROMPT.md`, not here. Invoke in
+**Diagnostic mode** to retrofit a drifting loop.
+
+## When to invoke
+
+- "derive a loop / write me a loop for X"
+- "make this an overnight / autonomous loop"
+- any request that previously routed to `/frontier-loop`, `/goal-loop`,
+  `/story-loop`, or `/greenfield-loop`
+- a task that mixes archetypes (e.g. frontier evidence discipline + story
+  chapter cadence) — loopgen is the only skill that composes hybrids
+
+## Do NOT invoke when
+
+- the user wants a one-off plan, not an iterative loop → `/architect`
+- the user wants to *run* a loop now → that is the runner's job (`/loop`,
+  `/goal`, `/schedule`); loopgen only generates the prompt
+- pure debugging → a debugging tool, not a loop
+
+## The primitive vocabulary (single source of truth)
+
+Phase 2 classifies against this matrix. It is locked; extend it only when ≥2
+archetypes meaningfully differ on a new axis (the vocabulary-axis test).
+
+**Axes that vary by archetype** (the classifier weights these):
+
+| Axis | Values | frontier | goal | story | greenfield | wt |
+|---|---|---|---|---|---|---|
+| `target-shape` | finite-criteria · frontier-expanding · promise-discovery · discovery-reframing | frontier-expanding | finite-criteria | promise-discovery | discovery-reframing | 3 |
+| `halt-shape` | terminal · equilibrium · checkpoint-with-reopen · manual-gated | equilibrium | terminal | checkpoint-with-reopen | manual-gated | 3 |
+| `artifact-shape` | prompt-only · acceptance-inventory · storyboard · rubric+intent · findings-ledger | findings-ledger | acceptance-inventory | storyboard | rubric+intent | 3 |
+| `convergence-shape` | criteria-completion · frontier-exhaustion · capstone-plus-closer · stone-reframe · iteration-cap | frontier-exhaustion | criteria-completion | capstone-plus-closer | stone-reframe | 2 |
+| `cadence-shape` | sync · checkpoint-gated · chapter · deferred-fire-and-forget | checkpoint-gated | sync | chapter | checkpoint-gated | 1 |
+| `consult-capability` | tier-0 · tier-1 · tier-2 · tier-3 *(environment-detected)* | detect | detect | detect | detect | 1 |
+
+**Shared primitives** (constant across archetypes; in every composed prompt):
+`runner-contract`, `judgment-default`, `evidence-tier`, `frontload-audit`,
+`halt-cause-classifier`, `diagnostic-pattern`, `evaluator-maturity` (T0–T6),
+`queue-as-second-artifact`.
+
+**Forbidden divergences** (identity-breaking; never compose — route away):
+
+- `goal` cannot take `target-shape` `frontier-expanding`/`discovery-reframing`,
+  nor `halt-shape` `manual-gated`.
+- `frontier`/`greenfield` cannot take `target-shape` `finite-criteria`.
+
+**Contradictions** (classification error → AskUserQuestion, never silent
+default): `target: finite-criteria` with `halt: equilibrium`/`manual-gated`, or
+with `convergence: frontier-exhaustion`.
+
+**`consult-capability` tiers** (detected at frontload time — probe for
+`mcp__agentify-desktop__*`, other `mcp__*` tools, `/second-opinion`,
+`/agentify`, PAL): `tier-0` none → drop scheduled-consult sections + substitute
+a human-look gate; `tier-1` human-bridge handoff; `tier-2` single programmatic
+consult; `tier-3` rich fabric (blind adversarial + multi-modal). All archetypes
+default `tier-0` if undetected — never assume a channel exists.
+
+## Phase 1 — Frontload audit
+
+Run the universal pre-flight from `primitives/frontload-audit.md`, plus the
+nearest archetype's extra items (named in each `archetypes/*.md`). For every
+item: **resolve** (AskUserQuestion if the host has it, else print prominently),
+**default + Alignment Review**, or **escalate-mark** (irreversible only).
+
+Always assess `consult-capability` here (the bodytxt-learned move): detect the
+tier and record it; it changes which sections Phase 3 emits.
+
+Record results under `loop/STATE.md` `frontload:` and produce the frontload
+preamble (resolved / defaulted / open gaps). Anything unresolved, undefaulted,
+and unmarked is a **derivation gap** — name it explicitly; the emitted prompt's
+halt-cause classifier flags `derivation-gap` halts so the next pass closes it.
+
+## Phase 2 — Primitive extraction + archetype classification
+
+1. **Extract** a value for each varying axis from the task description, using
+   the detection heuristics in each `primitives/<axis>.md`.
+2. **Check contradictions** first. If the bundle hits a contradiction pair,
+   HALT classification and fire AskUserQuestion with the conflicting axes — no
+   silent default.
+3. **Classify.** Compute weighted-Hamming distance from the bundle to each
+   archetype's defaults (weights above). The nearest archetype is the shorthand
+   reference. **Be decisive — pick one archetype; do not present a menu.**
+4. **Name divergences.** Every axis whose value differs from the nearest
+   archetype's default is a divergence; record `axis → value (source-archetype
+   or "task")`.
+5. **Ties = genuine hybrid.** If two archetypes are equidistant, the task is a
+   real hybrid (e.g. bodytxt = frontier+story): pick the higher-weight-match
+   archetype as the shorthand and name the other's contributions as divergences.
+   If still genuinely ambiguous, fire AskUserQuestion with the two candidates.
+
+Emit a structured classification: `{archetype, divergences[], consult-tier,
+evaluator-tier}`. No silent defaults — every divergence is visible.
+
+## Phase 3 — Compose
+
+Follow `templates/composed-prompt.md`. In short: load the nearest archetype's
+body (`templates/bodies/<archetype>-body.md`), resolve `{{INCLUDE}}` markers
+from `primitives/*.md`, fill placeholders from Phase 1, prepend the provenance
+preamble, apply divergence patches, apply consult degradation, strip any
+section with an unsubstituted placeholder (warn if any survive), and emit.
+
+The provenance preamble MUST enumerate the archetype, every divergence + its
+source, the consult tier, and the frontload gaps. If a section says "the
+archetype" without provenance naming the composing values, the composition is
+invisible — fix it.
+
+## Phase 4 — Emit + surface decision
+
+**Default surface: file.** Write `loop/PROMPT.md` + `loop/STATE.md`, plus the
+nearest archetype's extra artifact(s):
+
+- `goal` → `loop/ACCEPTANCE.md` (frozen inventory)
+- `story` → `docs/storyboard.{md,yaml}`
+- `greenfield` → `loop/RUBRIC.md` + `loop/INTENT.md` (+ `loop/README.md`)
+- `frontier` → a findings ledger + trace/benchmark locations (suggest, don't
+  silently invent, if the repo lacks a convention)
+
+If the user invoked mid-conversation without asking to save, emit **chat-only**
+with an offer to write the files.
+
+Then present the menu:
+
+- **Approve** — keep the emitted files.
+- **Modify** — the user overrides one or more primitive values; rerun Phase
+  2.5–3 with the overrides and re-emit.
+- **Abort** — discard.
+
+Return a one-paragraph rationale: archetype + divergences, consult tier,
+evaluator tier (if applicable), and any open frontload gaps.
+
+## Diagnostic mode
+
+Invoked to retrofit a drifting loop, not author a new one. Follow
+`primitives/diagnostic-pattern.md`: read the current `loop/PROMPT.md` +
+`loop/STATE.md` + the queue artifact + ledger; **classify which archetype the
+loop currently is** (it may have drifted from its declared archetype — flag the
+drift first); score against that archetype's failure modes (`archetypes/*.md`);
+emit a **minimal** `loop/PROMPT.md` mutation (inline edit, never a rewrite);
+write a ⚠️ block to `loop/STATE.md`; optionally add a Skill Harvest note when
+the lesson generalizes.
+
+## Anti-patterns
+
+- **Forcing a hybrid into one archetype.** When the task is genuinely mixed,
+  do not snap to the nearest and drop the rest — name the divergences.
+- **Pretending consult capability exists at tier-0.** Degrade gracefully;
+  substitute a human-look gate; record it in provenance.
+- **Silent defaults on a contradiction.** Contradictory primitives are a
+  classification error → ask the user.
+- **Primitive-vocabulary inflation.** Add an axis only when ≥2 archetypes
+  meaningfully differ on it.
+- **Invisible composition.** Every divergence axis must appear in the
+  provenance preamble with its source.
+- **Dead sections.** Strip any section whose placeholder was not substituted.
+
+## Composability
+
+| Direction | Skill | Relationship |
+|---|---|---|
+| upstream | `/architect` | conceptual parent; an architect blueprint is a first-class `goal` criteria source |
+| upstream | `/oracle-design` | complementary for the `goal` archetype's verifier matrix |
+| downstream | `/loop`, `/goal`, `/schedule` | runners that execute the emitted `loop/PROMPT.md` (untouched — the format is structurally identical to legacy output) |
+| downstream | `/provision`, `/route` | reference the old loop skills; repoint to `/loopgen` in a follow-up PR |
+| sibling | `frontier-loop`, `goal-loop`, `story-loop`, `greenfield-loop` | retired in favor of loopgen; now thin shims that route to `/loopgen` with the archetype pinned |
+
+## References
+
+- `primitives/` — the vocabulary. Axes (`target-shape`, `halt-shape`,
+  `artifact-shape`, `convergence-shape`, `cadence-shape`, `consult-capability`)
+  + shared blocks (`runner-contract`, `judgment-default`, `evidence-tier`,
+  `frontload-audit`, `halt-cause-classifier`, `diagnostic-pattern`,
+  `evaluator-maturity`, `queue-as-second-artifact`).
+- `archetypes/` — `frontier`, `goal`, `story`, `greenfield`: irreducible loop
+  shape + default primitive values + forbidden divergences + failure modes.
+- `templates/composed-prompt.md` — the assembly skeleton; `templates/bodies/`
+  — the four emittable archetype bodies.
+- `references/oracle-principles.md` (goal), `references/review-closure-overlay.md`
+  + `references/braid-case-study.md` (frontier),
+  `references/greenfield-invariants.md` (greenfield),
+  `references/backward-compat-tests.md` (the U11 probe).
