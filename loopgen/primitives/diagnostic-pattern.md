@@ -24,7 +24,6 @@ Diagnostic mode only. Not part of an emitted prompt.
    without losing them.
 6. **Write a ⚠️ block** to `loop/STATE.md` telling the next iteration what
    changed and why.
-7. **Optional Skill Harvest note** when the lesson generalizes beyond this run.
 
 ## Drift-from-declared check (loopgen addition)
 

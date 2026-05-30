@@ -83,10 +83,6 @@ disposes. Convergence is `stone-reframe`: the artifact landing on the user's
 
 {{INCLUDE primitives/queue-as-second-artifact.md}}
 <!-- this archetype's queue is rubric+intent; it is an INDEX, not the source of intent -->
-
-{{INCLUDE skill-harvest}}
-
-Location: {{ARTIFACT_LOCATIONS}}
 ````
 
 ---

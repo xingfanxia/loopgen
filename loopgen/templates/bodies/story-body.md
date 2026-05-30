@@ -554,11 +554,6 @@ selected surface class, add a short retro note explaining what was
 exhausted, where the frontier drifted, what evaluator bias may have caused
 it, and what the next loop should target.
 
-When the run exposes reusable process lessons, add a Skill Harvest note:
-target skill, observed gap, evidence iteration, proposed rule, why it
-generalizes, suggested patch wording, and the risk the rule could
-accidentally encourage.
-
 Before finalizing a promoted commit, check that the manifest, storyboard,
 ledger/report, focused validation, and git commit all name the same story
 and promise. Do not use passing tests as a proxy if they do not cover the

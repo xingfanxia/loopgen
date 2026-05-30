@@ -44,8 +44,7 @@ logic that turns a body template into a composed prompt.
 11. **Halt conditions** — archetype body + **Halt-cause classifier** ALWAYS
     (`primitives/halt-cause-classifier.md`, including the archetype's terminal
     cause).
-12. **Artifacts to maintain** — the archetype's queue (`artifact-shape`) +
-    **Skill Harvest** ALWAYS.
+12. **Artifacts to maintain** — the archetype's queue (`artifact-shape`).
 13. **Overlays** — review-closure (`frontier` closure mode); Surface Taste Lane
     (`story` taste lane).
 
@@ -77,9 +76,6 @@ is invisible — the preamble MUST enumerate every divergence axis + its source.
 1. **Load** `templates/bodies/<nearest>-body.md`.
 2. **Resolve includes.** For each `{{INCLUDE primitives/X.md}}` marker, inline
    the block that follows the `---` spec separator in that primitive file.
-   `{{INCLUDE skill-harvest}}` inlines the shared Skill Harvest block.
-   (The frontier/goal/story bodies inline these blocks already; only the
-   greenfield body uses include markers. Either resolves to the same text.)
 3. **Fill placeholders** from the frontload audit + primitive bundle.
 4. **Prepend** the Provenance preamble with values filled.
 5. **Apply divergence patches.** For every axis where the bundle diverges from

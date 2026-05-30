@@ -44,11 +44,6 @@ playbook lives in the composed `loop/PROMPT.md`, not here. Invoke in
 Phase 2 classifies against this matrix. It is locked; extend it only when ≥2
 archetypes meaningfully differ on a new axis (the vocabulary-axis test).
 
-Promotion bar: a new archetype, primitive, or overlay lands only with a
-**dogfooding citation** — a real run that surfaced the failure mode it addresses;
-frontier-model recommendations and design intuitions don't qualify. The Skill
-Harvest block (`primitives/skill-harvest.md`) is the capture mechanism.
-
 **Axes that vary by archetype** (the five the classifier weights):
 
 | Axis | Values | frontier | goal | story | greenfield | wt |
@@ -204,8 +199,7 @@ Invoked to retrofit a drifting loop, not author a new one. Follow
 loop currently is** (it may have drifted from its declared archetype — flag the
 drift first); score against that archetype's failure modes (`archetypes/*.md`);
 emit a **minimal** `loop/PROMPT.md` mutation (inline edit, never a rewrite);
-write a ⚠️ block to `loop/STATE.md`; optionally add a Skill Harvest note when
-the lesson generalizes.
+write a ⚠️ block to `loop/STATE.md`.
 
 ## Anti-patterns
 
