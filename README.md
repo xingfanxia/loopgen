@@ -8,7 +8,7 @@ Hand it whatever you're trying to do: close a spec, push a benchmark, walk a fro
 
 ## Install
 
-Each skill is a plain directory with a `SKILL.md`. No plugin runtime. Symlink `loopgen/` into the directory your agent reads skills from (`~/.claude/skills/` for Claude Code, `~/.codex/skills/` for Codex); anything that reads skill folders can use it. The unified skill is [`loopgen/`](loopgen/SKILL.md); the four named loops (`/frontier-loop` and friends) are thin shims that redirect to it.
+Each skill is a plain directory with a `SKILL.md`. No plugin runtime. Symlink `loopgen/` into the directory your agent reads skills from (`~/.claude/skills/` for Claude Code, `~/.codex/skills/` for Codex); anything that reads skill folders can use it. The unified skill is [`loopgen/`](loopgen/SKILL.md).
 
 ## How it actually works
 
@@ -32,7 +32,7 @@ Pick by what you hand the loop, but you don't have to. loopgen classifies for yo
 3. **Compose.** Start from the archetype body, apply per-axis divergence patches, prepend the provenance preamble.
 4. **Emit.** One self-contained prompt, ready for any runner.
 
-The primitive vocabulary (six varying axes: target / halt / convergence / artifact / cadence / consult), the four archetype definitions, the assembler, and the four emittable bodies all live under [`loopgen/`](loopgen/SKILL.md).
+The primitive vocabulary (five varying axes: target / halt / convergence / artifact / cadence, plus an environment-detected consult tier that overlays composition rather than steering classification), the four archetype definitions, the assembler, and the four emittable bodies all live under [`loopgen/`](loopgen/SKILL.md).
 
 ### The archetypes, in full
 
@@ -59,16 +59,6 @@ You shipped onboarding three weeks ago and the storyboard has drifted. Signed-ou
 You have an idea to build out. Empty repo, no spec, no inventory, no evaluator. The failure mode is the opposite of `goal`: it's not "did I close the list", it's "did I commit to a list at all".
 
 You have a vague intent: "something that surfaces what's blocking me in Linear." You don't know what "it" is yet. `/loopgen` derives a prompt that names the artifact, builds the smallest scenario that proves it, and earns the next addition only when the current one holds. Halts on `stone-converged` when the artifact has landed on the user's reframed target and further iteration has no positive yield. The 11 green-field invariants live in [`loopgen/references/greenfield-invariants.md`](loopgen/references/greenfield-invariants.md).
-
-### The promotion bar
-
-A new archetype, primitive, overlay, or structural refactor lands on `main` only with a **dogfooding citation**: a concrete run on a real project that surfaced the failure mode the addition addresses. Frontier-model recommendations and design intuitions don't earn promotion. A real run does.
-
-The capture mechanism is the **Skill Harvest** pattern each archetype body emits as part of its iteration protocol. When a run reveals a generalizable lesson, the loop writes a structured harvest note (target, observed gap, evidence iteration, proposed rule, why it generalizes, suggested patch wording, accidental-encouragement risk). Promotion requires at least one such citation.
-
-This bar already retired `spark-loop` (taxonomy hadn't earned a public slot) and retracted `god-loop` (drafted, then pulled when it failed the same bar). Restoration of either, if real usage ever earns it back, is a `git revert` away.
-
-The bar is empirical, not aesthetic. "Full coverage" is rejected as a design goal. The family grows from observed failure modes, not from theoretical gaps.
 
 ---
 

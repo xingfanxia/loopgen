@@ -1,6 +1,6 @@
 ---
 name: loopgen
-description: "Compose a repo-specific, runner-agnostic loop prompt from a primitive vocabulary. Classifies a task to its nearest archetype (frontier / goal / story / greenfield), composes the prompt from primitive values — defaulting to the archetype, diverging where the task demands — and emits with provenance. Supersedes /frontier-loop, /goal-loop, /story-loop, /greenfield-loop. Also diagnoses a drifting loop. Triggers: '/loopgen', 'derive a loop for X', 'make me an overnight loop'."
+description: "Compose a repo-specific, runner-agnostic loop prompt from a primitive vocabulary. Classifies a task to its nearest archetype (frontier / goal / story / greenfield), composes the prompt from primitive values — defaulting to the archetype, diverging where the task demands — and emits with provenance. Also diagnoses a drifting loop. Triggers: '/loopgen', 'derive a loop for X', 'make me an overnight loop', 'close the findings in X', 'fix the bugs by morning', 'push a benchmark with a loop', 'walk the storyboard', 'build out an idea from zero'."
 ---
 
 # Loopgen
@@ -13,11 +13,11 @@ nearest *archetype* by extracting primitive values, composes the prompt by
 combining those values (defaulting to the nearest archetype's presets and
 diverging where the task demands), and emits with a provenance preamble.
 
-It supersedes the four loop skills (`frontier-loop`, `goal-loop`, `story-loop`,
-`greenfield-loop`), whose irreducible cores now live as archetype reference
-documents (`archetypes/*.md`) and whose shared infrastructure is the primitive
-vocabulary (`primitives/*.md`). Output is backward-compatible: a pure archetype
-reproduces the legacy skill's prompt plus a provenance preamble.
+It replaces the four legacy loop skills, whose irreducible cores now live as
+archetype reference documents (`archetypes/*.md`) and whose shared
+infrastructure is the primitive vocabulary (`primitives/*.md`). Output is
+backward-compatible: a pure archetype reproduces the legacy skill's prompt plus
+a provenance preamble.
 
 Invoke **once per run** to author or revise a prompt; the loop's per-iteration
 playbook lives in the composed `loop/PROMPT.md`, not here. Invoke in
@@ -27,8 +27,8 @@ playbook lives in the composed `loop/PROMPT.md`, not here. Invoke in
 
 - "derive a loop / write me a loop for X"
 - "make this an overnight / autonomous loop"
-- any request that previously routed to `/frontier-loop`, `/goal-loop`,
-  `/story-loop`, or `/greenfield-loop`
+- any per-archetype loop intent: closing a finite checklist, pushing a
+  benchmark, walking a storyboard, or building an idea from zero
 - a task that mixes archetypes (e.g. frontier evidence discipline + story
   chapter cadence) — loopgen is the only skill that composes hybrids
 
@@ -44,7 +44,12 @@ playbook lives in the composed `loop/PROMPT.md`, not here. Invoke in
 Phase 2 classifies against this matrix. It is locked; extend it only when ≥2
 archetypes meaningfully differ on a new axis (the vocabulary-axis test).
 
-**Axes that vary by archetype** (the classifier weights these):
+Promotion bar: a new archetype, primitive, or overlay lands only with a
+**dogfooding citation** — a real run that surfaced the failure mode it addresses;
+frontier-model recommendations and design intuitions don't qualify. The Skill
+Harvest block (`primitives/skill-harvest.md`) is the capture mechanism.
+
+**Axes that vary by archetype** (the five the classifier weights):
 
 | Axis | Values | frontier | goal | story | greenfield | wt |
 |---|---|---|---|---|---|---|
@@ -53,7 +58,11 @@ archetypes meaningfully differ on a new axis (the vocabulary-axis test).
 | `artifact-shape` | prompt-only · acceptance-inventory · storyboard · rubric+intent · findings-ledger | findings-ledger | acceptance-inventory | storyboard | rubric+intent | 3 |
 | `convergence-shape` | criteria-completion · frontier-exhaustion · capstone-plus-closer · stone-reframe · iteration-cap | frontier-exhaustion | criteria-completion | capstone-plus-closer | stone-reframe | 2 |
 | `cadence-shape` | sync · checkpoint-gated · chapter · deferred-fire-and-forget | checkpoint-gated | sync | chapter | checkpoint-gated | 1 |
-| `consult-capability` | tier-0 · tier-1 · tier-2 · tier-3 *(environment-detected)* | detect | detect | detect | detect | 1 |
+
+Max weighted-Hamming distance is **12** (3+3+3+2+1). `consult-capability`
+(tier-0..3) is **environment-detected, not archetype-varying** — it is a
+composition *overlay* that changes which sections Phase 3 emits, and does
+**not** participate in classification distance. Its tiers are defined below.
 
 **Shared primitives** (constant across archetypes; in every composed prompt):
 `runner-contract`, `judgment-default`, `evidence-tier`, `frontload-audit`,
@@ -182,8 +191,8 @@ the lesson generalizes.
 | upstream | `/architect` | conceptual parent; an architect blueprint is a first-class `goal` criteria source |
 | upstream | `/oracle-design` | complementary for the `goal` archetype's verifier matrix |
 | downstream | `/loop`, `/goal`, `/schedule` | runners that execute the emitted `loop/PROMPT.md` (untouched — the format is structurally identical to legacy output) |
-| downstream | `/provision`, `/route` | reference the old loop skills; repoint to `/loopgen` in a follow-up PR |
-| sibling | `frontier-loop`, `goal-loop`, `story-loop`, `greenfield-loop` | retired in favor of loopgen; now thin shims that route to `/loopgen` with the archetype pinned |
+| downstream | `/provision`, `/route` | may still name the removed loop commands; repoint to `/loopgen` |
+| sibling | `frontier-loop`, `goal-loop`, `story-loop`, `greenfield-loop` | retired and removed; their archetype cores live in `archetypes/*.md` |
 
 ## References
 
@@ -197,6 +206,6 @@ the lesson generalizes.
 - `templates/composed-prompt.md` — the assembly skeleton; `templates/bodies/`
   — the four emittable archetype bodies.
 - `references/oracle-principles.md` (goal), `references/review-closure-overlay.md`
-  + `references/braid-case-study.md` (frontier),
+  + `references/same-family-drift.md` (frontier),
   `references/greenfield-invariants.md` (greenfield),
   `references/backward-compat-tests.md` (the U11 probe).

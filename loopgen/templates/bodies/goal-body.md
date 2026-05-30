@@ -302,14 +302,14 @@ When emitting `criteria-met`, `stop-and-summarize`, or
   Next derivation pass adds it to the Frontload audit.
 - `genuine-escalate` — irreversible / external / authority-needed (paid
   API budget, public-publish, secret, product direction, source conflict).
-- `wrong-loop` — the work is not terminal goal-shaped; reroute:
-  - `frontier-loop` if a criterion needs open-ended search, evaluator
+- `wrong-loop` — the work is not terminal goal-shaped; reroute via `/loopgen` to:
+  - the `frontier` archetype if a criterion needs open-ended search, evaluator
     discovery, metric improvement, or "make it better" without a fixed
     pass line;
-  - `greenfield-loop` if the artifact / target / audience / evaluator is
+  - the `greenfield` archetype if the artifact / target / audience / evaluator is
     under-specified and the criteria are placeholders rather than a
     contract;
-  - `story-loop` if the next job is discovering or reconciling product
+  - the `story` archetype if the next job is discovering or reconciling product
     promises before a finite implementation target exists.
 
 `derivation-gap` is the feedback signal — the Frontload audit was
@@ -343,7 +343,7 @@ Harvest note** to the run's artifact directory:
   could enable
 
 Harvest notes are the **dogfooding citations** the family's promotion-bar
-rule requires (see `README.md`). Without them, lessons from real runs
+rule requires. Without them, lessons from real runs
 evaporate.
 
 Location: `{{ARTIFACT_LOCATIONS}}`

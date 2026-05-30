@@ -18,7 +18,7 @@ from the frontload audit at composition time.
 
 A run that surfaces a generalizable lesson and doesn't capture it lets that
 lesson evaporate. Promotion of any new archetype / primitive / overlay requires
-at least one such note (see `README.md` — "The promotion bar"). Without the
+at least one such note. Without the
 harvest mechanism the bar has no supply.
 
 ---
@@ -40,7 +40,7 @@ Harvest note** to the run's artifact directory:
   could enable
 
 Harvest notes are the **dogfooding citations** the family's promotion-bar
-rule requires (see `README.md`). Without them, lessons from real runs
+rule requires. Without them, lessons from real runs
 evaporate.
 
 Location: {{ARTIFACT_LOCATIONS}}

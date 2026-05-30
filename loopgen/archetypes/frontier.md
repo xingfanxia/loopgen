@@ -53,7 +53,7 @@ intervention; it is never picked from a menu.
 - Includes `primitives/evaluator-maturity.md` (T0–T6 tiers + ramp stages 0–9).
 - Applies `references/review-closure-overlay.md` when the branch is in closure
   mode (architecture landed; work comes from reviewed findings / exact probes).
-- Carries the lessons of `references/braid-case-study.md` — the greedy
+- Carries the lessons of `references/same-family-drift.md` — the greedy
   proof-promotion and observability-echo drift that produced the same-family
   admissibility rule and the quiet-signal checkpoint.
 - Body template: `templates/bodies/frontier-body.md`. No extra emitted file

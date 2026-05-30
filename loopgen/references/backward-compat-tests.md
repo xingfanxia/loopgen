@@ -23,7 +23,7 @@ and blocks promotion until the design is revised.
 ### 1. Pure frontier
 
 - **Task:** "Run an evidence-driven improvement loop on this repo; make it
-  better and keep the evaluator honest." (frontier-loop's braid case study.)
+  better and keep the evaluator honest."
 - **Expected bundle:** `target=frontier-expanding, halt=equilibrium,
   artifact=findings-ledger, convergence=frontier-exhaustion,
   cadence=checkpoint-gated`. Archetype `frontier`, divergences `none`.

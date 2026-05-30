@@ -38,4 +38,4 @@ for it does not.
   defense against drift.
 - This ranking is the substrate the `frontier` same-family admissibility rule
   and quiet-signal checkpoint key on (`archetypes/frontier.md`,
-  `references/braid-case-study.md`).
+  `references/same-family-drift.md`).

@@ -538,7 +538,7 @@ evidence or a decision. Newly discovered child stories may be appended as
 For each non-verified result, emit a handoff target:
 
 - `product-fail` -> implementation ticket; for a finite fix, derive a
-  `goal-loop` with the failing acceptance criterion as the inventory
+  `goal`-archetype loop (via `/loopgen`) with the failing acceptance criterion as the inventory
 - `oracle-defect` -> evaluator/test task
 - `fixture-gap` -> fixture/golden/data task
 - `env-gap` -> dev-server/devslot/DX task
@@ -688,8 +688,8 @@ cause so the user (and the next derivation) can route it back:
   nothing, and `remaining_findings_classified` records why skipped
   findings were not promotable.
 - `wrong-loop` — the work needs a different loop (evaluator blindness
-  → `frontier-loop`; known product-fail with a finite acceptance
-  inventory → `goal-loop`; target itself undefined → `greenfield-loop`).
+  → the `frontier` archetype; known product-fail with a finite acceptance
+  inventory → the `goal` archetype; target itself undefined → the `greenfield` archetype).
 
 `derivation-gap` is the feedback signal: the Frontload audit was
 incomplete; close it next run.

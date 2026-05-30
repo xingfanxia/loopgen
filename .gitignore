@@ -1,7 +1,8 @@
 .DS_Store
 
-# story-loop runtime state (storyboard data, logs)
-story-loop/.claude/
+# local / ephemeral — not part of the skill
+.inbox/
+.research/
 **/logs/
 
 # machine-local tooling state (never commit)

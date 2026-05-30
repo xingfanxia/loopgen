@@ -307,7 +307,7 @@ cause so the user (and the next derivation) can route it back:
 - `signal-starvation` — quiet-signal checkpoint fired; outer channel
   ran or stop-and-summarize.
 - `wrong-loop` — the work belongs in a different loop type (a
-  finite-checklist closure should reroute to `goal-loop`).
+  finite-checklist closure should reroute to the `goal` archetype via `/loopgen`).
 
 `derivation-gap` is the feedback signal. It tells the user the
 checklist was incomplete; add the missed item to next run's Frontload
@@ -349,7 +349,7 @@ Harvest note** to the run's artifact directory:
   could enable
 
 Harvest notes are the **dogfooding citations** the family's promotion-bar
-rule requires (see `README.md`). Without them, lessons from real runs
+rule requires. Without them, lessons from real runs
 evaporate.
 
 Location: {{ARTIFACT_LOCATIONS}}
@@ -460,4 +460,4 @@ contract at the end:
 - review ledger or benchmark locations
 
 If the branch is in post-build closure mode, append the review-closure
-overlay from [`review-closure-overlay.md`](review-closure-overlay.md).
+overlay from [`review-closure-overlay.md`](../../references/review-closure-overlay.md).

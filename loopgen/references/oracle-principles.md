@@ -59,7 +59,7 @@ don't apply to us — runner contract + LLM iteration replaces them).
    or "confirm the spec." Every verifier is a command.
 2. **No criterion says "decide", "investigate", "confirm with."** A
    criterion describes a finite testable state. If it requires judgment,
-   it's not a goal criterion — route to `story-loop` or `frontier-loop`.
+   it's not a goal criterion — route to the `story` or `frontier` archetype.
 3. **Probes test at builder depth.** Authenticated API calls, real
    integration paths — not port pings. Manual inspection is not terminal
    proof.
