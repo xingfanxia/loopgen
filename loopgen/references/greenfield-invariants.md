@@ -119,6 +119,11 @@ review question, and continue. Topic, content, style, scene-direction,
 essay-text are all the loop's job — make the call, log it, move on. Human
 review happens after the fact.
 
+**Never call `AskUserQuestion` or any interactive / blocking / approval-prompt
+tool, for any reason** — unattended, it is a deadlock, not a question. Route
+reversible → default + log; needs-a-human or irreversible → `escalate` /
+`stop-and-summarize` with the question in the summary.
+
 Emit `escalate: <reason>` only for genuinely irreversible / external
 blockers: **paid APIs without budget caps, public-publish actions, and
 secrets/credentials** — nothing else.

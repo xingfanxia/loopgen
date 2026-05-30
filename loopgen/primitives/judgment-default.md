@@ -41,3 +41,9 @@ externally blocked, or requires authority the loop cannot establish:
 - secrets / credentials,
 - product-direction changes whose rollback is unclear,
 - source conflict between authoritative-current sources.
+
+**Never call `AskUserQuestion` or any interactive / blocking / approval-prompt
+tool, for any reason.** The runner may be unattended, so the call is a deadlock,
+not a question. Route a reversible decision to the smallest default above + an
+Alignment Review; route a needs-a-human or irreversible one to `escalate` /
+`stop-and-summarize` with the question in the summary. Async, never interactive.

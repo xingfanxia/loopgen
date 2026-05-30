@@ -56,9 +56,9 @@ You shipped onboarding three weeks ago and the storyboard has drifted. Signed-ou
 
 #### [`greenfield`](loopgen/archetypes/greenfield.md)
 
-You have an idea to build out. Empty repo, no spec, no inventory, no evaluator. The failure mode is the opposite of `goal`: it's not "did I close the list", it's "did I commit to a list at all".
+You have an idea to build out. Empty repo, no spec, no inventory, no evaluator. The failure mode is the inverse of `goal`'s: `goal` asks whether the list got closed; greenfield asks whether you ever committed to one.
 
-You have a vague intent: "something that surfaces what's blocking me in Linear." You don't know what "it" is yet. `/loopgen` derives a prompt that names the artifact, builds the smallest scenario that proves it, and earns the next addition only when the current one holds. Halts on `stone-converged` when the artifact has landed on the user's reframed target and further iteration has no positive yield. The 11 green-field invariants live in [`loopgen/references/greenfield-invariants.md`](loopgen/references/greenfield-invariants.md).
+The seed: "something that surfaces what's blocking me in Linear." You don't know what "it" is yet. `/loopgen` derives a prompt that names the artifact, builds the smallest scenario that proves it, and earns the next addition only when the current one holds. Halts on `stone-converged` when the artifact has landed on the user's reframed target and further iteration has no positive yield. The 11 green-field invariants live in [`loopgen/references/greenfield-invariants.md`](loopgen/references/greenfield-invariants.md).
 
 ---
 

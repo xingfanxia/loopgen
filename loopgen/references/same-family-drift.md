@@ -59,7 +59,7 @@ The case study and review-closure overlay are intended to be self-contained.
 ## Second Drift: Observability-Echo (iters 56 → 69)
 
 After this skill was re-derived to prevent the first drift, a second
-gnhf run produced 69 iterations under a freshly-authored
+run produced 69 iterations under a freshly-authored
 frontier-shaped prompt. Iters 1–56 were healthy: diverse interventions
 across axes, ~34% new product capability, ramp regressions caught within
 single-digit iterations, an explicit concentration-break at iter 16.

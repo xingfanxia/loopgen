@@ -1,7 +1,7 @@
 # Runner Contract (shared primitive)
 
 **Purpose.** Declares that the emitted prompt is runner-agnostic — `/loop`,
-`/goal`, and external harnesses (gnhf, cocc, ralph) all re-invoke it; they
+`/goal`, and external harnesses (cocc, ralph) all re-invoke it; they
 differ only in invocation. Establishes the four things the prompt assumes
 about its host and the boundary between a runner ceiling and a repository
 failure.
@@ -29,12 +29,26 @@ that said "begin with its First-iteration bootstrap" would have re-run inventory
 instantiation on iteration 2; fix was to gate the bootstrap on `iteration: 0`
 inside `PROMPT.md` and reduce the kick-off to a stable pointer.
 
+**Unattended corollary (authoring guidance).** When the loop runs UNATTENDED (the
+default for `/goal`, ralph, cron, `cadence-shape: deferred-fire-and-forget`),
+the emitted prompt MUST **globally forbid interactive / blocking / approval-prompt
+tools (`AskUserQuestion` and the like), for ANY reason** — no human is there to
+answer, so any such call is an overnight deadlock. Route every decision instead:
+reversible → smallest reversible default + Alignment Review; needs-a-human or
+irreversible → `stop-and-summarize` with the right halt label and the question in
+the summary (async, never interactive). A **context-scoped** ban is not enough —
+forbidding interactive prompts only for cost leaves the tool reachable for the
+next decision ("which cell?", "ambiguous oracle?"). Make it global, at the
+runner-contract level. Dogfooding: mdtools hybrid-pareto loop (2026-05-29) — a
+cost-only "don't ask" rule still left `AskUserQuestion` reachable; the loop
+blocked on it at the first paid step.
+
 ---
 
 ## Runner contract
 
 This prompt is runner-agnostic. A *runner* re-invokes this prompt
-iteratively; `/loop`, `/goal`, and external harnesses (gnhf, cocc, ralph)
+iteratively; `/loop`, `/goal`, and external harnesses (cocc, ralph)
 are all runners. The prompt assumes only:
 
 1. Iterative re-invocation — you are one iteration.

@@ -57,7 +57,7 @@ Avoid one-selector-at-a-time promotions when a coherent family is ready.
   move genuinely necessary, or deferral via `stop-and-summarize`.
   Cosmetic, rustfmt, file-rotation, naming-cleanup, or ledger-only
   changes do **not** satisfy a mode break — this is the specific
-  failure shape observed in the gnhf iter-64 case study.
+  failure shape observed in the iter-64 case study.
 - if the next best move is another narrow ledger update rather than a
   product or evaluator intervention, pause and diagnose before repeating
 - treat the ledger as an evidence sink, not the main artifact of progress

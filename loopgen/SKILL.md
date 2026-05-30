@@ -6,7 +6,7 @@ description: "Compose a repo-specific, runner-agnostic loop prompt from a primit
 # Loopgen
 
 `/loopgen` derives a repo-specific, **runner-agnostic** loop prompt — `/loop`,
-`/goal`, and external harnesses (gnhf, cocc, ralph) are all valid runners; they
+`/goal`, and external harnesses (cocc, ralph) are all valid runners; they
 differ only in invocation. It is a **hybrid dispatcher + compositional
 generator**: it runs a shared pre-flight audit, classifies the task to its
 nearest *archetype* by extracting primitive values, composes the prompt by
@@ -162,7 +162,7 @@ path to the prompt, and a one-phrase identity. Nothing else.
 >
 > e.g. `/goal read loop/PROMPT.md and execute as the hybrid-pareto benchmarking loop.`
 
-A runner (`/goal`, `/loop`, gnhf, ralph, cocc) re-sends the *same* prompt every
+A runner (`/goal`, `/loop`, ralph, cocc) re-sends the *same* prompt every
 iteration (see `primitives/runner-contract.md`), so the kick-off must be
 **iteration-agnostic** and carry **no instruction content** — every rule (which
 file is the goal, where `STATE.md` is, the iteration protocol, the bootstrap
