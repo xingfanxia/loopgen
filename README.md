@@ -1,6 +1,6 @@
 # loopgen
 
-Your loop died 10 minutes after you went to sleep. Blocked on a decision you could have made before it ever fired.
+Your loop died 10 minutes after you went to sleep. Blocked on a decision you could have made before it ever fired, or simply finished prematurely.
 
 loopgen writes the prompt so it doesn't.
 
@@ -23,7 +23,7 @@ loopgen classifies for you, and composes a hybrid when your intention sits betwe
 | Seed | Archetype | Halts on |
 |---|---|---|
 | A task with a definition of done | `goal` | `criteria-met`: one final-verify proves the frozen acceptance inventory |
-| A frontier to push (autoresearch) | `frontier` | `frontier-exhausted`: five homeostasis axes balanced, no intervention left |
+| A frontier to push (autoresearch) | `frontier` | `homeostatic-checkpoint`: five homeostasis axes balanced, no intervention left |
 | A product surface to walk through | `story` | `storyboard-converged`: the visible product matches the storyboard |
 | An idea to build out from zero | `greenfield` | `stone-converged`: the artifact landed on the user's reframed target |
 
@@ -48,7 +48,7 @@ You have a spec with a dozen acceptance lines and you want them all green by mor
 
 You have a quality frontier to push — better, faster, more robust, higher-scoring — with no finish line, Karpathy's autoresearch style. A held-out benchmark score is one instance; so are latency, test coverage, type-safety, suite health, robustness, or "improve the codebase" once you've named the dimension. Each iteration senses the repo across five homeostasis axes, picks the intervention at the edge between what the artifact can already do and what it can't yet, runs it, scores it, and decides whether the frontier moved — alternating between improving the product and improving the mechanism that judges it. (A *finite* version of the same target — "get coverage to exactly 80% and stop" — has a pass line and is `goal`, not `frontier`; the frontier is the one with no fixed finish. Note: no finish line ≠ no stopping rule — a frontier loop still halts, at equilibrium / plateau / budget, just not at a target number.)
 
-Your benchmark scores 0.71 and you want it to grind and auto-improve — or the test suite is slow and flaky and you want it faster and greener by morning, no fixed target, just better. `/loopgen` halts on `frontier-exhausted` when all five homeostasis axes are in balance and no intervention is available, or `signal-starvation` when N consecutive iterations produce no new failing trace or finding.
+Your benchmark scores 0.71 and you want it to grind and auto-improve — or the test suite is slow and flaky and you want it faster and greener by morning, no fixed target, just better. `/loopgen` halts on `homeostatic-checkpoint` when all five homeostasis axes are in balance and no intervention is available, or `signal-starvation` when N consecutive iterations produce no new failing trace or finding.
 
 #### [`story`](loopgen/archetypes/story.md)
 
@@ -64,4 +64,4 @@ The seed: "an artifact manager for my spec-driven workflow." You don't know what
 
 ---
 
-It's a prompt-writer skill with strong opinions about going to sleep. That's all it is.
+It's a prompt-writer skill with strong opinions about going to sleep. That's all. YMMV.
