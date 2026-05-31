@@ -26,6 +26,45 @@ terminal cause).
   stretch; the quiet-signal checkpoint fired.
 - `wrong-loop` — the work belongs in a different archetype (see reroute table).
 
+## Completion semantics
+
+Shared halt causes are **iteration/session halts**, not proof that the loop's
+frontier or goal is complete. A prompt MUST make this distinction explicit:
+
+- `genuine-escalate`, `derivation-gap`, `signal-starvation`, and `wrong-loop`
+  mean "this invocation halted"; they must report the frontier/queue as still
+  OPEN unless the queue is independently empty.
+- Only the archetype-terminal success cause may claim archetype completion
+  (`frontier-exhausted`, `criteria-met`, `storyboard-converged`, or
+  `stone-converged`).
+- On any non-terminal shared halt, final output must say
+  `iteration halted; frontier remains OPEN` (or the archetype equivalent), then
+  list the unresolved queue rows and the external authorization or derivation
+  change needed to resume.
+- Runners that expose a generic "goal complete" switch must not use it for a
+  non-terminal shared halt. They may mark the *invocation* complete, but the
+  loop artifact remains active/paused with OPEN work.
+
+## Non-terminal halt precondition
+
+Before emitting any non-terminal shared halt, the loop MUST scan its full
+search surface, not only the currently selected row:
+
+- frontier loops scan all homeostasis axes and all OPEN findings / anchors;
+- goal loops scan all acceptance rows and verifier/oracle gaps;
+- story loops scan storyboard lanes and unresolved promise rows;
+- greenfield loops scan rubric/intent hypotheses and blocked capability
+  surfaces.
+
+A single blocked row is not enough to halt. If another reversible, in-scope
+intervention can move a different axis or strengthen the evaluator, the loop
+continues with that intervention. A non-terminal halt is valid only when every
+remaining useful intervention is blocked by the same external authority, would
+violate scope/budget, or is low-yield same-family polish with no fresh evidence.
+
+The final output for a non-terminal halt must include a compact "halt scan"
+naming each searched axis/queue class and why no safe continuation remains.
+
 ## Archetype-terminal causes
 
 | Archetype | Terminal cause(s) |

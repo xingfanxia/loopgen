@@ -51,6 +51,12 @@ them from `story`**, not as brand-new values.
 
 - Emits `docs/storyboard.{md,yaml}` as the extra artifact, plus a
   per-promoted-story evidence manifest.
+- **Evidence modality tracks the surface class, not the storyboard.** The
+  storyboard (the promise index) is surface-agnostic; only its proof modality
+  varies: screenshots / DOM for a web frontend, a command transcript + exit code
+  for a CLI, contract tests + schema fixtures for an API, terminal snapshots for
+  a TUI. Classifying `story` for a non-UI surface is sound; emitting UI-only
+  evidence for it is the overclaim to avoid.
 - The **Surface Taste Lane** section is conditional — include only when the lane
   is the taste lane.
 - Body template: `templates/bodies/story-body.md`.

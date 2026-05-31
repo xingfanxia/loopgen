@@ -46,3 +46,27 @@ gates the forbidden-divergence and contradiction checks.
 - **Contradiction** (classification error → ask the user, no silent default):
   `finite-criteria` with `halt-shape: equilibrium`/`manual-gated`, or with
   `convergence-shape: frontier-exhaustion`.
+
+## Underspecified targets (the preintent read)
+
+A phrasing can classify cleanly yet name only the *shape* of the target, not its
+*content*. "Improve the codebase" extracts `frontier-expanding` decisively — it
+is "make it better", no pass line — but names no **dimension** to improve along
+(perf? coverage? type-safety? complexity? dead-code?). Likewise "build me
+something X-adjacent" extracts `discovery-reframing` but may leave the adjacency
+unpinned. These are the two moving-target values, and both routinely arrive as a
+*preintent*: a real target the verb only gestures at.
+
+The read must record both halves — `{value, dimension|adjacency: <named |
+UNDEFINED>}` — and an UNDEFINED dimension is a **target derivation gap** (the
+frontier-vector / target-adjacency frontload item), never a silent default.
+Classification succeeding is not the same as the loop being runnable: a clean
+match — even an exact, distance-0 one — to `frontier`/`greenfield` yields a
+**`frontier_candidate`, `runnable: false`**, not a launchable loop. A vague
+frontier binds *four* slots before it can fire, not one: the **dimension** (which
+quality axis — one primary, or an explicit scorecard if it is genuinely
+multi-axis), the **stop rule** (no pass line ≠ no halt: equilibrium / plateau /
+budget still bounds it), the **scope**, and the **evidence signal**. Each unbound
+slot is an open frontload gap — never a silent default. A loop launched with no
+dimension self-halts on iteration 1 (`signal-starvation`); one launched with a
+dimension but no stop rule never halts at all.

@@ -122,8 +122,16 @@ halt-cause classifier flags `derivation-gap` halts so the next pass closes it.
    the eyeball that once called bodytxt a "hybrid" is the failure mode computing
    them guards against.)
 
-Emit a structured classification: `{archetype, divergences[], consult-tier,
-evaluator-tier}`. No silent defaults — every divergence is visible.
+Emit a structured classification: `{archetype, runnable, target-status,
+divergences[], consult-tier, evaluator-tier}`, where `target-status` is `defined`
+or `UNDEFINED → derivation-gap`, and `runnable` is `false` whenever a slot the
+loop needs to fire (dimension, stop rule, scope, evidence signal) is unbound. A
+clean archetype match — even an exact one — is a *candidate*, not a launchable
+loop: the *preintent* read is that "improve the codebase" classifies as `frontier`
+yet binds no dimension or stop rule, so it emits `{archetype: frontier, runnable:
+false}` with those as derivation gaps (see `primitives/target-shape.md`). No
+silent defaults — every divergence, every unbound slot, and an undefined target
+is visible.
 
 ## Phase 3 — Compose
 
@@ -131,12 +139,24 @@ Follow `templates/composed-prompt.md`. In short: load the nearest archetype's
 body (`templates/bodies/<archetype>-body.md`), resolve `{{INCLUDE}}` markers
 from `primitives/*.md`, fill placeholders from Phase 1, prepend the provenance
 preamble, apply divergence patches, apply consult degradation, strip any
-section with an unsubstituted placeholder (warn if any survive), and emit.
+section with an unsubstituted placeholder (warn if any survive), verify halt
+semantics, and emit.
 
 The provenance preamble MUST enumerate the archetype, every divergence + its
 source, the consult tier, and the frontload gaps. If a section says "the
 archetype" without provenance naming the composing values, the composition is
 invisible — fix it.
+
+The emitted prompt MUST also distinguish invocation halt from archetype
+completion. Shared halt causes (`genuine-escalate`, `derivation-gap`,
+`signal-starvation`, `wrong-loop`) are not completion claims by themselves.
+Only the archetype-terminal success cause may say the loop is complete. If a
+prompt can halt on a shared cause, it must tell the runner to report the
+frontier/queue/story as still open and list the unresolved artifact rows.
+It must also require a full search-surface scan before any non-terminal halt,
+so one blocked row cannot stop a frontier/story/greenfield/goal loop while
+another in-scope evaluator, observability, specification, verifier, or queue
+repair move remains.
 
 ## Phase 4 — Emit + surface decision
 

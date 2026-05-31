@@ -48,6 +48,24 @@ Valid progress is any small reversible change that does at least one of:
 4. improves observability or specification so future search is cheaper and
    less ambiguous
 
+## Primary action spine
+
+Every valid frontier iteration must touch the frontier directly. The default
+shape is:
+
+```text
+run or re-evaluate a concrete frontier trace / artifact
+  -> score it against the frontier vector
+  -> improve one product, evaluator, observability, or specification weakness
+     exposed by that evidence
+```
+
+Ledger-only work, environment audits, repeated green validators, and
+homeostasis prose are not progress unless they are attached to a trace or
+artifact evaluated in the same iteration. If the loop cannot produce or
+re-evaluate evidence and cannot implement an improvement from existing
+evidence, it must halt without claiming progress.
+
 ## Evaluator maturity
 
 Current tier: {{EVALUATOR_TIER}}.
@@ -123,6 +141,10 @@ shape labels the correction.
 
 ### Iteration protocol
 
+0. Name the concrete trace, artifact, OPEN finding, or degraded evaluator
+   surface this iteration will use as its evidence source. If none exists and
+   none can be produced inside the scope/budget rules, halt without accepting a
+   ledger-only iteration.
 1. Read the state: current repo as directed by the motive and surfaces
    named in this prompt, plus ledger / findings / run-artifacts if the
    framework provides them, plus oracle outputs and failing traces.
@@ -148,6 +170,28 @@ shape labels the correction.
    Otherwise revert, record the evidence, name the next hypothesis.
 8. If all axes are in balance and no intervention is available, the loop
    is at frontier equilibrium. Emit `stop-and-summarize` and halt.
+
+### Homeostasis-before-halt rule
+
+Before any non-terminal halt (`genuine-escalate`, `derivation-gap`,
+`signal-starvation`, or `wrong-loop`), run a final homeostasis scan across all
+five axes and every OPEN finding / anchor. A single blocked anchor is not enough
+to halt the frontier loop. If product work is blocked, look for evaluator,
+observability, specification, or intervention-diversity work that is reversible
+and in scope. If such work exists, continue with it.
+
+The halt is valid only when every remaining useful intervention is either
+blocked by the same external authority, outside scope, or low-yield same-family
+polish with no fresh evidence. Include the scan in the final response:
+
+```text
+halt scan:
+- oracle trustworthiness: <balanced/drifting/blocked> - <why no safe move>
+- product capability: <balanced/drifting/blocked> - <why no safe move>
+- failure legibility: <balanced/drifting/blocked> - <why no safe move>
+- specification coherence: <balanced/drifting/blocked> - <why no safe move>
+- intervention diversity: <balanced/drifting/blocked> - <why no safe move>
+```
 
 ### Intervention labels (reference glossary)
 
@@ -271,6 +315,22 @@ cause so the user (and the next derivation) can route it back:
   ran or stop-and-summarize.
 - `wrong-loop` — the work belongs in a different loop type (a
   finite-checklist closure should reroute to the `goal` archetype via `/loopgen`).
+
+### Frontier completion semantics
+
+Only `frontier-exhausted` means the frontier is complete. `genuine-escalate`,
+`derivation-gap`, `signal-starvation`, and `wrong-loop` are valid invocation
+halts, but they are not completion. When halting for any non-terminal cause,
+write:
+
+```text
+iteration halted; frontier remains OPEN
+```
+
+Then list the unresolved OPEN findings / anchors and the external authorization,
+derivation change, or reroute needed to resume. Do not mark a generic runner
+goal as complete for a non-terminal shared halt; at most, mark the invocation
+complete and leave the loop artifact active or gated.
 
 `derivation-gap` is the feedback signal. It tells the user the
 checklist was incomplete; add the missed item to next run's Frontload

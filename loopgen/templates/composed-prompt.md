@@ -98,7 +98,16 @@ is invisible — the preamble MUST enumerate every divergence axis + its source.
 7. **Strip dead sections.** Remove any section whose `{{placeholder}}` was not
    substituted. If any `{{…}}` survives, WARN in the emit summary — the emitted
    prompt must contain no dead sections.
-8. **Emit** (see `SKILL.md` Phase 4): `loop/PROMPT.md` + `loop/STATE.md` + the
+8. **Verify halt semantics.** The emitted prompt must distinguish invocation
+   halt from archetype completion. Shared halt causes (`genuine-escalate`,
+   `derivation-gap`, `signal-starvation`, `wrong-loop`) never mean the
+   frontier, goal, story, or greenfield artifact is complete by themselves.
+   Only the archetype-terminal success cause may claim completion. If this
+   distinction is absent, patch the prompt before emitting.
+   Also verify that any non-terminal shared halt requires a full search-surface
+   scan first, so a single blocked row cannot stop the loop while another
+   reversible in-scope intervention remains.
+9. **Emit** (see `SKILL.md` Phase 4): `loop/PROMPT.md` + `loop/STATE.md` + the
    archetype's extra artifact(s).
 
 ## Backward-compatibility invariant (U11 gate)
