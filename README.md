@@ -4,26 +4,28 @@ Your loop died 10 minutes after you went to sleep. Blocked on a decision you cou
 
 loopgen writes the prompt so it doesn't.
 
-Hand it whatever you're trying to do: close a spec, improve the codebase, push a benchmark, walk a frontend, build a vague idea. It works out which kind of loop that is, writes the prompt and the invariants, and resolves the decisions that would've stalled the loop 10 minutes in. Hand the result to a runner (`/goal` in Claude Code or Codex, or any ralph-based harness) and go to sleep. loopgen doesn't run the loop. It makes sure the loop survives the night.
+Hand it whatever you're trying to do: close a spec, improve the codebase, push a benchmark, walk a frontend, build a vague idea. It works out which kind of loop that is, writes the prompt and the invariants, and resolves the decisions upfront that would've stalled the loop 10 minutes in. Hand the result to a runner (`/goal` in Claude Code or Codex, or any ralph-based harness) and go to sleep. loopgen makes sure the loop survives the night.
+
+![loopgen pursuing a goal loop](assets/loopgen-pursuing-goal.png)
 
 ## Install
 
-Each skill is a plain directory with a `SKILL.md`. No plugin runtime. Symlink `loopgen/` into the directory your agent reads skills from (`~/.claude/skills/` for Claude Code, `~/.codex/skills/` for Codex); anything that reads skill folders can use it. The unified skill is [`loopgen/`](loopgen/SKILL.md).
+It's a skill. Send your agent the repo, or clone it and symlink `loopgen/` into the skill directory (`~/.claude/skills/` for Claude Code, `~/.codex/skills/` for Codex).
 
 ## How it actually works
 
-You don't need any of this to use it. loopgen picks the shape and fills the blanks. It's here for when a loop drifts and you want to see why, or when you want to add to the family.
+loopgen was built from four archetypal loop generator skills that earned themselves from many loop runs. It picks the shape from your intent and fills the blanks. It creates state and prompt files, then hands you the kickoff prompt.
 
 ### The four archetypes
 
-Pick by what you hand the loop, but you don't have to. loopgen classifies for you, and composes a hybrid when the intention sits between archetypes.
+loopgen classifies for you, and composes a hybrid when your intention sits between archetypes.
 
 | Seed | Archetype | Halts on |
 |---|---|---|
 | A task with a definition of done | `goal` | `criteria-met`: one final-verify proves the frozen acceptance inventory |
-| A quality frontier to push | `frontier` | `frontier-exhausted`: five homeostasis axes balanced, no intervention left |
+| A frontier to push (autoresearch) | `frontier` | `frontier-exhausted`: five homeostasis axes balanced, no intervention left |
 | A product surface to walk through | `story` | `storyboard-converged`: the visible product matches the storyboard |
-| An idea to build out | `greenfield` | `stone-converged`: the artifact landed on the user's reframed target |
+| An idea to build out from zero | `greenfield` | `stone-converged`: the artifact landed on the user's reframed target |
 
 ### How it composes
 
@@ -44,9 +46,9 @@ You have a spec with a dozen acceptance lines and you want them all green by mor
 
 #### [`frontier`](loopgen/archetypes/frontier.md)
 
-You have a quality frontier to push — better, faster, more robust, higher-scoring — with no finish line. A held-out benchmark score is one instance; so are latency, test coverage, type-safety, suite health, robustness, or "improve the codebase" once you've named the dimension. Each iteration senses the repo across five homeostasis axes, picks the intervention at the edge between what the artifact can already do and what it can't yet, runs it, scores it, and decides whether the frontier moved — alternating between improving the product and improving the mechanism that judges it. (A *finite* version of the same target — "get coverage to exactly 80% and stop" — has a pass line and is `goal`, not `frontier`; the frontier is the one with no fixed finish. Note: no finish line ≠ no stopping rule — a frontier loop still halts, at equilibrium / plateau / budget, just not at a target number.)
+You have a quality frontier to push — better, faster, more robust, higher-scoring — with no finish line, Karpathy's autoresearch style. A held-out benchmark score is one instance; so are latency, test coverage, type-safety, suite health, robustness, or "improve the codebase" once you've named the dimension. Each iteration senses the repo across five homeostasis axes, picks the intervention at the edge between what the artifact can already do and what it can't yet, runs it, scores it, and decides whether the frontier moved — alternating between improving the product and improving the mechanism that judges it. (A *finite* version of the same target — "get coverage to exactly 80% and stop" — has a pass line and is `goal`, not `frontier`; the frontier is the one with no fixed finish. Note: no finish line ≠ no stopping rule — a frontier loop still halts, at equilibrium / plateau / budget, just not at a target number.)
 
-Your reviewer scores 0.71 on a held-out set and you want it past 0.75 before the team retros tomorrow — or the test suite is slow and flaky and you want it faster and greener by morning, no fixed target, just better. `/loopgen` halts on `frontier-exhausted` when all five homeostasis axes are in balance and no intervention is available, or `signal-starvation` when N consecutive iterations produce no new failing trace or finding.
+Your benchmark scores 0.71 and you want it to grind and auto-improve — or the test suite is slow and flaky and you want it faster and greener by morning, no fixed target, just better. `/loopgen` halts on `frontier-exhausted` when all five homeostasis axes are in balance and no intervention is available, or `signal-starvation` when N consecutive iterations produce no new failing trace or finding.
 
 #### [`story`](loopgen/archetypes/story.md)
 
@@ -58,8 +60,8 @@ You shipped onboarding three weeks ago and the storyboard has drifted. Signed-ou
 
 You have an idea to build out. No spec, no inventory, no evaluator — often an empty repo, but equally a brand-new subsystem inside an existing one. The failure mode is the inverse of `goal`'s: `goal` asks whether the list got closed; greenfield asks whether you ever committed to one.
 
-The seed: "something that surfaces what's blocking me in Linear." You don't know what "it" is yet. `/loopgen` derives a prompt that names the artifact, builds the smallest scenario that proves it, and earns the next addition only when the current one holds. Halts on `stone-converged` when the artifact has landed on the user's reframed target and further iteration has no positive yield. The 11 green-field invariants live in [`loopgen/references/greenfield-invariants.md`](loopgen/references/greenfield-invariants.md).
+The seed: "an artifact manager for my spec-driven workflow." You don't know what "it" is yet. `/loopgen` derives a prompt that names the artifact, builds the smallest scenario that proves it, and earns the next addition only when the current one holds. Halts on `stone-converged` when the artifact has landed on the user's reframed target and further iteration has no positive yield. The 11 green-field invariants live in [`loopgen/references/greenfield-invariants.md`](loopgen/references/greenfield-invariants.md).
 
 ---
 
-It's a prompt-writer with strong opinions about going to sleep. That's all it is.
+It's a prompt-writer skill with strong opinions about going to sleep. That's all it is.
