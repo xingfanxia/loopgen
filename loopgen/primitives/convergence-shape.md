@@ -10,8 +10,9 @@ stop. A composed prompt names both.
 
 - `criteria-completion` — the final-verify proves the whole frozen inventory in
   one repo state (`criteria-met`).
-- `frontier-exhaustion` — all homeostasis axes in balance and no positive-yield
-  intervention available.
+- `homeostatic-checkpoint` — all homeostasis axes are currently balanced and no
+  high-yield admissible intervention is available. This stops the invocation
+  without claiming the frontier is complete.
 - `capstone-plus-closer` — the run completes a capstone deliverable, then a
   closer pass that reconciles / seals the queue (a chapter ends with a closer).
 - `stone-reframe` — the artifact lands on the user's *reframed* target and
@@ -28,7 +29,7 @@ halt under any convergence-shape.
 | Task phrasing | Value |
 |---|---|
 | finite verifier matrix | `criteria-completion` |
-| homeostasis balance, "nothing left to restore" | `frontier-exhaustion` |
+| homeostasis balance, "nothing left to restore" | `homeostatic-checkpoint` |
 | chapters / episodes with closers | `capstone-plus-closer` |
 | reframable creative target | `stone-reframe` |
 | explicit budget / iteration cap | `iteration-cap` |
@@ -37,20 +38,20 @@ halt under any convergence-shape.
 
 | Archetype | Default |
 |---|---|
-| frontier | `frontier-exhaustion` |
+| frontier | `homeostatic-checkpoint` |
 | goal | `criteria-completion` |
 | story | `capstone-plus-closer` |
 | greenfield | `stone-reframe` |
 
 Refinement over the source blueprint: `story`'s default is
 `capstone-plus-closer` post-bodytxt — not a brand-new value; `frontier`'s
-default is `frontier-exhaustion` — its self-halting equilibrium, not
-`manual-only`.
+default is `homeostatic-checkpoint` — its self-pausing equilibrium, not
+completion or `manual-only`.
 
 ## Composition rules
 
 - `criteria-completion` requires `target-shape: finite-criteria`.
 - Orthogonal to `halt-shape`; both appear in the composed prompt and in
   provenance when either diverges.
-- **Contradiction** (ask the user): `frontier-exhaustion` with `target-shape:
-  finite-criteria`.
+- **Contradiction** (ask the user): `homeostatic-checkpoint` with
+  `target-shape: finite-criteria`.

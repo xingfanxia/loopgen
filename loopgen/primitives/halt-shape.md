@@ -11,9 +11,9 @@ prompt names both.
 
 - `terminal` — halt is final for this goal version; reopens only via an explicit
   per-row `reopen_condition` or regression mode.
-- `equilibrium` — halts at frontier-exhausted balance; reopens **automatically**
-  on strong new signal (externally reviewed finding, typed failing trace, oracle
-  verdict, metric movement).
+- `equilibrium` — checkpoints at homeostatic balance; reopens
+  **automatically** on strong new signal (externally reviewed finding, typed
+  failing trace, oracle verdict, metric movement).
 - `checkpoint-with-reopen` — halts on convergence but explicitly reopens when a
   new authoritative source / route / fixture appears (the story shape; bodytxt
   keeps it, sourced from story).

@@ -19,7 +19,7 @@ intervention; it is never picked from a menu.
 | `target-shape` | `frontier-expanding` |
 | `halt-shape` | `equilibrium` |
 | `artifact-shape` | `findings-ledger` |
-| `convergence-shape` | `frontier-exhaustion` |
+| `convergence-shape` | `homeostatic-checkpoint` |
 | `cadence-shape` | `checkpoint-gated` |
 | `consult-capability` | detect (`tier-0` default) |
 

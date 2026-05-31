@@ -102,8 +102,10 @@ is invisible — the preamble MUST enumerate every divergence axis + its source.
    halt from archetype completion. Shared halt causes (`genuine-escalate`,
    `derivation-gap`, `signal-starvation`, `wrong-loop`) never mean the
    frontier, goal, story, or greenfield artifact is complete by themselves.
-   Only the archetype-terminal success cause may claim completion. If this
-   distinction is absent, patch the prompt before emitting.
+   Frontier's `homeostatic-checkpoint` also does not mean completion; frontier
+   loops checkpoint and reopen on fresh signal. Only non-frontier
+   archetype-terminal success causes may claim completion. If this distinction
+   is absent, patch the prompt before emitting.
    Also verify that any non-terminal shared halt requires a full search-surface
    scan first, so a single blocked row cannot stop the loop while another
    reversible in-scope intervention remains.

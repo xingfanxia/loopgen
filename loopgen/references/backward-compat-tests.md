@@ -25,7 +25,7 @@ and blocks promotion until the design is revised.
 - **Task:** "Run an evidence-driven improvement loop on this repo; make it
   better and keep the evaluator honest."
 - **Expected bundle:** `target=frontier-expanding, halt=equilibrium,
-  artifact=findings-ledger, convergence=frontier-exhaustion,
+  artifact=findings-ledger, convergence=homeostatic-checkpoint,
   cadence=checkpoint-gated`. Archetype `frontier`, divergences `none`.
 - **Reference:** legacy `frontier-loop` output (`templates/bodies/frontier-body.md`
   filled).

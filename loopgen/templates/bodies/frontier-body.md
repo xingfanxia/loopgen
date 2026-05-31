@@ -169,7 +169,8 @@ shape labels the correction.
 7. Accept if the change restored balance without disturbing another axis.
    Otherwise revert, record the evidence, name the next hypothesis.
 8. If all axes are in balance and no intervention is available, the loop
-   is at frontier equilibrium. Emit `stop-and-summarize` and halt.
+   is at frontier equilibrium. Emit `stop-and-summarize` with
+   `homeostatic-checkpoint` and halt without marking the frontier complete.
 
 ### Homeostasis-before-halt rule
 
@@ -216,6 +217,25 @@ A change authored by the iteration is `FIXED_PENDING_CONFIRMATION`, not
 `CLOSED`. Closure requires either the next iteration's review pass
 explicitly confirming, or the next pass not re-raising the finding. Halt
 conditions count OPEN only; `FIXED_PENDING_CONFIRMATION` is not cleared.
+
+### Frontier status taxonomy
+
+Do not use generic `DEFERRED`. Every anchor or benchmark row that is not green
+must carry one of these statuses:
+
+- `OPEN` — pressure remains and the next admissible intervention is known or
+  discoverable.
+- `FIXED_PENDING_CONFIRMATION` — changed this iteration; needs a later pass or
+  independent oracle before closure.
+- `CLOSED_CONFIRMED` — independently confirmed fixed.
+- `CLOSED_EXPECTED_RED_CONTROL` — intentionally failing control that proves the
+  evaluator rejects bad output.
+- `PAUSED_EXTERNAL` — blocked on explicit external authority, budget, secret, or
+  unavailable live channel.
+- `REJECTED_OUT_OF_SCOPE` — not part of this frontier's scope.
+
+`improvement_candidate` implies `OPEN` or `PAUSED_EXTERNAL` unless the row is a
+`CLOSED_EXPECTED_RED_CONTROL` whose purpose is to stay red.
 
 ### Status-theater prohibition
 
@@ -292,12 +312,13 @@ Default N = 3; set per repo as `{{CASH_OUT_N}}`.
 ## Halt conditions
 
 Halt = emit `stop-and-summarize`. Escalate (rare, irreversible-only) is a
-separate signal — see the Runner contract.
+separate signal — see the Runner contract. A frontier halt is a checkpoint,
+not completion.
 
 - No OPEN findings for 2 consecutive review rounds.
 {{SCOPE_DRIFT_HALT}}
 - All five homeostasis axes in balance and no intervention is available
-  (frontier-exhausted equilibrium).
+  (`homeostatic-checkpoint` equilibrium).
 
 ### Halt-cause classifier
 
@@ -309,28 +330,30 @@ cause so the user (and the next derivation) can route it back:
   loop doesn't block on it again.
 - `genuine-escalate` — irreversible / external / authority-needed
   (paid API budget, public-publish, secret, product direction).
-- `frontier-exhausted` — legitimate completion; all five homeostasis
-  axes in balance, no positive-yield intervention available.
+- `homeostatic-checkpoint` — legitimate checkpoint; all five homeostasis axes
+  in balance, no high-yield admissible intervention available. This does not
+  mean the frontier is complete.
 - `signal-starvation` — quiet-signal checkpoint fired; outer channel
   ran or stop-and-summarize.
 - `wrong-loop` — the work belongs in a different loop type (a
   finite-checklist closure should reroute to the `goal` archetype via `/loopgen`).
 
-### Frontier completion semantics
+### Frontier checkpoint semantics
 
-Only `frontier-exhausted` means the frontier is complete. `genuine-escalate`,
-`derivation-gap`, `signal-starvation`, and `wrong-loop` are valid invocation
-halts, but they are not completion. When halting for any non-terminal cause,
-write:
+Frontier loops do not self-complete. `homeostatic-checkpoint`,
+`genuine-escalate`, `derivation-gap`, `signal-starvation`, and `wrong-loop` are
+valid invocation halts, but none is completion. When halting for any frontier
+cause, write:
 
 ```text
-iteration halted; frontier remains OPEN
+iteration halted; frontier checkpointed
 ```
 
-Then list the unresolved OPEN findings / anchors and the external authorization,
-derivation change, or reroute needed to resume. Do not mark a generic runner
-goal as complete for a non-terminal shared halt; at most, mark the invocation
-complete and leave the loop artifact active or gated.
+Then list either the next pressure / unresolved OPEN findings / anchors, or the
+full homeostasis scan proving no high-yield admissible intervention remains.
+Do not mark a generic runner goal as complete for any frontier halt; at most,
+mark the invocation complete and leave the loop artifact checkpointed, active,
+or gated.
 
 `derivation-gap` is the feedback signal. It tells the user the
 checklist was incomplete; add the missed item to next run's Frontload

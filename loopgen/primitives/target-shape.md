@@ -45,7 +45,7 @@ gates the forbidden-divergence and contradiction checks.
   a moving target with no pass line is not goal-shaped.
 - **Contradiction** (classification error → ask the user, no silent default):
   `finite-criteria` with `halt-shape: equilibrium`/`manual-gated`, or with
-  `convergence-shape: frontier-exhaustion`.
+  `convergence-shape: homeostatic-checkpoint`.
 
 ## Underspecified targets (the preintent read)
 

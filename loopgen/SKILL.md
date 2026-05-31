@@ -51,7 +51,7 @@ archetypes meaningfully differ on a new axis (the vocabulary-axis test).
 | `target-shape` | finite-criteria · frontier-expanding · promise-discovery · discovery-reframing | frontier-expanding | finite-criteria | promise-discovery | discovery-reframing | 3 |
 | `halt-shape` | terminal · equilibrium · checkpoint-with-reopen · manual-gated | equilibrium | terminal | checkpoint-with-reopen | manual-gated | 3 |
 | `artifact-shape` | prompt-only · acceptance-inventory · storyboard · rubric+intent · findings-ledger | findings-ledger | acceptance-inventory | storyboard | rubric+intent | 3 |
-| `convergence-shape` | criteria-completion · frontier-exhaustion · capstone-plus-closer · stone-reframe · iteration-cap | frontier-exhaustion | criteria-completion | capstone-plus-closer | stone-reframe | 2 |
+| `convergence-shape` | criteria-completion · homeostatic-checkpoint · capstone-plus-closer · stone-reframe · iteration-cap | homeostatic-checkpoint | criteria-completion | capstone-plus-closer | stone-reframe | 2 |
 | `cadence-shape` | sync · checkpoint-gated · chapter · deferred-fire-and-forget | checkpoint-gated | sync | chapter | checkpoint-gated | 1 |
 
 Max weighted-Hamming distance is **12** (3+3+3+2+1). `consult-capability`
@@ -72,7 +72,7 @@ composition *overlay* that changes which sections Phase 3 emits, and does
 
 **Contradictions** (classification error → AskUserQuestion, never silent
 default): `target: finite-criteria` with `halt: equilibrium`/`manual-gated`, or
-with `convergence: frontier-exhaustion`.
+with `convergence: homeostatic-checkpoint`.
 
 **`consult-capability` tiers** (detected at frontload time — probe for
 `mcp__agentify-desktop__*`, other `mcp__*` tools, `/second-opinion`,
@@ -150,9 +150,11 @@ invisible — fix it.
 The emitted prompt MUST also distinguish invocation halt from archetype
 completion. Shared halt causes (`genuine-escalate`, `derivation-gap`,
 `signal-starvation`, `wrong-loop`) are not completion claims by themselves.
-Only the archetype-terminal success cause may say the loop is complete. If a
-prompt can halt on a shared cause, it must tell the runner to report the
-frontier/queue/story as still open and list the unresolved artifact rows.
+Frontier's `homeostatic-checkpoint` also does not mean completion; frontier
+loops checkpoint and reopen on fresh signal. Only non-frontier archetype
+success causes may say the loop is complete. If a prompt can halt on a shared
+cause, it must tell the runner to report the frontier/queue/story as open or
+checkpointed and list the unresolved artifact rows or halt scan.
 It must also require a full search-surface scan before any non-terminal halt,
 so one blocked row cannot stop a frontier/story/greenfield/goal loop while
 another in-scope evaluator, observability, specification, verifier, or queue

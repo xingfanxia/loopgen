@@ -9,8 +9,8 @@ the four legacy classifiers.
 ## Include when
 
 Every composed prompt, under "Halt conditions." Emit the shared causes plus the
-nearest archetype's terminal cause (a divergence may add a second archetype's
-terminal cause).
+nearest archetype's stop cause (a divergence may add a second archetype's stop
+cause). For frontier, the stop cause is a checkpoint, not completion.
 
 ## Shared causes (in every prompt)
 
@@ -34,13 +34,15 @@ frontier or goal is complete. A prompt MUST make this distinction explicit:
 - `genuine-escalate`, `derivation-gap`, `signal-starvation`, and `wrong-loop`
   mean "this invocation halted"; they must report the frontier/queue as still
   OPEN unless the queue is independently empty.
-- Only the archetype-terminal success cause may claim archetype completion
-  (`frontier-exhausted`, `criteria-met`, `storyboard-converged`, or
-  `stone-converged`).
-- On any non-terminal shared halt, final output must say
-  `iteration halted; frontier remains OPEN` (or the archetype equivalent), then
-  list the unresolved queue rows and the external authorization or derivation
-  change needed to resume.
+- Frontier loops never self-complete. `homeostatic-checkpoint` means no
+  high-yield admissible intervention remains after a full scan; the frontier is
+  balanced for now and reopens on fresh signal.
+- Only non-frontier archetype-terminal success causes may claim archetype
+  completion (`criteria-met`, `storyboard-converged`, or `stone-converged`).
+- On any non-terminal shared halt, final output must say the invocation halted
+  and report the artifact as OPEN or checkpointed as appropriate, then list the
+  unresolved queue rows and the external authorization or derivation change
+  needed to resume.
 - Runners that expose a generic "goal complete" switch must not use it for a
   non-terminal shared halt. They may mark the *invocation* complete, but the
   loop artifact remains active/paused with OPEN work.
@@ -65,11 +67,11 @@ violate scope/budget, or is low-yield same-family polish with no fresh evidence.
 The final output for a non-terminal halt must include a compact "halt scan"
 naming each searched axis/queue class and why no safe continuation remains.
 
-## Archetype-terminal causes
+## Archetype stop causes
 
-| Archetype | Terminal cause(s) |
+| Archetype | Stop cause(s) |
 |---|---|
-| frontier | `frontier-exhausted` |
+| frontier | `homeostatic-checkpoint` (checkpoint, not completion) |
 | goal | `criteria-met` (success) · `partial-deadlock` · `oracle-drift` |
 | story | `storyboard-converged` |
 | greenfield | `stone-converged` |
@@ -83,6 +85,6 @@ naming each searched axis/queue class and why no safe continuation remains.
 
 ## Composition notes
 
-- The terminal cause matches the archetype's `convergence-shape`.
+- The stop cause matches the archetype's `convergence-shape`.
 - `derivation-gap` is what makes the `frontload-audit` self-improving across
   runs.
