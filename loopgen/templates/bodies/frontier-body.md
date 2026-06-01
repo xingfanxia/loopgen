@@ -66,6 +66,10 @@ artifact evaluated in the same iteration. If the loop cannot produce or
 re-evaluate evidence and cannot implement an improvement from existing
 evidence, it must halt without claiming progress.
 
+{{INCLUDE primitives/pressure-accounting.md}}
+
+{{BENCHMARK_FRONTIER_MODE}}
+
 ## Evaluator maturity
 
 Current tier: {{EVALUATOR_TIER}}.
@@ -181,9 +185,28 @@ to halt the frontier loop. If product work is blocked, look for evaluator,
 observability, specification, or intervention-diversity work that is reversible
 and in scope. If such work exists, continue with it.
 
+No-trigger is not no-pressure. If the current ledger has no OPEN findings and
+no changed files, the loop must perform one active pressure-discovery move
+before checkpointing. Examples: search for an untested project/category, audit a
+recent trace against the frontier vector, add a stronger outer check for a
+suspected blind spot, compare performance/cost trend, or improve the evaluator's
+ability to expose the next weakness. If discovery
+finds pressure, set the frontier active and continue. If discovery is blocked by
+budget or external authority, halt as `PAUSED_EXTERNAL`, not checkpoint.
+
+Homeostasis is not the end of the frontier loop; it is the signal to return to
+the ramp shape at a wider radius. When known axes are balanced, the next useful
+move is usually an expansion ramp: add a new project category, stronger outer
+check, adversarial control, evaluator dimension, or
+representation/performance measurement before resuming product improvement.
+Treat the initial ramp as the first instance of this recurring pattern, not a
+one-time preface.
+
 The halt is valid only when every remaining useful intervention is either
 blocked by the same external authority, outside scope, or low-yield same-family
-polish with no fresh evidence. Include the scan in the final response:
+polish with no fresh evidence, the active pressure-discovery move found no new
+admissible pressure, and no expansion-ramp option exists inside scope/budget.
+Record the pressure fields and include the scan in the final response:
 
 ```text
 halt scan:
@@ -192,6 +215,12 @@ halt scan:
 - failure legibility: <balanced/drifting/blocked> - <why no safe move>
 - specification coherence: <balanced/drifting/blocked> - <why no safe move>
 - intervention diversity: <balanced/drifting/blocked> - <why no safe move>
+pressure discovery: <what was searched/evaluated> - <pressure found or why none>
+expansion ramp: <new radius considered> - <ramp started or why none>
+pressure_status: <open/paid/blocked/exhausted>
+pressure_debt: <none/low/medium/high/explicitly_deferred>
+checkpoint_reason: <plateau_after_active_pressure/budget_exhausted/evaluator_invalid/risk_limit_hit/target_gap_unresolved/negative_result_saved; required for every checkpoint; pressure_status=open checkpoint is invalid>
+next_pressure: <next trace/artifact/dimension/intervention or none-with-reason>
 ```
 
 ### Intervention labels (reference glossary)
@@ -220,7 +249,7 @@ conditions count OPEN only; `FIXED_PENDING_CONFIRMATION` is not cleared.
 
 ### Frontier status taxonomy
 
-Do not use generic `DEFERRED`. Every anchor or benchmark row that is not green
+Do not use generic `DEFERRED`. Every anchor or artifact row that is not green
 must carry one of these statuses:
 
 - `OPEN` — pressure remains and the next admissible intervention is known or
@@ -234,7 +263,7 @@ must carry one of these statuses:
   unavailable live channel.
 - `REJECTED_OUT_OF_SCOPE` — not part of this frontier's scope.
 
-`improvement_candidate` implies `OPEN` or `PAUSED_EXTERNAL` unless the row is a
+An improvement opportunity implies `OPEN` or `PAUSED_EXTERNAL` unless the row is a
 `CLOSED_EXPECTED_RED_CONTROL` whose purpose is to stay red.
 
 ### Status-theater prohibition
@@ -304,7 +333,7 @@ the next accepted change must do one of:
 
 1. use the improved signal to select or complete product work,
 2. run the outer channel and update the frontier vector,
-3. create or run a holdout / anti-overfitting check, or
+3. create or run a stronger anti-overfitting check, or
 4. emit `stop-and-summarize`.
 
 Default N = 3; set per repo as `{{CASH_OUT_N}}`.
@@ -375,8 +404,7 @@ Default N = 3; set per repo as `{{QUIET_SIGNAL_N}}`.
 - **Ledger** — concise state / hypotheses / outcomes (memory).
 - **Structured traces** — failures produce queryable artifacts, not just
   stderr.
-- **Benchmark / metric outputs** — machine-readable, persisted across
-  iterations.
+- **Metric outputs** — machine-readable, persisted across iterations.
 
 {{REVIEW_CLOSURE_OVERLAY}}
 ```
@@ -468,7 +496,7 @@ Ramp is complete when all five hold:
 
 When all five hold, emit `ramp-complete` in iteration output. The next
 iteration switches to main-loop homeostasis. Stages 6–9 (search set,
-holdout split, metric surfacing, golden principles) continue as
+anti-overfitting split, metric surfacing, golden principles) continue as
 ordinary evaluator / observability work inside the main loop.
 ```
 
