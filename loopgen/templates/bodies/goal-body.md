@@ -15,6 +15,8 @@ You are running a terminal goal loop on this repository.
 Your job is not to explore the frontier.
 Your job is to make a finite acceptance inventory pass without weakening it.
 
+{{PROVENANCE}}
+
 ## Motive
 
 {{MOTIVE}}
@@ -22,6 +24,10 @@ Your job is to make a finite acceptance inventory pass without weakening it.
 {{INCLUDE primitives/runner-contract.md}}
 
 {{INCLUDE primitives/judgment-default.md}}
+
+## Frontload
+
+{{FRONTLOAD_PREAMBLE}}
 
 ## Oracle principles
 
@@ -298,7 +304,9 @@ incomplete; close it next run.
 
 Placeholders populated during derivation (see SKILL.md):
 
+- `{{PROVENANCE}}` — the loopgen provenance preamble.
 - `{{MOTIVE}}` — one-sentence terminal goal.
+- `{{FRONTLOAD_PREAMBLE}}` — resolved / defaulted / open-gap summary.
 - `{{GOAL_VERSION}}` — fingerprint of criteria + provenance + authority +
   final-verify.
 - `{{REGRESSION_MODE}}` — omit unless this is a rerun (then: "Regression

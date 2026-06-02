@@ -38,11 +38,11 @@ Roles are invariant; filenames are defaults.
 
 | Role | Default file | Contract |
 |---|---|---|
-| `DOMAIN_SPEC` | `DOMAIN_SPEC.md` | fixed surface, mutable surface, eval unit, budget, leakage risks |
-| `BENCHMARK` | `BENCHMARK.md` | search set, holdout set, expected-green/red controls, metrics, timeouts |
-| `CANDIDATES` | `CANDIDATES.jsonl` | rows with candidate lineage, operator, hypothesis, status, eval artifacts |
-| `FRONTIER` | `FRONTIER.json` | best/Pareto members, evaluator health, pressure debt, checkpoint reason |
-| `traces` | `traces/<candidate>/<case>/evaluation.json` | raw evidence; missing or corrupt output counts as failure |
+| `DOMAIN_SPEC` | `loop/DOMAIN_SPEC.md` | fixed surface, mutable surface, eval unit, budget, leakage risks |
+| `BENCHMARK` | `loop/BENCHMARK.md` | search set, holdout set, expected-green/red controls, metrics, timeouts |
+| `CANDIDATES` | `loop/CANDIDATES.jsonl` | rows with candidate lineage, operator, hypothesis, status, eval artifacts |
+| `FRONTIER` | `loop/FRONTIER.json` | best/Pareto members, evaluator health, pressure debt, checkpoint reason |
+| `traces` | `loop/traces/<candidate>/<case>/evaluation.json` | raw evidence; missing or corrupt output counts as failure |
 
 Repo-native markdown is acceptable only when it preserves the same fields and
 can be audited mechanically.

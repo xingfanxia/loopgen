@@ -49,8 +49,8 @@ them from `story`**, not as brand-new values.
 
 ## Extras
 
-- Emits `docs/storyboard.{md,yaml}` as the extra artifact, plus a
-  per-promoted-story evidence manifest.
+- Emits `docs/storyboard.md` as the required artifact, plus a per-promoted-story
+  evidence manifest.
 - **Evidence modality tracks the surface class, not the storyboard.** The
   storyboard (the promise index) is surface-agnostic; only its proof modality
   varies: screenshots / DOM for a web frontend, a command transcript + exit code

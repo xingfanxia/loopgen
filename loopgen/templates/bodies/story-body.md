@@ -19,6 +19,8 @@ needed, document the alignment cost for human review, implement or verify
 one focused slice, capture evidence, and continue. It is not broad QA or a
 project-management digest.
 
+{{PROVENANCE}}
+
 ## Motive
 
 {{MOTIVE}}
@@ -26,6 +28,10 @@ project-management digest.
 {{INCLUDE primitives/runner-contract.md}}
 
 {{INCLUDE primitives/judgment-default.md}}
+
+## Frontload
+
+{{FRONTLOAD_PREAMBLE}}
 
 ## Core objects
 
@@ -705,8 +711,10 @@ Verification:
 
 Placeholders populated during derivation (see SKILL.md):
 
+- `{{PROVENANCE}}` — the loopgen provenance preamble.
 - `{{MOTIVE}}` — one-sentence goal from the user (e.g., "verify the
   evidence-anchor workflow for the compliance officer persona").
+- `{{FRONTLOAD_PREAMBLE}}` — resolved / defaulted / open-gap summary.
 - `{{LANE}}` — selected lane. Common values: `Surface Taste Lane` (visual
   / product / frontend quality), or a domain-specific lane named by the
   repo. If absent from the user prompt, infer from the strongest guidance
@@ -714,9 +722,9 @@ Placeholders populated during derivation (see SKILL.md):
 - `{{SURFACE_CLASS}}` — generic repo-local audience / workflow / surface
   name (e.g., "report viewer", "checkout flow"). Use names the repo
   itself uses; do not hard-code product-specific audiences.
-- `{{STORYBOARD_PATH}}` — `docs/storyboard.md` for human review or
-  `docs/storyboard.yaml` for machine iteration. Prefer the repo's
-  existing convention; create the file if absent.
+- `{{STORYBOARD_PATH}}` — `docs/storyboard.md`. Repo-native machine-readable
+  boards may be recorded as aliases in `loop/STATE.md`, but this canonical file
+  still exists.
 
 Drop the **Surface Taste Lane** section when `{{LANE}}` is not the taste
 lane.

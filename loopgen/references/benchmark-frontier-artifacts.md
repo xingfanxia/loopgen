@@ -7,11 +7,11 @@ runner may use repo-native files, but the fields must be mechanically auditable.
 
 | Role | Default file | Required fields |
 |---|---|---|
-| `DOMAIN_SPEC` | `DOMAIN_SPEC.md` | fixed surface, mutable surface, eval unit, budget, leakage risks |
-| `BENCHMARK` | `BENCHMARK.md` | search set, holdout set, expected-green controls, expected-red controls, metrics, timeouts |
-| `CANDIDATES` | `CANDIDATES.jsonl` | candidate rows, lineage, hypothesis, status, trace paths |
-| `FRONTIER` | `FRONTIER.json` | current best/Pareto members, evaluator health, pressure debt, checkpoint reason |
-| `traces` | `traces/<candidate>/<case>/evaluation.json` | raw per-candidate/per-case evidence |
+| `DOMAIN_SPEC` | `loop/DOMAIN_SPEC.md` | fixed surface, mutable surface, eval unit, budget, leakage risks |
+| `BENCHMARK` | `loop/BENCHMARK.md` | search set, holdout set, expected-green controls, expected-red controls, metrics, timeouts |
+| `CANDIDATES` | `loop/CANDIDATES.jsonl` | candidate rows, lineage, hypothesis, status, trace paths |
+| `FRONTIER` | `loop/FRONTIER.json` | current best/Pareto members, evaluator health, pressure debt, checkpoint reason |
+| `traces` | `loop/traces/<candidate>/<case>/evaluation.json` | raw per-candidate/per-case evidence |
 
 ## Candidate Row
 

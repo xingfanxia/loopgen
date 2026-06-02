@@ -1,10 +1,9 @@
 # Runner Contract (shared primitive)
 
-**Purpose.** Declares that the emitted prompt is runner-agnostic — `/loop`,
-`/goal`, and external harnesses (cocc, ralph) all re-invoke it; they
-differ only in invocation. Establishes the four things the prompt assumes
-about its host and the boundary between a runner ceiling and a repository
-failure.
+**Purpose.** Declares that the emitted prompt is runner-agnostic internally
+while the operator-facing kick-off always uses `/goal`. Establishes the four
+things the prompt assumes about its host and the boundary between a runner
+ceiling and a repository failure.
 
 **Include when.** Every composed prompt, every archetype, unconditionally.
 This block is universal.
@@ -30,7 +29,7 @@ instantiation on iteration 2; fix was to gate the bootstrap on `iteration: 0`
 inside `PROMPT.md` and reduce the kick-off to a stable pointer.
 
 **Unattended corollary (authoring guidance).** When the loop runs UNATTENDED (the
-default for `/goal`, ralph, cron, `cadence-shape: deferred-fire-and-forget`),
+default for `/goal`, cron-style runs, `cadence-shape: deferred-fire-and-forget`),
 the emitted prompt MUST **globally forbid interactive / blocking / approval-prompt
 tools (`AskUserQuestion` and the like), for ANY reason** — no human is there to
 answer, so any such call is an overnight deadlock. Route every decision instead:
@@ -47,9 +46,8 @@ blocked on it at the first paid step.
 
 ## Runner contract
 
-This prompt is runner-agnostic. A *runner* re-invokes this prompt
-iteratively; `/loop`, `/goal`, and external harnesses (cocc, ralph)
-are all runners. The prompt assumes only:
+This prompt is runner-agnostic internally. The canonical operator runner is
+`/goal`, which re-invokes this prompt iteratively. The prompt assumes only:
 
 1. Iterative re-invocation — you are one iteration.
 2. File-persisted state — durable progress lives in named files, not memory.

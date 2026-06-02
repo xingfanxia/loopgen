@@ -45,7 +45,7 @@ raises ceilings; the loop proposes, the user disposes.
 ## Extras
 
 - Includes the 11 invariants (`references/greenfield-invariants.md`).
-- Emits `loop/RUBRIC.md` + `loop/INTENT.md` (+ `loop/README.md`) as extra
+- Emits `loop/RUBRIC.md`, `loop/INTENT.md`, and `loop/README.md` as required
   artifacts.
 - Uses research → preloop → bootstrap → iter phase gates, each with
   `owner: loop | user | external`; user-owned gates cannot be flipped by the

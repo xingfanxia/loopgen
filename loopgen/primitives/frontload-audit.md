@@ -9,8 +9,8 @@ through the night without blocking.
 
 ## Include when
 
-Phase 1, always. Its output — the frontload preamble — is prepended to every
-composed prompt.
+Phase 1, always. Its output — the frontload preamble — fills the
+`{{FRONTLOAD_PREAMBLE}}` slot in every composed prompt.
 
 ## The resolve / default / escalate procedure
 
@@ -81,8 +81,8 @@ pass closes them.
 
 ## Composition notes
 
-- Output: record under `loop/STATE.md` `frontload:` and prepend a frontload
-  preamble to `loop/PROMPT.md` naming exactly what was resolved / defaulted /
-  left open.
+- Output: record under `loop/STATE.md` `frontload:` and fill the
+  `{{FRONTLOAD_PREAMBLE}}` slot in `loop/PROMPT.md` naming exactly what was
+  resolved / defaulted / left open.
 - `cadence-shape: deferred-fire-and-forget` raises the completeness bar — no
   human is awake to answer a gap.

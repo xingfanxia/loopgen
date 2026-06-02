@@ -1,23 +1,26 @@
 ---
 name: loopgen
-description: "Compose a repo-specific, runner-agnostic loop prompt from a primitive vocabulary. Classifies a task to its nearest archetype (frontier / goal / story / greenfield), composes the prompt from primitive values — defaulting to the archetype, diverging where the task demands — and emits with provenance. Also diagnoses a drifting loop. Triggers: '/loopgen', 'derive a loop for X', 'make me an overnight loop', 'close the findings in X', 'fix the bugs by morning', 'push a benchmark with a loop', 'walk the storyboard', 'build out an idea from zero'."
+description: "Compose a repo-specific, /goal-ready loop prompt from a primitive vocabulary. Classifies a task to its nearest archetype (frontier / goal / story / greenfield), composes the prompt from primitive values — defaulting to the archetype, diverging where the task demands — and emits with provenance. Also diagnoses a drifting loop. Triggers: '/loopgen', 'derive a loop for X', 'make me an overnight loop', 'close the findings in X', 'fix the bugs by morning', 'push a benchmark with a loop', 'walk the storyboard', 'build out an idea from zero'."
 ---
 
 # Loopgen
 
-`/loopgen` derives a repo-specific, **runner-agnostic** loop prompt — `/loop`,
-`/goal`, and external harnesses (cocc, ralph) are all valid runners; they
-differ only in invocation. It is a **hybrid dispatcher + compositional
-generator**: it runs a shared pre-flight audit, classifies the task to its
-nearest *archetype* by extracting primitive values, composes the prompt by
-combining those values (defaulting to the nearest archetype's presets and
-diverging where the task demands), and emits with a provenance preamble.
+`/loopgen` derives a repo-specific, **runner-agnostic** loop prompt with a
+canonical `/goal` kick-off. The emitted `loop/PROMPT.md` carries the complete
+iteration contract; the operator-facing invocation is always a stable pointer
+to that file. It is a **hybrid dispatcher + compositional generator**: it runs a
+shared pre-flight audit, classifies the task to its nearest *archetype* by
+extracting primitive values, composes the prompt by combining those values
+(defaulting to the nearest archetype's presets and diverging where the task
+demands), and emits with a provenance preamble.
 
 It replaces the four legacy loop skills, whose irreducible cores now live as
 archetype reference documents (`archetypes/*.md`) and whose shared
 infrastructure is the primitive vocabulary (`primitives/*.md`). Output is
-backward-compatible: a pure archetype reproduces the legacy skill's prompt plus
-a provenance preamble.
+backward-compatible under the U11 probe: a pure archetype reproduces the legacy
+skill's prompt plus the accepted contract deltas (provenance, frontload,
+canonical artifact/state references, and frontier pressure accounting where
+applicable).
 
 Invoke **once per run** to author or revise a prompt; the loop's per-iteration
 playbook lives in the composed `loop/PROMPT.md`, not here. Invoke in
@@ -35,8 +38,8 @@ playbook lives in the composed `loop/PROMPT.md`, not here. Invoke in
 ## Do NOT invoke when
 
 - the user wants a one-off plan, not an iterative loop → `/architect`
-- the user wants to *run* a loop now → that is the runner's job (`/loop`,
-  `/goal`, `/schedule`); loopgen only generates the prompt
+- the user wants to *run* a loop now → that is the runner's job (`/goal`);
+  loopgen only generates the prompt
 - pure debugging → a debugging tool, not a loop
 
 ## The primitive vocabulary (single source of truth)
@@ -84,6 +87,50 @@ with `convergence: homeostatic-checkpoint`.
 a human-look gate; `tier-1` human-bridge handoff; `tier-2` single programmatic
 consult; `tier-3` rich fabric (blind adversarial + multi-modal). All archetypes
 default `tier-0` if undetected — never assume a channel exists.
+
+## Derivation read contract
+
+Do not compose from memory. Every authoring run reads a bounded, provenance-
+relevant set of files and records that list in `loop/STATE.md`
+`derivation_read_set`.
+
+**Always read before classification and composition:**
+
+- `templates/composed-prompt.md`
+- `primitives/target-shape.md`
+- `primitives/halt-shape.md`
+- `primitives/artifact-shape.md`
+- `primitives/convergence-shape.md`
+- `primitives/cadence-shape.md`
+- `primitives/consult-capability.md`
+- `primitives/frontload-audit.md`
+- `primitives/runner-contract.md`
+- `primitives/judgment-default.md`
+- `primitives/evidence-tier.md`
+- `primitives/halt-cause-classifier.md`
+- `primitives/queue-as-second-artifact.md`
+
+**After classification, also read:**
+
+- `archetypes/<nearest>.md`
+- `templates/bodies/<nearest>-body.md`
+- every `primitives/<axis>.md` whose value diverged from the nearest archetype
+  default
+- every `archetypes/<source>.md` that supplied a divergent value by archetype
+  default
+- every reference named by the nearest archetype's `## Extras`
+- every primitive/reference named by active overlays
+
+For frontier-shaped tasks, read `primitives/evaluator-maturity.md` and
+`primitives/pressure-accounting.md`. When benchmark language appears or the
+benchmark-frontier overlay activates, read `primitives/benchmark-frontier.md`,
+`primitives/eval-ladder.md`, `references/benchmark-frontier-artifacts.md`, and
+`references/benchmark-frontier-example.md`.
+
+The provenance preamble's `Primitive sources:` line is the human-readable slice
+of this read set: it names the files whose values shaped or diverged from the
+nearest archetype. A required read that cannot be completed is a derivation gap,
+not a reason to guess.
 
 ## Phase 1 — Frontload audit
 
@@ -147,10 +194,10 @@ is visible.
 
 Follow `templates/composed-prompt.md`. In short: load the nearest archetype's
 body (`templates/bodies/<archetype>-body.md`), resolve `{{INCLUDE}}` markers
-from `primitives/*.md`, fill placeholders from Phase 1, prepend the provenance
-preamble, apply divergence patches, apply consult degradation, strip any
-section with an unsubstituted placeholder (warn if any survive), verify halt
-semantics, and emit.
+from `primitives/*.md`, fill placeholders from Phase 1 including the
+`{{PROVENANCE}}` and `{{FRONTLOAD_PREAMBLE}}` slots, apply divergence patches,
+apply consult degradation, strip any section with an unsubstituted placeholder
+(warn if any survive), verify halt semantics, and emit.
 
 The provenance preamble MUST enumerate the archetype, every divergence + its
 source, overlays, the consult tier, and the frontload gaps. If a section says "the
@@ -170,44 +217,114 @@ so one blocked row cannot stop a frontier/story/greenfield/goal loop while
 another in-scope evaluator, observability, specification, verifier, or queue
 repair move remains.
 
+## Artifact + state contracts
+
+Every file-backed emission writes the same canonical anchors. Repo-native paths
+may be recorded as aliases inside `loop/STATE.md`, but they do **not** replace
+the canonical files.
+
+**Common files, every archetype:**
+
+- `loop/PROMPT.md` — the complete re-entrant iteration prompt.
+- `loop/STATE.md` — the durable resume state.
+
+**Archetype files:**
+
+| Archetype | Required files |
+|---|---|
+| `goal` | `loop/ACCEPTANCE.md`, `loop/VERIFY.md` |
+| `story` | `docs/storyboard.md` |
+| `frontier` | `loop/FINDINGS.md`, `loop/TRACES.md`, `loop/METRICS.md` |
+| `greenfield` | `loop/RUBRIC.md`, `loop/INTENT.md`, `loop/README.md` |
+
+`loop/VERIFY.md` may start as an empty "not yet run" final-verify transcript;
+it still exists so every goal loop has the same resume surface. `loop/TRACES.md`
+and `loop/METRICS.md` are indexes: they may point to repo-native trace
+directories, performance reports, benchmark outputs, or generated artifacts.
+
+**Required `loop/STATE.md` keys, every archetype:**
+
+- `archetype`, `identity`, `primitive_bundle`, `divergences`, `overlays`
+- `consult_tier`, `evaluator_tier`
+- `derivation_read_set`
+- `frontload: {resolved, defaulted, open_gaps}`
+- `artifacts: {canonical, repo_aliases}`
+- `iteration`, `phase`, `current_artifact`, `last_action`, `next_action`
+- `halt_cause`, `halt_scan`
+
+**Archetype-specific `loop/STATE.md` keys:**
+
+- `goal` — `goal_version`, `current_criterion`, `stuck_counters`,
+  `final_verify`, `oracle_change_notes`.
+- `story` — `storyboard_path`, `lane`, `surface_class`, `current_story`,
+  `last_surface`, `last_story_family`, `same_family_count`, `fixture_mode`,
+  `evidence_manifest`, `remaining_findings_classified`.
+- `frontier` — `frontier_vector`, `current_anchor`, `reward_channels`,
+  `pressure_status`, `pressure_debt`, `checkpoint_reason`, `next_pressure`,
+  `trace_locations`, `metric_locations`, `guardrails`.
+- `greenfield` — `score_lock`, `phase_gates`, `rubric_version`,
+  `score_comparable_with`, `target_hypotheses`, `current_stone_axis`,
+  `capability_list`, `user_halt_owner`.
+
+**Hybrid merge rule.** A hybrid is a union over **active contracts**, not a
+blind union over all contributing archetypes:
+
+1. Emit the nearest archetype's complete file + state contract.
+2. Add every file and state key required by each divergent primitive value.
+3. Add every file and state key required by each active overlay.
+4. Never drop the nearest archetype's state obligations unless the divergence is
+   forbidden and the task is routed away instead of composed.
+
+Important add-ons:
+
+- `target-shape: frontier-expanding` adds `loop/TRACES.md`,
+  `loop/METRICS.md`, `frontier_vector`, `trace_locations`,
+  `metric_locations`, and `guardrails` when those are not already present.
+- `artifact-shape: findings-ledger` adds the full frontier artifact set:
+  `loop/FINDINGS.md`, `loop/TRACES.md`, and `loop/METRICS.md`.
+- `artifact-shape: acceptance-inventory` adds `loop/ACCEPTANCE.md` and
+  `loop/VERIFY.md`.
+- `artifact-shape: storyboard` adds `docs/storyboard.md`.
+- `artifact-shape: rubric+intent` adds `loop/RUBRIC.md`, `loop/INTENT.md`, and
+  `loop/README.md`.
+- `overlay: benchmark-frontier` adds `loop/DOMAIN_SPEC.md`,
+  `loop/BENCHMARK.md`, `loop/CANDIDATES.jsonl`, `loop/FRONTIER.json`, and
+  `loop/traces/`.
+
 ## Phase 4 — Emit + surface decision
 
-**Default surface: file.** Write `loop/PROMPT.md` + `loop/STATE.md`, plus the
-nearest archetype's extra artifact(s):
-
-- `goal` → `loop/ACCEPTANCE.md` (frozen inventory)
-- `story` → `docs/storyboard.{md,yaml}`
-- `greenfield` → `loop/RUBRIC.md` + `loop/INTENT.md` (+ `loop/README.md`)
-- `frontier` → a findings ledger + trace/metric locations (suggest, don't
-  silently invent, if the repo lacks a convention)
+**Default surface: file.** Write the full Artifact + state contract: common
+files, nearest archetype files, divergent primitive add-ons, and active overlay
+files. Seed canonical artifacts even when they only point at repo-native aliases.
 
 For `frontier` with `overlay: benchmark-frontier`, emit or resolve the semantic
 artifact roles from `primitives/benchmark-frontier.md`: `DOMAIN_SPEC`,
 `BENCHMARK`, `CANDIDATES`, `FRONTIER`, and `traces`. These roles are conditional
 on the overlay and are not required for pure frontier.
 
-If the user invoked mid-conversation without asking to save, emit **chat-only**
-with an offer to write the files.
+Emit chat-only only when the user explicitly asks for a dry run, sketch, or
+chat-only derivation. Otherwise write the canonical files above; deterministic
+artifact emission is the default.
 
 ### The kick-off (runner invocation)
 
 After emitting, give the operator the **pointer kick-off** — the line they paste
-into a runner to start the loop. It is a **bare pointer**: the runner verb, the
-path to the prompt, and a one-phrase identity. Nothing else.
+into `/goal` to start the loop. It is a **bare pointer**: the fixed runner verb,
+the path to the prompt, and a one-phrase identity. Nothing else.
 
-> `/<runner> read loop/PROMPT.md and execute as <one-phrase loop identity>.`
+> `/goal read loop/PROMPT.md and execute as <one-phrase loop identity>.`
 >
 > e.g. `/goal read loop/PROMPT.md and execute as the hybrid-pareto benchmarking loop.`
 
-A runner (`/goal`, `/loop`, ralph, cocc) re-sends the *same* prompt every
-iteration (see `primitives/runner-contract.md`), so the kick-off must be
-**iteration-agnostic** and carry **no instruction content** — every rule (which
-file is the goal, where `STATE.md` is, the iteration protocol, the bootstrap
-gate) lives in `loop/PROMPT.md`, the single source. If you are tempted to add a
-clause to the kick-off ("…and start with…", "…loop/STATE.md tells you where you
-are"), put it in `PROMPT.md` instead. NEVER bake first-iteration language into
-the kick-off ("begin with the bootstrap", "first, instantiate…") — on iteration 2
-it mis-fires, re-running one-time setup.
+`/goal` re-sends the *same* prompt every iteration (see
+`primitives/runner-contract.md`), so the kick-off must be **iteration-agnostic**
+and carry **no instruction content** — every rule (which file is the goal, where
+`STATE.md` is, the iteration protocol, the bootstrap gate) lives in
+`loop/PROMPT.md`, the single source. If you are tempted to add a clause to the
+kick-off ("…and start with…", "…loop/STATE.md tells you where you are"), put it
+in `PROMPT.md` instead. NEVER bake first-iteration language into the kick-off
+("begin with the bootstrap", "first, instantiate…") — on iteration 2 it
+mis-fires, re-running one-time setup.
 
 This only works if `PROMPT.md` is **re-entrant**: all bootstrap /
 inventory-instantiation / one-time work must be **self-gated on durable state** in
@@ -221,8 +338,8 @@ composed `PROMPT.md` has it before emitting, or the pointer kick-off is unsafe.
 Then present the menu:
 
 - **Approve** — keep the emitted files.
-- **Modify** — the user overrides one or more primitive values; rerun Phase
-  2.5–3 with the overrides and re-emit.
+- **Modify** — the user overrides one or more primitive values; rerun Phase 2
+  classification and Phase 3 composition with the overrides, then re-emit.
 - **Abort** — discard.
 
 Return a one-paragraph rationale: archetype + divergences, consult tier,
@@ -258,7 +375,7 @@ write a ⚠️ block to `loop/STATE.md`.
 |---|---|---|
 | upstream | `/architect` | conceptual parent; an architect blueprint is a first-class `goal` criteria source |
 | upstream | `/oracle-design` | complementary for the `goal` archetype's verifier matrix |
-| downstream | `/loop`, `/goal`, `/schedule` | runners that execute the emitted `loop/PROMPT.md` (untouched — the format is structurally identical to legacy output) |
+| downstream | `/goal` | canonical runner that executes the emitted `loop/PROMPT.md`; `/goal` is the runner, not the `goal` archetype |
 | downstream | `/provision`, `/route` | may still name the removed loop commands; repoint to `/loopgen` |
 | sibling | `frontier-loop`, `goal-loop`, `story-loop`, `greenfield-loop` | retired and removed; their archetype cores live in `archetypes/*.md` |
 

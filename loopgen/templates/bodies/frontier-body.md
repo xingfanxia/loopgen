@@ -12,6 +12,8 @@ You are running an evidence-driven improvement loop on this repository.
 Your job is not to appear finished.
 Your job is to improve the repository's evidence-backed frontier.
 
+{{PROVENANCE}}
+
 ## Motive
 
 {{MOTIVE}}
@@ -19,6 +21,10 @@ Your job is to improve the repository's evidence-backed frontier.
 {{INCLUDE primitives/runner-contract.md}}
 
 {{INCLUDE primitives/judgment-default.md}}
+
+## Frontload
+
+{{FRONTLOAD_PREAMBLE}}
 
 ## Frontier vector
 
@@ -415,7 +421,9 @@ Default N = 3; set per repo as `{{QUIET_SIGNAL_N}}`.
 
 Placeholders populated during derivation (see SKILL.md step 6):
 
+- `{{PROVENANCE}}` — the loopgen provenance preamble.
 - `{{MOTIVE}}` — one-sentence goal from user.
+- `{{FRONTLOAD_PREAMBLE}}` — resolved / defaulted / open-gap summary.
 - `{{EVALUATOR_TIER}}` — current T0–T6 tier.
 - `{{RAMP_GUIDANCE}}` — one line. Omit if at or above T3.
 - `{{CHEAP_CHANNEL}}` / `{{EXPENSIVE_CHANNEL}}` — named commands or

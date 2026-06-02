@@ -61,5 +61,6 @@ intervention; it is never picked from a menu.
 - Carries the lessons of `references/same-family-drift.md` — the greedy
   proof-promotion and observability-echo drift that produced the same-family
   admissibility rule and the quiet-signal checkpoint.
-- Body template: `templates/bodies/frontier-body.md`. No extra emitted file
-  beyond a findings ledger + traces + benchmark outputs.
+- Body template: `templates/bodies/frontier-body.md`.
+- Emits `loop/FINDINGS.md`, `loop/TRACES.md`, and `loop/METRICS.md` as required
+  artifacts. Benchmark outputs are added only by the benchmark-frontier overlay.

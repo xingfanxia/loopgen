@@ -4,7 +4,7 @@ Your loop died 10 minutes after you went to sleep. Blocked on a decision you cou
 
 loopgen writes the prompt so it doesn't.
 
-Hand it whatever you're trying to do: close a spec, improve the codebase, push a benchmark, walk a frontend, build a vague idea. It works out which kind of loop that is, writes the prompt and the invariants, and resolves the decisions upfront that would've stalled the loop 10 minutes in. Hand the result to a runner (`/goal` in Claude Code or Codex, or any ralph-based harness) and go to sleep. loopgen makes sure the loop survives the night.
+Hand it whatever you're trying to do: close a spec, improve the codebase, push a benchmark, walk a frontend, build a vague idea. It works out which kind of loop that is, writes the prompt and the invariants, and resolves the decisions upfront that would've stalled the loop 10 minutes in. Hand the fixed `/goal` kick-off to Claude Code or Codex and go to sleep. loopgen makes sure the loop survives the night.
 
 ![loopgen pursuing a goal loop](assets/loopgen-pursuing-goal.png)
 
@@ -14,7 +14,7 @@ It's a skill. Send your agent the repo, or clone it and symlink `loopgen/` into 
 
 ## How it actually works
 
-loopgen was built from four archetypal loop generator skills that earned themselves from many loop runs. It picks the shape from your intent and fills the blanks. It creates state and prompt files, then hands you the kickoff prompt.
+loopgen was built from four archetypal loop generator skills that earned themselves from many loop runs. It picks the shape from your intent and fills the blanks. It creates canonical state, prompt, and queue files, then hands you the fixed `/goal` kickoff prompt.
 
 ### The four archetypes
 
@@ -31,8 +31,20 @@ loopgen classifies for you, and composes a hybrid when your intention sits betwe
 
 1. **Frontload audit.** Resolve every uncertainty the loop will need (motive, commands, paths, evaluator, scope) before composing. Unresolved items emit as a frontload preamble so you can close them before the loop fires.
 2. **Classify.** Extract the intention's primitive values, score against each archetype's default bundle (weighted-Hamming over the varying axes), pick the nearest. A genuine tie is a hybrid; a contradiction (e.g. a `finite-criteria` target with an `equilibrium` halt) is a classification error → ask, never silently default.
-3. **Compose.** Start from the archetype body, apply per-axis divergence patches, prepend the provenance preamble. Overlays such as consult capability and benchmark-frontier are detected during frontload and do not add archetypes or change the weighted classifier.
-4. **Emit.** One self-contained prompt, ready for any runner.
+3. **Compose.** Start from the archetype body, apply per-axis divergence patches, and fill the provenance + frontload slots. Overlays such as consult capability and benchmark-frontier are detected during frontload and do not add archetypes or change the weighted classifier.
+4. **Emit.** Canonical artifacts plus one self-contained prompt and a fixed `/goal` kick-off.
+
+Canonical artifacts are stable:
+
+| Shape | Files |
+|---|---|
+| Common | `loop/PROMPT.md`, `loop/STATE.md` |
+| `goal` | `loop/ACCEPTANCE.md`, `loop/VERIFY.md` |
+| `frontier` | `loop/FINDINGS.md`, `loop/TRACES.md`, `loop/METRICS.md` |
+| `story` | `docs/storyboard.md` |
+| `greenfield` | `loop/RUBRIC.md`, `loop/INTENT.md`, `loop/README.md` |
+
+Hybrids keep the nearest archetype's files, then add the active divergent or overlay contracts. For example, a story-shaped frontend performance loop keeps `docs/storyboard.md` and adds metric/trace indexes because the frontier-expanding target needs measurable before/after evidence.
 
 The primitive vocabulary (the five axes the classifier scores on: target / halt / artifact / convergence / cadence; plus frontload overlays such as consult capability and benchmark-frontier, which affect composition rather than steering classification), the four archetype definitions, the assembler, and the four emittable bodies all live under [`loopgen/`](loopgen/SKILL.md).
 
@@ -50,7 +62,7 @@ You have a quality frontier to push — better, faster, more robust, higher-scor
 
 Your benchmark scores 0.71 and you want it to grind and auto-improve — or the test suite is slow and flaky and you want it faster and greener by morning, no fixed target, just better. `/loopgen` halts on `homeostatic-checkpoint` when all five homeostasis axes are in balance and no intervention is available, or `signal-starvation` when N consecutive iterations produce no new failing trace or finding.
 
-Pure frontier stays light: it records pressure status, pressure debt, checkpoint reason, and next pressure in the existing state or ledger. When frontload binds a concrete benchmark/eval/harness object, loopgen adds the `benchmark-frontier` overlay: semantic roles for domain spec, benchmark, candidates, frontier, and traces; candidate lineage; evaluator health; and search/holdout/adversarial pressure before promotion. It is still `frontier`, not a fifth archetype.
+Pure frontier records pressure status, pressure debt, checkpoint reason, and next pressure in `loop/FINDINGS.md`, `loop/TRACES.md`, `loop/METRICS.md`, and `loop/STATE.md`. When frontload binds a concrete benchmark/eval/harness object, loopgen adds the `benchmark-frontier` overlay: semantic roles for domain spec, benchmark, candidates, frontier, and traces; candidate lineage; evaluator health; and search/holdout/adversarial pressure before promotion. It is still `frontier`, not a fifth archetype.
 
 #### [`story`](loopgen/archetypes/story.md)
 

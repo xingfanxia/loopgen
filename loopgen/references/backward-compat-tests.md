@@ -8,12 +8,16 @@ capability and the degradation contract.
 ## Acceptance criteria
 
 A composed prompt **passes** when its difference from the legacy reference is
-limited to exactly three classes:
+limited to these accepted classes:
 
-1. **the provenance preamble** (new, expected — the only addition for a pure
-   case), and
-2. **frontier pressure accounting** (accepted only for pure frontier), and
-3. **cosmetic** whitespace / section-ordering.
+1. **the provenance preamble** (new, expected — identifies the composed source
+   values),
+2. **the frontload preamble** (new, expected — every composed prompt records
+   resolved / defaulted / open derivation gaps),
+3. **frontier pressure accounting** (accepted only for pure frontier),
+4. **canonical artifact/state contract references** (`loop/STATE.md`
+   `derivation_read_set`, canonical file names, repo aliases), and
+5. **cosmetic** whitespace / section-ordering.
 
 Any **load-bearing** structural difference on a pure case (a missing section, a
 changed rule, a weakened halt condition, a dropped invariant) is a **failure**
@@ -30,6 +34,7 @@ and blocks promotion until the design is revised.
   cadence=checkpoint-gated`. Archetype `frontier`, divergences `none`.
 - **Reference:** legacy `frontier-loop` output (`templates/bodies/frontier-body.md`
   filled).
+- **Extra artifacts:** `loop/FINDINGS.md`, `loop/TRACES.md`, `loop/METRICS.md`.
 - **Must contain:** the 5-axis homeostasis frame, signal hierarchy, same-family
   admissibility, frontier-anchor requirement, quiet-signal checkpoint,
   evaluator-maturity tier, and pressure fields `pressure_status`,
@@ -45,7 +50,7 @@ and blocks promotion until the design is revised.
   artifact=acceptance-inventory, convergence=criteria-completion, cadence=sync`.
   Archetype `goal`, divergences `none`.
 - **Reference:** legacy `goal-loop` output.
-- **Extra artifact:** `loop/ACCEPTANCE.md` emitted.
+- **Extra artifacts:** `loop/ACCEPTANCE.md`, `loop/VERIFY.md`.
 - **Must contain:** oracle principles, terminal contract, final-verify, the
   acceptance inventory, oracle-drift guard, partial-deadlock vs criteria-met.
 
@@ -57,7 +62,7 @@ and blocks promotion until the design is revised.
   artifact=storyboard, convergence=capstone-plus-closer, cadence=chapter`.
   Archetype `story`, divergences `none`.
 - **Reference:** legacy `story-loop` output.
-- **Extra artifact:** `docs/storyboard.{md,yaml}` resolved.
+- **Extra artifact:** `docs/storyboard.md`.
 - **Must contain:** Guidance Source + Story Record objects, status model,
   ready-gate, same-family drift guard, fixture-mode declaration; Surface Taste
   Lane only if the lane is the taste lane.
@@ -69,7 +74,7 @@ and blocks promotion until the design is revised.
   artifact=rubric+intent, convergence=stone-reframe, cadence=checkpoint-gated`.
   Archetype `greenfield`, divergences `none`.
 - **Reference:** legacy `greenfield-loop` output.
-- **Extra artifacts:** `loop/RUBRIC.md` + `loop/INTENT.md` (+ `loop/README.md`).
+- **Extra artifacts:** `loop/RUBRIC.md`, `loop/INTENT.md`, `loop/README.md`.
 - **Must contain:** all 11 invariants, score-locked ramp, score quarantine,
   CAPABILITY mode, preloop/research phase gates with owners.
 
@@ -88,8 +93,12 @@ and blocks promotion until the design is revised.
 - **Must contain:** the **story** body (storyboard artifact, chapter cadence,
   capstone-plus-closer convergence, checkpoint-with-reopen halt) with the
   `target-shape` swapped to `frontier-expanding`; the provenance preamble names
-  that one divergence + its source. It must **NOT** carry a frontier homeostasis
-  frame — nearest is story, so the body is the story body, not a frontier body.
+  that one divergence + its source. The artifact contract includes
+  `docs/storyboard.md` plus `loop/TRACES.md` and `loop/METRICS.md` because the
+  `frontier-expanding` target needs measurable before/after evidence. It must
+  **NOT** carry a frontier homeostasis frame or `loop/FINDINGS.md` unless
+  `artifact-shape: findings-ledger` is also active — nearest is story, so the
+  body is the story body, not a frontier body.
 - This case demonstrates the new capability: a story loop with a
   `frontier-expanding` target is a cross-archetype divergence no single legacy
   skill composed (`story-loop`'s target was always `promise-discovery`). It is
@@ -122,8 +131,10 @@ and blocks promotion until the design is revised.
 - **Expected bundle:** same weighted axes as pure frontier. Archetype
   `frontier`, divergences `none`, `overlay: benchmark-frontier`.
 - **Must contain:** semantic artifact roles `DOMAIN_SPEC`, `BENCHMARK`,
-  `CANDIDATES`, `FRONTIER`, and `traces`; candidate lineage; evaluator health;
-  pressure debt; eval ladder; search/holdout/adversarial separation.
+  `CANDIDATES`, `FRONTIER`, and `traces` with canonical paths
+  `loop/DOMAIN_SPEC.md`, `loop/BENCHMARK.md`, `loop/CANDIDATES.jsonl`,
+  `loop/FRONTIER.json`, and `loop/traces/`; candidate lineage; evaluator
+  health; pressure debt; eval ladder; search/holdout/adversarial separation.
 - **Must not:** appear as a fifth archetype, change weighted-Hamming distance,
   or make pure frontier emit the candidate artifact bundle.
 
@@ -141,14 +152,16 @@ and blocks promotion until the design is revised.
 The probe is an adversarial workflow: for each pure case, compose via the
 Phase 1–3 procedure, diff the result against the legacy body
 (`templates/bodies/<archetype>-body.md`), and classify each difference as
-provenance / cosmetic / load-bearing. Rows 1–4 must show no load-bearing
-difference; row 5 must contain the hybrid sections; row 6 must drop consult
-sections; row 7 must halt with an error; row 8 must activate the overlay (emit
-the `DOMAIN_SPEC` / `BENCHMARK` / `CANDIDATES` / `FRONTIER` / `traces` roles and
-the eval ladder, with classification distance unchanged and the pure-frontier
-render free of the candidate bundle); row 9 must reject the green-trace /
-zero-OPEN / no-expansion shape as a checkpoint (expand a candidate/case/control,
-or halt `PAUSED_EXTERNAL` with `pressure_debt: explicitly_deferred`).
+provenance / frontload / canonical-artifact / cosmetic / load-bearing. Rows 1–4
+must show no unapproved load-bearing difference; row 5 must contain the hybrid
+sections and additive artifact contract; row 6 must drop consult sections; row
+7 must halt with an error; row 8 must activate the overlay (emit the
+`loop/DOMAIN_SPEC.md` / `loop/BENCHMARK.md` / `loop/CANDIDATES.jsonl` /
+`loop/FRONTIER.json` / `loop/traces/` roles and the eval ladder, with
+classification distance unchanged and the pure-frontier render free of the
+candidate bundle); row 9 must reject the green-trace / zero-OPEN / no-expansion
+shape as a checkpoint (expand a candidate/case/control, or halt
+`PAUSED_EXTERNAL` with `pressure_debt: explicitly_deferred`).
 
 All nine rows are required; a gate run that stops at row 7 does not exercise the
 benchmark-frontier overlay this probe is meant to protect.
