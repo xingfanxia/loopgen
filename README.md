@@ -1,10 +1,20 @@
 # loopgen
 
-Your loop died 10 minutes after you went to sleep. Blocked on a decision you could have made before it ever fired, or simply finished prematurely.
+<p align="center"><strong>Prompt Compiler for creating long-running autonomous loops.</strong></p>
 
-loopgen writes the prompt so it doesn't.
+Your loop died 10 minutes after you went to sleep.
 
-Hand it whatever you're trying to do: close a spec, improve the codebase, push a benchmark, walk a frontend, build a vague idea. It works out which kind of loop that is, writes the prompt and the invariants, and resolves the decisions upfront that would've stalled the loop 10 minutes in. Hand the fixed `/goal` kick-off to Claude Code or Codex and go to sleep. loopgen makes sure the loop survives the night.
+Not because the task was impossible. It blocked on a decision you could have made before it ever fired, or it declared victory on the first green-looking signal.
+
+loopgen writes the part of the prompt that keeps that from happening.
+
+Give it the thing you're trying to do: close a spec, improve the codebase, push a benchmark, walk a frontend, build a vague idea. It classifies the loop, writes the prompt + state + queue files, resolves the decisions that would stall the run, then hands you one `/goal` line. Paste it into Claude Code or Codex and let it run.
+
+The visible output is intentionally boring:
+
+```text
+/goal read loop/PROMPT.md and execute as <loop identity>.
+```
 
 ![loopgen pursuing a goal loop](assets/loopgen-pursuing-goal.png)
 
@@ -14,11 +24,11 @@ It's a skill. Send your agent the repo, or clone it and symlink `loopgen/` into 
 
 ## How it actually works
 
-loopgen was built from four archetypal loop generator skills that earned themselves from many loop runs. It picks the shape from your intent and fills the blanks. It creates canonical state, prompt, and queue files, then hands you the fixed `/goal` kickoff prompt.
+loopgen is four battle-tested loop-generator skills folded into one compiler. It picks the shape from your intent, fills the blanks, creates canonical state, prompt, and queue files, then hands you the fixed `/goal` kickoff prompt.
 
 ### The four archetypes
 
-loopgen classifies for you, and composes a hybrid when your intention sits between archetypes.
+loopgen classifies for you. When the intent sits between archetypes, it composes the active contracts instead of forcing the task into one box.
 
 | Seed | Archetype | Halts on |
 |---|---|---|
