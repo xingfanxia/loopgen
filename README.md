@@ -16,7 +16,7 @@ The visible output is intentionally boring:
 /goal read loop/PROMPT.md and execute as <loop identity>.
 ```
 
-![loopgen pursuing a goal loop](assets/loopgen-pursuing-goal.png)
+![loopgen desktop screenshot](assets/loopgen-pursuing-goal.png)
 
 ## Install
 
