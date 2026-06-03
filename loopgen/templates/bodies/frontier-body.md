@@ -178,9 +178,44 @@ shape labels the correction.
 6. Run the cheap validator; if it passes, run the stronger oracle.
 7. Accept if the change restored balance without disturbing another axis.
    Otherwise revert, record the evidence, name the next hypothesis.
-8. If all axes are in balance and no intervention is available, the loop
+8. Close the iteration transaction before any halt or anchor switch: write trace
+   artifacts, update every canonical ledger/state file, run validation, inspect
+   `git status --short`, and resolve tracked diffs. If the accepted
+   intervention changed tracked product/prompt/runtime files and the user
+   authorized unattended commits for this loop, make one focused Conventional
+   Commit. If the change is not accepted, revert it or continue the same
+   evidence loop; do not checkpoint with stale ledgers or unresolved dirty
+   tracked diffs except for an explicit runner-ceiling crash-recovery checkpoint
+   that names the diff and next command in state.
+9. If all axes are in balance and no intervention is available, the loop
    is at frontier equilibrium. Emit `stop-and-summarize` with
    `homeostatic-checkpoint` and halt without marking the frontier complete.
+
+### Structural escalation bridge
+
+Repeated `NEGATIVE_CASE` findings are not terminal bookkeeping. They are
+evidence that the loop's current primitive set is missing a product/runtime,
+evaluator, or representation capability. When the same structural failure class
+appears twice, or one trace shows the current boundary cannot represent the
+authoritative source at all, the next accepted move must bridge into
+consultation, architecture, and build:
+
+1. **Consult** — ask the available consult channel to review the trace bundle
+   and classify the failure as prompt wording, evaluator weakness, or missing
+   product/runtime structure. The prompt must cite concrete trace paths and
+   observed deltas.
+2. **Architect** — invoke `/architect` deeply on the smallest structural change
+   that would make the failure class measurable. Save the plan to a durable
+   artifact when the next step will use `/build`.
+3. **Build** — invoke `/build` on that plan and implement only the first
+   structural probe/slice required to test the class.
+4. **Rerun** — rerun one failed same-class trace before advancing to unrelated
+   queue work.
+
+Prompt-only repair is forbidden after the second same-family negative unless
+the consult step contradicts the class diagnosis with trace-backed evidence.
+Moving to a fresh ticket without either the bridge or an explicit outside-scope
+classification is a failed frontier iteration.
 
 ### Homeostasis-before-halt rule
 
@@ -245,6 +280,27 @@ first; the axis in disturbance implies the label.
 ## Rules
 
 {{SCOPE_MANIFEST}}
+
+### End-of-iteration transaction
+
+An iteration is not durable until evidence, ledger, validator, and git state
+agree. Before any halt, checkpoint, ticket switch, or anchor switch:
+
+1. Persist the raw trace / artifact used for the decision.
+2. Update the canonical ledger and state surfaces named by this prompt.
+3. Run the appropriate validator for any tracked change.
+4. Check `git status --short`.
+5. Resolve tracked diffs:
+   - accepted tracked product/prompt/runtime change -> focused commit when
+     unattended commits are authorized;
+   - rejected tracked change -> revert and record the rejected evidence;
+   - still-undecided tracked change -> keep iterating on the same anchor, or
+     record a runner-ceiling recovery checkpoint with exact diff and next
+     command.
+
+Ledger-only edits do not count as frontier movement, but stale ledgers make the
+iteration invalid. A trace directory without matching state/ledger rows is a
+failed transaction.
 
 ### Closure discipline (FIXED ≠ CLOSED)
 

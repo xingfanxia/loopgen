@@ -53,7 +53,7 @@ Each row records:
 
 - `candidate_id`
 - `parent_candidate_id` or `null`
-- `operator`: `draft | debug | improve | ablate | stress | falsify | transfer | compress`
+- `operator`: `draft | debug | improve | ablate | stress | falsify | transfer | compress | consult | architect | build`
 - `hypothesis`
 - `dimension`
 - `metric_vector`
@@ -63,6 +63,21 @@ Each row records:
 
 A row missing `hypothesis`, `operator`, or its compliance/smoke/search trace
 paths cannot update the `FRONTIER` role.
+
+Candidate rows are write-through state, not retrospective notes. Once a trace
+exists for a candidate, the row must move out of `proposed` in the same
+iteration, and the owning `FRONTIER`/`STATE` surfaces must reflect the earned
+status before the runner may halt. If a tracked product/prompt/runtime diff was
+created for the candidate, the candidate status and git status must close
+together: accepted candidates are committed, rejected candidates are reverted,
+and undecided candidates keep the loop on the same case instead of
+checkpointing.
+
+For repeated structural negatives, the candidate lineage must include the bridge
+explicitly: a `consult` row for the trace-backed diagnosis, an `architect` row
+for the saved structural plan, and a `build` row for the implemented probe/slice.
+The build row cannot become a frontier member until a same-class rerun trace
+demonstrates the structural change improved or falsified the candidate.
 
 A status may not outrun its evidence or its verdict. A trace pays for a status
 only when it is non-null, parseable, linked to this candidate and rung, and
