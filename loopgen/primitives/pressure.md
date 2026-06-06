@@ -197,17 +197,23 @@ Record every transition in `loop/STATE.md` `pressure_ledger`, each with its
 evidence cite. Bound **both** sets, not just retired rows: a new `source:
 backpressure` row scoped to an already-pressured scope **merges into** the
 existing row (strengthen / re-stamp), never appends a duplicate; more than
-`pressure-cap` active rows (concrete default 12, frontload-tunable alongside
+`pressure-cap` in-force rows (`active` or `hardened` — the two states still
+re-tested each pass; concrete default 12, frontload-tunable alongside
 stuck-attempt-N / quiet-signal-N when pressure is active), or a row that keeps
 oscillating its mode (`constraint` ↔ `burden`) or re-stamping without ever
-reaching a terminal status (`paid` / `stale` / `retired`), is itself a
-`checkpoint_reason` / derivation-gap, not silent growth. The `pressure_ledger` itself is capped, not
+reaching a terminal status (`paid` / `stale` / `retired`), is itself a halt /
+checkpoint cause (a `derivation-gap`, or `frontier`'s `checkpoint_reason`), not
+silent growth. The `pressure_ledger` itself is capped, not
 just the active set: keep at most the last `K` transitions per row (default
-`K = 5`) — older in-flight transitions on a non-retired row collapse to a count +
+`K = 5`) — older in-flight transitions on a non-terminal row collapse to a count +
 last state, so an oscillating or repeatedly re-stamped row cannot grow the ledger
-without bound. Once a row is `retired`, collapse its whole history to a one-line
-summary (id, final status, evidence); retired summaries beyond the most recent
-`M` (default 50) collapse to an aggregate count. The ledger is therefore bounded
-by `pressure-cap`·`K` + `M` + 1 — the concrete ceiling case 12 checks. Pressure
+without bound. Once a row reaches a terminal status (`paid` / `stale` /
+`retired`), collapse its whole history to a one-line summary (id, final status,
+evidence); terminal summaries beyond the most recent `M` (default 50) collapse to
+an aggregate count. The ledger is therefore bounded by `pressure-cap`·`K` + `M` +
+1 — the concrete ceiling case 12 checks: the in-force set (`active` + `hardened`)
+is capped at `pressure-cap`, each carrying ≤ `K` transitions, while every
+terminal row (`paid` / `stale` / `retired`) is already collapsed to a one-line
+summary counted under `M`, so no status escapes both caps. Pressure
 without a lifecycle is bureaucracy with better branding; a lifecycle without
 evidence is the same laundering wearing a clock.

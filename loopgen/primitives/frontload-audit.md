@@ -72,7 +72,12 @@ For each checklist item, do exactly one of:
   whose cited convention cannot be pointed at is downgraded to `source: authored`
   (needs human sign-off) or cut: without a provenance trail, a fabricated mined
   row that merely justifies a wanted edit is indistinguishable from a real
-  convention.
+  convention. A `mined` row enters at the weakest authority — `strength: low`,
+  `mode: salience` (slope-only) — so an over-eager or stale-but-present
+  convention nudges attention without bending a gate; promotion to `burden` /
+  `constraint` (a wall) needs the same reproduced tier-1/2 evidence a
+  backpressure wall does (`primitives/pressure.md`), never the bare fact that
+  the convention exists.
 - **Benchmark-frontier overlay** — for frontier-shaped tasks, bind a concrete
   benchmark/eval/harness object, evaluation unit, and durable evidence location,
   or record a derivation gap if benchmark language appears without an object.

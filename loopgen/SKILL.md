@@ -286,7 +286,8 @@ directories, performance reports, benchmark outputs, or generated artifacts.
 
 `frontier`'s `pressure_status` / `pressure_debt` / `checkpoint_reason` /
 `next_pressure` are the frontier projection of the common `pressure_objects` /
-`pressure_ledger` — the same field, rendered as a checkpoint contract.
+`pressure_ledger` — a checkpoint-level aggregate over those rows (not a
+field-for-field rename), rendered as a checkpoint contract.
 
 **Hybrid merge rule.** A hybrid is a union over **active contracts**, not a
 blind union over all contributing archetypes:
@@ -407,7 +408,8 @@ write a ⚠️ block to `loop/STATE.md`.
   `artifact-shape`, `convergence-shape`, `cadence-shape`, `consult-capability`)
   + shared blocks (`runner-contract`, `judgment-default`, `evidence-tier`,
   `frontload-audit`, `halt-cause-classifier`, `diagnostic-pattern`,
-  `evaluator-maturity`, `queue-as-second-artifact`, `pressure-accounting`) and
+  `evaluator-maturity`, `queue-as-second-artifact`, `pressure`,
+  `pressure-accounting`) and
   the conditional `benchmark-frontier` / `eval-ladder` overlay.
 - `archetypes/` — `frontier`, `goal`, `story`, `greenfield`: irreducible loop
   shape + default primitive values + forbidden divergences + failure modes.

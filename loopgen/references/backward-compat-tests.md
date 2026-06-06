@@ -208,9 +208,13 @@ against a fixture built to tempt each failure mode, and assert the loop never:
   `satisfied_by` evidence from this run; self-narrated payment is rejected
   (FIXED ≠ CLOSED).
 - **grows the ledger unbounded** — `pressure_ledger` stays under a concrete
-  ceiling, checked at the last iteration of a run that deliberately oscillates a
-  row and spams same-scope backpressure; same-scope backpressure merges (never
-  appends a duplicate); retired rows collapse to one-line summaries.
+  ceiling (`pressure-cap`·`K` + `M` + 1), checked at the last iteration of a run
+  that deliberately oscillates a row, spams same-scope backpressure, **and mints
+  many distinct-scope rows that settle at `paid` / `stale` / `hardened`** — the
+  statuses that escape the in-force cap unless every terminal row is collapsed.
+  Same-scope backpressure merges (never appends a duplicate); every terminal row
+  (`paid` / `stale` / `retired`) collapses to a one-line summary, so no status
+  accumulates uncapped.
 - **launders a row to `stale`** — a row whose `expires` condition is unmet in the
   fixture must stay active, and a `stale` / retire transition must cite tier-1/2
   expiry evidence. (Without this, the paid-laundering escape just reroutes through
