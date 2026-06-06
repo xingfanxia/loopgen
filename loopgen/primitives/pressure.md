@@ -142,6 +142,18 @@ the next iteration starts already bent away from the failure instead of
 re-discovering it. The loop improves not because the model got smarter but
 because failure stops being wasted.
 
+**Watch for coupled regression.** Backpressure can ping-pong: fixing scope A
+regresses scope B (mints backpressure on B), the next pass fixes B and regresses
+A, and the loop runs all night minting alternating rows. Each is a real tier-1/2
+failure, so no per-criterion stuck counter ever trips (a *different* scope fails
+each pass) and the loop stays alive because some move is always legal — the
+oscillation *is* the failure, and nothing per-criterion sees it. When the
+`pressure_ledger` shows backpressure alternating between the same two (or N)
+scopes over the last `K` passes with no net criterion-count progress, that is a
+**coupled-regression** signal, not endless work: the scopes need joint
+resolution. Halt — `partial-deadlock` for goal, the structural-escalation bridge
+for frontier — naming the coupled scopes; do not keep ping-ponging.
+
 ## Lifecycle
 
 Each pass, retire what no longer earns its place — but a transition is a claim
