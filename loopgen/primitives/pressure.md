@@ -100,6 +100,16 @@ When modes conflict on one scope, the stronger wins (`constraint` > `burden` >
 point at where it bent a plan; a row whose `satisfied_by` cannot cite tier-1/2
 evidence (`evidence-tier.md`) is cut, not rendered.
 
+**Record the read-back.** Reading the weather is neither optional nor
+self-attested. The numbered iteration protocol in the body does not list
+`loop/PRESSURE.md`; step 0 above **extends** it — the pressure read is a
+precondition of step 1. Each pass, write a `pressure_consulted` record to
+`loop/STATE.md`: every active row id mapped to the plan element it bent, or
+`no-effect: <reason>`. That turns "a pressure bent my plan" from prose the loop
+can fabricate or silently skip into an artifact the next pass and the case-12
+trace can diff against the moves actually made. A pass with no
+`pressure_consulted` record has not completed step 0.
+
 **Maintain walls or they fall.** Each pass, re-test every enforced `constraint`
 row — `status: active` **or** `hardened`, the two states still in force —
 against its reopen / `expires` condition before treating it as a wall. A

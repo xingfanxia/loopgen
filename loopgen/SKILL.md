@@ -268,7 +268,7 @@ directories, performance reports, benchmark outputs, or generated artifacts.
 - `artifacts: {canonical, repo_aliases}`
 - `iteration`, `phase`, `current_artifact`, `last_action`, `next_action`
 - `halt_cause`, `halt_scan`
-- `pressure_objects`, `pressure_ledger`
+- `pressure_objects`, `pressure_ledger`, `pressure_consulted`
 
 **Archetype-specific `loop/STATE.md` keys:**
 
