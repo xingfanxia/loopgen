@@ -227,9 +227,21 @@ the OPEN-gate assertion into terminal-safety (`criteria-met` requires zero `OPEN
 passes regardless of pressure ordering — the half the always-on gate does not
 guarantee).
 
+**Deterministic post-conditions (discovery rounds).** Several invariants added by
+the post-merge hardening have concrete pass/fail oracles, not just representative
+checks: `pressure_consulted` is present for every active-pressure pass (or the
+pass is incomplete); every `source: mined` row's provenance pointer resolves to a
+real artifact at compose (grep); a fixture with two overlapping `constraint` walls
+that empty an `OPEN` gate's legal moves must produce a `genuine-escalate`
+(`constraint-deadlock`) halt, not a spin; a fixture that makes two scopes mutually
+regress must halt on `coupled-regression` within `K` passes; and a simulated torn
+write (STATE mutated, `PRESSURE.md` left stale) must self-heal on the next pass's
+start-of-iteration re-render. Assert these mechanically — they do not depend on
+the loop's judgment.
+
 **Residual risk (scoped, not closed):** an LLM loop's runtime is
-non-deterministic, so this is a *representative* adversarial scenario, not a unit
-assertion. Judgment gates whether the scripted fixtures resemble a real overnight
+non-deterministic, so the four *behavioral* assertions above are *representative*
+adversarial scenarios, not unit assertions. Judgment gates whether the scripted fixtures resemble a real overnight
 run; a green case 12 is evidence the guardrails fire under pressure, not proof
 they fire always. It exists because verification had drifted entirely to the
 compose-time surface — the byte-identity cases prove assembly, nothing else
