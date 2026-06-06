@@ -65,7 +65,14 @@ For each checklist item, do exactly one of:
   **Value is not mineable** (delight vs boring, speed vs polish, which
   abstractions to shed) — value is human-seeded `source: authored`. A repo with
   no such conventions mines nothing, and the pressure surface stays empty
-  (byte-identical).
+  (byte-identical). Every `mined` row carries a provenance pointer to the
+  concrete artifact it was mined from (the golden-test glob, the lint rule
+  `file:line`, the migration-notes path), grep-confirmed to exist at compose —
+  the same "confirm it's observable" discipline the budget rule uses. A mined row
+  whose cited convention cannot be pointed at is downgraded to `source: authored`
+  (needs human sign-off) or cut: without a provenance trail, a fabricated mined
+  row that merely justifies a wanted edit is indistinguishable from a real
+  convention.
 - **Benchmark-frontier overlay** — for frontier-shaped tasks, bind a concrete
   benchmark/eval/harness object, evaluation unit, and durable evidence location,
   or record a derivation gap if benchmark language appears without an object.

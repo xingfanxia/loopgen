@@ -126,6 +126,14 @@ unmet. The archetype gate (goal's binary oracle, frontier's pressure checkpoint,
 story's ready-gate, greenfield's phase gates) outranks every pressure: pressure
 may reorder how you approach the work; it may never erase the work.
 
+**Constraint deadlock escalates.** The priority rule above resolves modes on one
+scope; it says nothing about two `constraint` rows on different but overlapping
+scopes. When two walls make the set of legal moves toward an `OPEN` gate empty
+(every move is refused by one wall or the other), do not spin re-selecting the
+criterion or mislabel it `STUCK`: that is a `constraint-deadlock`, which routes to
+`genuine-escalate` — a human must relax or re-scope one wall. Name the two
+constraints in the halt summary so the next derivation sees the real cause.
+
 ## Backpressure
 
 When an attempt resolves against the world — a failed verify, eval, probe, or
@@ -162,7 +170,11 @@ that owes evidence, exactly like a queue row:
 - → `paid` **only** when `satisfied_by` cites fresh tier-1/2 evidence produced
   this run (`evidence-tier.md`). A row may never be flipped to `paid` on the
   loop's own say-so — self-narrated payment is FIXED≠CLOSED laundering that lets
-  the loop escape an unmet pressure.
+  the loop escape an unmet pressure. The `satisfied_by` channel is
+  **pre-registered at creation**: a row pays out only on the channel it declared
+  when authored / mined, not a weaker or different one chosen at payment time (a
+  green cheap channel that doesn't exercise the pressured scope is a known
+  false-green, not payment).
 - → `stale` / retired carries the **same** evidence burden as `paid`: cite the
   tier-1/2 signal that proves `expires` met or the cause externally gone — never
   the loop's own say-so. (Retiring is the easiest launder-and-shred exit — drop
