@@ -157,10 +157,13 @@ failure, so no per-criterion stuck counter ever trips (a *different* scope fails
 each pass) and the loop stays alive because some move is always legal — the
 oscillation *is* the failure, and nothing per-criterion sees it. When the
 `pressure_ledger` shows backpressure alternating between the same two (or N)
-scopes over the last `K` passes with no net criterion-count progress, that is a
-**coupled-regression** signal, not endless work: the scopes need joint
-resolution. Halt — `partial-deadlock` for goal, the structural-escalation bridge
-for frontier — naming the coupled scopes; do not keep ping-ponging.
+scopes over a short window of recent passes (the coupled-window) with no net
+criterion-count progress, that is a **coupled-regression** signal, not endless
+work: the scopes need joint resolution. Halt with `genuine-escalate` (reason
+`coupled-regression`), naming the coupled scopes so a human or the next
+derivation can break the coupling — for `goal` this also surfaces as
+`partial-deadlock`, for `frontier` it feeds the structural-escalation bridge. Do
+not keep ping-ponging.
 
 ## Lifecycle
 
@@ -174,7 +177,9 @@ that owes evidence, exactly like a queue row:
   **pre-registered at creation**: a row pays out only on the channel it declared
   when authored / mined, not a weaker or different one chosen at payment time (a
   green cheap channel that doesn't exercise the pressured scope is a known
-  false-green, not payment).
+  false-green, not payment). A strictly *stronger* channel may be adopted only by
+  an explicit re-stamp recorded in `pressure_ledger` (the merge / strengthen
+  path), never silently swapped in at payment.
 - → `stale` / retired carries the **same** evidence burden as `paid`: cite the
   tier-1/2 signal that proves `expires` met or the cause externally gone — never
   the loop's own say-so. (Retiring is the easiest launder-and-shred exit — drop

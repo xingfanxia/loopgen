@@ -234,7 +234,8 @@ pass is incomplete); every `source: mined` row's provenance pointer resolves to 
 real artifact at compose (grep); a fixture with two overlapping `constraint` walls
 that empty an `OPEN` gate's legal moves must produce a `genuine-escalate`
 (`constraint-deadlock`) halt, not a spin; a fixture that makes two scopes mutually
-regress must halt on `coupled-regression` within `K` passes; and a simulated torn
+regress must halt (`genuine-escalate`, reason `coupled-regression`) within the
+coupled-window; and a simulated torn
 write (STATE mutated, `PRESSURE.md` left stale) must self-heal on the next pass's
 start-of-iteration re-render. Assert these mechanically — they do not depend on
 the loop's judgment.
