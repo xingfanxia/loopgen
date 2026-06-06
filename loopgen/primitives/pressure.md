@@ -66,10 +66,23 @@ when the gate holds; else stripped. The active rows themselves live in
 ## Pressure weather
 
 This is iteration **step 0**: before any numbered step of the protocol below,
-re-read `loop/PRESSURE.md` and run its maintenance pass (below). It holds the
-active pressure field — the weather the acceptance criteria get read in — and
-its header carries these maintenance rules, so the discipline survives context
-compaction even when this block is summarized away. `loop/PRESSURE.md` is the rendered view of
+first **re-render** `loop/PRESSURE.md` from `loop/STATE.md` `pressure_objects`
+(the source of truth), then read it and run its maintenance pass (below).
+`PRESSURE.md` is a pure projection you never trust independently — re-deriving it
+each pass means a torn write (a crash between the STATE mutation and the render)
+self-heals instead of stranding the loop on a stale half. It holds the active
+pressure field — the weather the acceptance criteria get read in — and its header
+carries these maintenance rules, so the discipline survives context compaction
+even when this block is summarized away.
+
+**Flush before you continue.** Every pressure mutation — appending a backpressure
+row, any lifecycle transition — is written to `loop/STATE.md` `pressure_objects`
+and re-rendered to `loop/PRESSURE.md` within the same tool-call sequence that
+computed it, before the next decision. Never carry a pending pressure write in
+context across a tool call: a compaction boundary can drop it, and the surviving
+re-read pointer would then resume against a stale field with no signal a write
+was lost. This is the write-ahead discipline the budget spend-ledger already
+uses, applied to pressure state. `loop/PRESSURE.md` is the rendered view of
 `loop/STATE.md` `pressure_objects` (the source of truth), not a separate store:
 where a frontier checkpoint contract says to keep pressure in the findings
 ledger / `loop/STATE.md` and not invent a new artifact, this is that same store
