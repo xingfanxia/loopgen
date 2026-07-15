@@ -1,158 +1,85 @@
 # loopgen
 
-<p align="center"><strong>Prompt Compiler for creating long-running autonomous loops.</strong></p>
+Loopgen is an opt-in Codex/Claude skill for authoring a lightweight autonomous
+loop contract. It is useful when a task genuinely needs to survive a long run,
+resume, or handoff. It is not a default workflow for ordinary development.
 
-<p align="center"><em>It writes the weather, not just the target — a re-readable pressure field that makes the wrong worlds harder to reach while the loop runs.</em></p>
+The lite version keeps four things:
 
-Your loop died 10 minutes after you went to sleep.
+- one stable project objective;
+- a durable acceptance or discovery ledger;
+- validation tied to changed behavior;
+- explicit stop and approval boundaries.
 
-Not because the task was impossible. It blocked on a decision you could have made before it ever fired, or it declared victory on the first green-looking signal.
+It removes mandatory archetype compilation, repeated review rounds, provenance
+ceremony, and large fixed artifact sets.
 
-loopgen writes the part of the prompt that keeps that from happening.
+## Use
 
-Give it the thing you're trying to do: close a spec, improve the codebase, push a benchmark, walk a frontend, build a vague idea. It classifies the loop, writes the prompt + state + queue files, resolves the decisions that would stall the run, then hands you one `/goal` line. Paste it into Claude Code or Codex and let it run.
-
-The visible output is intentionally boring:
-
-```text
-/goal read loop/PROMPT.md and execute as <loop identity>.
-```
-
-![loopgen compiled loop contract](assets/loopgen-hero.jpg)
-
-## Quick Start
-
-Ask for the loop you actually want. Same compiler, different track:
-
-| Track | Ask | What loopgen composes |
-|---|---|---|
-| Product walkthrough | `/loopgen "walk the onboarding flow"` | A story-shaped loop: keep the product surface contract, reconcile the visible flow with the storyboard. |
-| Backend benchmark | `/loopgen "optimize the checkout API load benchmark"` | A frontier-shaped benchmark loop: keep pressure accounting, candidate lineage, traces, and metrics. |
-
-Both emit the same kind of fixed kickoff:
+Start Codex with the opt-in profile, then invoke it explicitly:
 
 ```text
-/goal read loop/PROMPT.md and execute as onboarding flow loop.
-/goal read loop/PROMPT.md and execute as checkout API load benchmark loop.
+codex -p loopgen
 ```
 
-The stable file shape is the point. Product walkthroughs keep the story surface:
+Inside that session:
+
+```text
+/loopgen create a finite delivery loop for the refactor in docs/ACCEPTANCE.md
+/loopgen diagnose why loop/PROMPT.md keeps reopening completed work
+/loopgen create a bounded frontier loop for the named benchmark
+```
+
+The normal output is one compact prompt:
 
 ```text
 loop/PROMPT.md
-loop/STATE.md
-docs/storyboard.md
 ```
 
-The backend benchmark track emits the frontier ledger and benchmark overlay:
+Loopgen reuses existing acceptance, status, audit, and verification artifacts.
+It creates `loop/STATE.md` only when the repository lacks a suitable durable
+ledger.
+
+Run the emitted contract separately:
 
 ```text
-loop/PROMPT.md
-loop/STATE.md
-loop/FINDINGS.md
-loop/TRACES.md
-loop/METRICS.md
-loop/DOMAIN_SPEC.md
-loop/BENCHMARK.md
-loop/FRONTIER.json
-loop/CANDIDATES.jsonl
-loop/traces/
+/goal read loop/PROMPT.md
 ```
 
-## How it actually works
+## Modes
 
-loopgen is four battle-tested loop-generator skills folded into one compiler. It
-picks the shape from your intent, fills the blanks the loop would otherwise hit
-mid-run, creates canonical state/prompt/artifact files, then hands you the fixed
-`/goal` kickoff prompt.
-
-| Seed | Archetype | Halts on |
+| Mode | Use | Stop |
 |---|---|---|
-| A task with a definition of done | `goal` | `criteria-met`: one final-verify proves the frozen acceptance inventory |
-| A quality edge to push | `frontier` | `homeostatic-checkpoint`: the loop has no useful in-scope intervention left |
-| A product surface to walk through | `story` | `storyboard-converged`: the visible product matches the storyboard |
-| An idea to build out from zero | `greenfield` | `stone-converged`: the artifact landed on the user's reframed target |
+| Finite delivery (default) | Refactor, migration, audit closure, release milestone, bounded product slice | Acceptance proven or a real blocker/approval boundary is reached |
+| Frontier discovery (explicit only) | Benchmark improvement, repeated discovery, exploration against fresh signals | A named bounded checkpoint; candidates go to a separate discovery queue |
 
-The compiler flow is short:
+A frontier may propose finite delivery work, but it does not share the finite
+runner's state or completion rule.
 
-1. **Frontload audit.** Resolve paths, commands, evaluator, scope, budget, and irreversible decisions before the loop fires.
-2. **Classify.** Extract primitive values and pick the nearest archetype. Contradictions ask instead of silently defaulting.
-3. **Compose.** Start from the archetype body, apply divergences and overlays, fill provenance and frontload gaps.
-4. **Emit.** Write the prompt/state/artifact contract and the same `/goal read loop/PROMPT.md...` pointer every time.
+## Process budget
 
-Hybrids keep the nearest archetype's contract, then add the active divergent or
-overlay pieces. A story-shaped frontend snappiness loop, for example, keeps the
-storyboard surface but adds trace/metric evidence because the target needs
-before/after pressure.
+- Focused validation during implementation.
+- One self-review of the relevant diff.
+- One independent review only for a named risk that merits it.
+- A full repository gate once at the final relevant diff when the work is broad,
+  high-risk, or explicitly at a merge/release gate.
+- No repeated checks while the diff and risk are unchanged.
+- No review loop for low, nit, or informational findings.
+
+Long thread age, token totals, and compaction count are diagnostic signals, not
+failure conditions. Loss of control means repeated work, acceptance drift,
+stale-context mistakes, reopened completed items, missing evidence, or failure
+to converge.
+
+## Repository layout
+
+[`loopgen/SKILL.md`](loopgen/SKILL.md) is the active lite skill. The existing
+`archetypes/`, `primitives/`, `templates/`, and `references/` directories are
+retained as historical design material for the fork; the lite skill does not
+load them during normal use.
 
 ## Install
 
-It's a skill. Send your agent the repo, or clone it and symlink `loopgen/` into the skill directory (`~/.claude/skills/` for Claude Code, `~/.codex/skills/` for Codex).
-
-## Why This Skill?
-
-Most autonomous prompt workflows behave like one-shot overnight instructions:
-the runner gets a large prompt, discovers missing decisions mid-run, then
-stalls or invents a stop condition.
-
-loopgen creates a middle layer:
-
-- **Prompt contract** — `loop/PROMPT.md` carries the full re-entrant loop playbook
-- **Durable state** — `loop/STATE.md` records classification, frontload, artifacts, and halt scan
-- **Queue artifacts** — acceptance inventories, storyboards, ledgers, rubrics, traces, and metrics give the loop somewhere concrete to work
-- **Fixed runner pointer** — `/goal read loop/PROMPT.md...` stays the only operator-facing kickoff
-
-The result is a loop that can survive handoff, resume from state, and explain
-which contract shaped it.
-
-## Capabilities
-
-| Capability | Description |
-|---|---|
-| **Archetype classification** | Maps the task to `goal`, `frontier`, `story`, or `greenfield` by primitive values, not vibes. |
-| **Hybrid composition** | Keeps the nearest archetype contract and adds active divergences or overlays. |
-| **Frontload audit** | Resolves commands, paths, evaluator, scope, and irreversible decisions before the loop fires. |
-| **Deterministic artifacts** | Emits the same canonical files for the same loop shape every run. |
-| **Benchmark frontier overlay** | Adds domain spec, benchmark, candidate lineage, frontier state, and trace roles when a concrete eval is bound. |
-| **Provenance preamble** | Names the primitive, archetype, body, reference, and overlay files that shaped the prompt. |
-| **Runner-stable kickoff** | Always emits one `/goal read loop/PROMPT.md...` pointer with no first-iteration instructions baked in. |
-
-## Common Asks
-
-| Ask | Shape |
-|---|---|
-| `/loopgen "close this spec"` | `goal`: finite acceptance inventory + final verify |
-| `/loopgen "walk the onboarding flow"` | `story`: storyboard + surface evidence |
-| `/loopgen "optimize the checkout API load benchmark"` | `frontier`: findings ledger + traces + metrics + benchmark overlay |
-| `/loopgen "build out this artifact idea from zero"` | `greenfield`: rubric + intent + README |
-| `/loopgen "improve frontend snappiness"` | `story` with frontier-expanding evidence add-ons |
-
-## Skill Behavior
-
-The bundled `loopgen` skill teaches the model to:
-
-- Never compose from memory; read the required primitives, archetype, body, and overlay references first
-- Never silently default on contradictory primitive values
-- Always emit canonical artifact files for the active contracts
-- Always record `derivation_read_set`, frontload, divergences, overlays, and artifacts in `loop/STATE.md`
-- Always make hybrids additive: nearest archetype first, then divergent primitive and overlay contracts
-- Always emit the bare `/goal read loop/PROMPT.md and execute as <identity>.` kickoff
-- Never put first-iteration setup instructions in the kickoff; bootstrap belongs inside the re-entrant prompt
-
-## Skill Internals
-
-These are not separate user docs. They are the markdown source files the
-`loopgen` skill reads, combines, and emits from.
-
-| Source | Role in the compiler |
-|---|---|
-| [`loopgen/SKILL.md`](loopgen/SKILL.md) | Compiler contract, phases, artifact/state contracts, and runner kickoff rules. |
-| [`loopgen/primitives/`](loopgen/primitives) | Primitive vocabulary: target, halt, artifact, convergence, cadence, frontload, runner, evidence, evaluator, pressure, benchmark overlays. |
-| [`loopgen/archetypes/`](loopgen/archetypes) | Defaults and failure modes for `goal`, `frontier`, `story`, and `greenfield`. |
-| [`loopgen/templates/composed-prompt.md`](loopgen/templates/composed-prompt.md) | Assembly procedure for emitted prompts. |
-| [`loopgen/templates/bodies/`](loopgen/templates/bodies) | Archetype body templates that become `loop/PROMPT.md`. |
-| [`loopgen/references/`](loopgen/references) | Oracle, benchmark-frontier, greenfield, review closure, and compatibility references. |
-
----
-
-It's a prompt-writer skill with strong opinions about going to sleep. That's all. YMMV.
+Symlink `loopgen/` into the Codex or Claude skills directory. Keep it opt-in: its
+frontmatter intentionally excludes broad triggers such as ordinary planning,
+debugging, implementation, or vague repository improvement.
