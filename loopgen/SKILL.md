@@ -48,6 +48,17 @@ do not create loop artifacts. For scheduled work, define the cadence from how
 often the source can change, the freshness/delta and no-op checks, and separate
 the stop condition for one run from retirement of the recurring routine.
 
+Bind the abstract runner to the harness's native primitive at authoring time
+(the contract above is harness-neutral):
+
+- Claude Code: `/goal` for bounded multi-turn; `/loop <interval>` for an
+  in-session scheduled continuation (omit the interval for self-paced wake-ups
+  via ScheduleWakeup); `/schedule` cloud routines or session-scoped CronCreate
+  for standalone scheduled runs.
+- Harnesses without a native scheduler (headless CI, cron-invoked runs): an
+  external scheduler invoking a headless run that reads `loop/PROMPT.md`. A
+  generated `loop.sh` is the fallback only when no scheduler exists at all.
+
 ## Modes
 
 Choose one mode decisively.
