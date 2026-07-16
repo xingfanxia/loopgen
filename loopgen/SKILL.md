@@ -27,6 +27,27 @@ have a named signal, bounded checkpoint, and separate discovery queue.
 - Do not prescribe agent count, model, review rounds, commit cadence, or thread
   rotation unless the task actually depends on them.
 
+## Choose The Runner First
+
+Do not turn every repeated action into an autonomous loop.
+
+- Use an ordinary turn for short, exploratory, or one-off work where the user
+  still owns the next check.
+- Use `/goal` for bounded multi-turn work with a stable objective and
+  verifiable completion. Point it at `loop/PROMPT.md` only when the durable
+  contract is too large for the goal itself.
+- Use a scheduled continuation when work must revisit external state and prior
+  task context matters. Use standalone scheduled runs when each input window is
+  independent.
+- Use an unattended mutating routine only after the same prompt, tools, model
+  route, and permissions succeed on a representative manual slice. Prefer
+  idempotent actions and an isolated worktree for repository mutations.
+
+If an ordinary turn or direct `/goal` is sufficient, report that decision and
+do not create loop artifacts. For scheduled work, define the cadence from how
+often the source can change, the freshness/delta and no-op checks, and separate
+the stop condition for one run from retirement of the recurring routine.
+
 ## Modes
 
 Choose one mode decisively.
@@ -62,9 +83,10 @@ one runner state or one completion rule between them.
 
 1. Inspect the repository and the named task source.
 2. Find existing acceptance, plan, status, audit, and verification artifacts.
-3. Decide finite delivery or explicit frontier discovery.
-4. Bind the objective, scope boundary, evidence source, validation commands,
-   approval boundary, and stop rules.
+3. Choose the runner, then decide finite delivery or explicit frontier
+   discovery.
+4. Bind the objective, trigger when applicable, scope boundary, evidence source,
+   validation commands, approval boundary, and stop rules.
 5. Write or revise `loop/PROMPT.md`.
 6. Reuse an existing durable ledger. Create `loop/STATE.md` only when no
    suitable state or milestone ledger exists.
@@ -84,6 +106,12 @@ sections below.
 
 State the user-visible outcome in one paragraph. Preserve the project-level
 objective; name the current milestone separately.
+
+### Runner and trigger
+
+Name the selected runner and what starts one run. For scheduled work, also name
+the cadence, one run's input window, freshness/delta checkpoint, no-op result,
+and the separate condition that retires the recurring routine.
 
 ### Sources of truth
 
@@ -108,6 +136,10 @@ Each iteration:
 4. run the most focused validation that can disprove the change;
 5. update acceptance/state with result and evidence;
 6. decide whether to continue, verify the milestone, or stop.
+
+For a scheduled runner, each run must first check source freshness and the
+actionable delta. Exit cheaply when nothing changed, and do not repeat a
+mutation for the same source item or checkpoint.
 
 Independent reads may be parallelized. Dependent work stays sequential. Spawn
 agents only when there is real parallel work or independent-evidence value;
@@ -161,6 +193,11 @@ Stop and report when one of these is true:
 - the current loop shape is wrong for the work;
 - repeated attempts show a genuine blocker.
 
+For recurring routines, distinguish these outcomes: a run may exit because
+there is no fresh actionable delta while the routine remains active; retire or
+cancel the routine only at its explicit external terminal condition or on user
+request.
+
 Before stopping for a blocker, check the remaining in-scope acceptance set for
 another actionable item. Report completed work, evidence, open items, blocker,
 and the smallest next decision.
@@ -190,10 +227,11 @@ regenerate the whole loop merely because an older template has more sections.
 
 Return:
 
-1. mode and one-sentence rationale;
+1. runner, mode, and one-sentence rationale;
 2. files created or revised;
 3. reused sources of truth;
 4. assumptions or blockers;
-5. the exact runner invocation, normally `/goal read loop/PROMPT.md`.
+5. the exact runner invocation or schedule draft, normally `/goal read loop/PROMPT.md`.
 
-Do not start the loop unless the user separately asks to run it.
+Do not start a goal or create a scheduled task unless the user separately asks
+to run or schedule it.
